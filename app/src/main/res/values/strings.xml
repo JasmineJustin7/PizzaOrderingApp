@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">RUPizzeria</string>
+    <string name="order_chicago_style_pizza">Order Chicago-Style Pizza</string>
+    <string name="ru_pizzeria">RU Pizzeria</string>
+    <string name="order_new_york_style_pizza">Order New York-Style Pizza</string>
+    <string name="view_current_order">View Current Order</string>
+    <string name="view_all_orders">View all Orders</string>
 
 </resources>
