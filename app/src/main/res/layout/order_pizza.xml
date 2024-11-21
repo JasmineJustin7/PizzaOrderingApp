@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="375dp"
+        android:layout_height="34dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="6dp"
+        tools:layout_editor_absoluteY="304dp">
+
+        <Spinner
+            android:id="@+id/pizza_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:translationY="-10dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/cs_pizza_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/alegreya"
+        android:text="@string/order_pizza"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/select_type_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="@string/select_pizza_type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_style_label" />
+
+    <TextView
+        android:id="@+id/select_size_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="@string/select_size"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="416dp"
+        android:layout_height="29dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="383dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+        <RadioButton
+            android:id="@+id/cs_large_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/large"
+            android:textSize="14sp"
+            android:translationX="245dp"
+            android:translationY="5dp" />
+
+        <RadioButton
+            android:id="@+id/cs_medium_size"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="@string/medium"
+            android:textSize="14sp"
+            android:translationX="125dp"
+            android:translationY="-30dp" />
+
+        <RadioButton
+            android:id="@+id/cs_small_size"
+            android:layout_width="wrap_content"
+            android:layout_height="33dp"
+            android:layout_marginTop="28dp"
+            android:text="@string/small"
+            android:textSize="14sp"
+            android:translationX="25dp"
+            android:translationY="-95dp" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/select_topping_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="76dp"
+        android:text="@string/select_toppings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/select_size_label" />
+
+    <RadioGroup
+        android:layout_width="340dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.366"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_style_label">
+
+        <RadioButton
+            android:id="@+id/choose_CStyle_RB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chicago_style_rb" />
+
+        <RadioButton
+            android:id="@+id/choose_NYStyle_RB"
+            android:layout_width="wrap_content"
+            android:layout_height="33dp"
+            android:layout_marginStart="44dp"
+            android:text="@string/new_york_style_rb"
+            android:translationX="150dp"
+            android:translationY="-28dp" />
+    </RadioGroup>
+
+    <ImageView
+        android:id="@+id/pizza_image"
+        android:layout_width="258dp"
+        android:layout_height="122dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cs_pizza_label"
+        app:srcCompat="@drawable/chicagopizzaimage" />
+
+    <TextView
+        android:id="@+id/select_style_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="196dp"
+        android:text="@string/select_style"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="409dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="352dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/crust_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/crust" />
+
+        <TextView
+            android:id="@+id/display_crust_text"
+            android:layout_width="322dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/crust_selection" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/price_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="96dp"
+        android:text="Price"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_toppings"
+        android:layout_width="396dp"
+        android:layout_height="99dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_topping_label" />
+
+    <TextView
+        android:id="@+id/display_price"
+        android:layout_width="59dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="24dp"
+        android:layout_weight="1"
+        android:text="@string/textview"
+        app:layout_constraintStart_toEndOf="@+id/price_label"
+        tools:layout_editor_absoluteY="616dp" />
+
+    <Button
+        android:id="@+id/add_to_order_button"
+        android:layout_width="413dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="676dp"
+        android:layout_weight="1"
+        android:text="@string/add_to_order"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
