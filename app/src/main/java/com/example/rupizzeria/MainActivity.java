@@ -23,11 +23,9 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-
         ImageButton cStyleIcon = findViewById(R.id.CStyleIcon);
         ImageButton currentOrderIcon = findViewById(R.id.currentOrderIcon);
         ImageButton ordersIcon = findViewById(R.id.ordersIcon);
-
 
         //order pizza
         cStyleIcon.setOnClickListener(v -> {
@@ -36,14 +34,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
         //current order
         currentOrderIcon.setOnClickListener(v -> {
             //Toast.makeText(MainActivity.this, "Current Order clicked", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this, CurrentOrdersActivity.class);
             startActivity(intent);
         });
-
 
         //view orders
         ordersIcon.setOnClickListener(v -> {
