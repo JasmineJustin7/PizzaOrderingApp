@@ -1,6 +1,6 @@
 package com.example.rupizzeria;
 
-package com.example.recyclerviewexample;
+//package com.example.recyclerviewexample;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -54,7 +54,8 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
     public ItemsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflate the row layout for the items
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.row_view, parent, false);
+        //View view = inflater.inflate(R.layout.row_view, parent, false);
+        View view = null;
         return new ItemsHolder(view);
     }
 
@@ -67,9 +68,9 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
     @Override
     public void onBindViewHolder(@NonNull ItemsHolder holder, int position) {
         //assign values for each row
-        holder.tv_name.setText(toppingsArrayList.get(position).getItemName());
-        holder.tv_price.setText(toppingsArrayList.get(position).getUnitPrice());
-        holder.im_item.setImageResource(toppingsArrayList.get(position).getImage());
+        //holder.tv_name.setText(toppingsArrayList.get(position).getItemName());
+        //holder.tv_price.setText(toppingsArrayList.get(position).getUnitPrice());
+        //holder.im_item.setImageResource(toppingsArrayList.get(position).getImage());
     }
 
     /**
