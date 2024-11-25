@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E5EBEF">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/headerCO"
         android:layout_width="0dp"
@@ -23,18 +21,17 @@
             android:id="@+id/header_titleCO"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Current Orders"
+            android:text='@string/current_order'
             android:textColor="@android:color/white"
             android:textSize="20sp" />
     </LinearLayout>
 
-    <!-- "Order #" and blank TextView -->
     <TextView
         android:id="@+id/orderNumTextView"
         android:layout_width="81dp"
         android:layout_height="36dp"
         android:layout_marginTop="16dp"
-        android:text="Order #"
+        android:text='@string/order_number'
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -59,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:text="Select items to remove"
+        android:text='@string/select_item'
         android:textColor="#FF000000"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +72,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectToRemove">
 
-        <!-- RecyclerView inside the ConstraintLayout -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/orderItemRecyclerView"
             android:layout_width="406dp"
@@ -95,7 +91,7 @@
         android:layout_marginTop="36dp"
         android:backgroundTint="#8B0000"
         android:onClick="removeItem"
-        android:text="Remove Item"
+        android:text='@string/remove_item'
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="108dp"
             android:layout_marginTop="8dp"
-            android:text="Order Total:"
+            android:text='@string/orderTotalText'
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/white"
             android:textSize="24sp"
@@ -131,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="$0.00"
+            android:text='@string/order_total'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
@@ -156,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="108dp"
             android:layout_marginTop="8dp"
-            android:text="Sales Tax:"
+            android:text='@string/salesTaxText'
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/white"
             android:textSize="24sp"
@@ -169,7 +165,7 @@
             android:layout_height="35dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="$0.00"
+            android:text='@string/sales_tax'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
@@ -194,7 +190,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="108dp"
             android:layout_marginTop="8dp"
-            android:text="Subtotal:"
+            android:text='@string/subtotalText'
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/white"
             android:textSize="24sp"
@@ -207,7 +203,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="$0.00"
+            android:text='@string/sub_total'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
@@ -221,7 +217,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:backgroundTint="#8B0000"
-        android:text="Place Order"
+        android:text='@string/place_order'
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.532"
         app:layout_constraintStart_toStartOf="parent"
