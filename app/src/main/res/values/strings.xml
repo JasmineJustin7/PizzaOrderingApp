@@ -20,5 +20,17 @@
     <string name="display_crust_text">Crust Type</string>
     <string name="order_pizzas">Order Pizzas</string>
     <string name="add_to_order">Add to Order</string>
-
+    <string name= "placed_orders">Placed Orders</string>
+    <string name="order_number">Order#</string>
+    <string name="cancel_order">Cancel Order</string>
+    <string name="current_order">Current Order</string>
+    <string name="select_item">Select Item to remove</string>
+    <string name="remove_item">Remove Item</string>
+    <string name="orderTotalText">Order Total</string>
+    <string name="order_total">Order Total</string>
+    <string name="salesTaxText">Sales Tax</string>
+    <string name="sales_tax">Sales Tax</string>
+    <string name="subtotalText">Subtotal</string>
+    <string name="sub_total">Subtotal</string>
+    <string name="place_order">Place Order</string>
 </resources>

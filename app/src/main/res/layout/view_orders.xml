@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:gravity="center"
-            android:text="Placed Orders"
+            android:text='@string/placed_orders'
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/white"
             android:textSize="24sp" />
@@ -44,7 +44,7 @@
             android:layout_width="76dp"
             android:layout_height="29dp"
             android:layout_marginStart="120dp"
-            android:text="Order#"
+            android:text='@string/order_number'
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -68,7 +68,7 @@
         android:layout_marginTop="12dp"
         android:backgroundTint="#8B0000"
         android:onClick="cancelOrder"
-        android:text="Cancel Order"
+        android:text='@string/cancel_order'
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
