@@ -1,7 +1,6 @@
 
 package com.example.rupizzeria;
 
-
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
