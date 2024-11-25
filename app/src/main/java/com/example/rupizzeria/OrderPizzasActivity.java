@@ -3,6 +3,11 @@ package com.example.rupizzeria;
 
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,10 +27,14 @@ public class OrderPizzasActivity extends AppCompatActivity {
      *  ID is consistent with the index of the associated menu item in the ArrayList.
      *  An image resource could also be an URI.
      */
+    private Spinner pizzaTypeSpinner;
+
     private int [] toppingImages = {R.drawable.anchovy, R.drawable.bbq_chicken, R.drawable.beef,
             R.drawable.cheddar, R.drawable.green_pepper, R.drawable.ham, R.drawable.mushroom,
             R.drawable.olive, R.drawable.pepperoni, R.drawable.pineapple, R.drawable.provolone,
     R.drawable.red_onion, R.drawable.sausage};
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +46,21 @@ public class OrderPizzasActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter); //bind the list of items to the RecyclerView
         //use the LinearLayout for the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        pizzaTypeSpinner = findViewById(R.id.pizza_type_spinner);
+        String[] pizzaTypes = {"Build Your Own", "Deluxe", "BBQ Chicken", "Meatzza"};
+        ArrayAdapter<String> pizzaTypeAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, pizzaTypes);
+        pizzaTypeSpinner.setAdapter(pizzaTypeAdapter);
+
+        RadioGroup sizeRadioGroup = findViewById(R.id.rg_size);
+        RadioButton sizeMedium = findViewById(R.id.cs_medium_size);
+        RadioButton sizeLarge = findViewById(R.id.cs_large_size);
+        RadioGroup styleRadioGroup = findViewById(R.id.rg_pizzaStyle);
+        RadioButton sizeSmall = findViewById(R.id.cs_small_size);
+        RadioButton chicagoStyle = findViewById(R.id.choose_CStyle_RB);
+        RadioButton nyStyle = findViewById(R.id.choose_NYStyle_RB);
+        styleRadioGroup.check(R.id.choose_CStyle_RB); //automatically select Chicago-Style pizza
+        sizeRadioGroup.check(R.id.cs_small_size); //automatically select small size when activity is created
+
     }
 
 

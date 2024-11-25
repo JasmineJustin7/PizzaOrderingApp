@@ -33,4 +33,5 @@
     <string name="subtotalText">Subtotal</string>
     <string name="sub_total">Subtotal</string>
     <string name="place_order">Place Order</string>
+    <string name="price_label">Price</string>
 </resources>
