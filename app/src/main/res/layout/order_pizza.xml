@@ -177,8 +177,7 @@
             android:id="@+id/display_crust_text"
             android:layout_width="322dp"
             android:layout_height="20dp"
-            android:layout_marginStart="20dp"
-            android:text="@string/crust_selection" />
+            android:layout_marginStart="20dp" />
     </LinearLayout>
 
     <TextView
