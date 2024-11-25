@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E5EBEF"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/headerCO"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#8B0000"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/header_titleCO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:text="Current Orders"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/selectToRemove"
+        android:layout_width="167dp"
+        android:layout_height="19dp"
+        android:gravity="start"
+        android:text="Select items to remove"
+        android:textColor="#FF000000"
+        android:textSize="16sp"
+        tools:ignore="UnknownId"
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="127dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints"></LinearLayout>
+
+
+    <Button
+        android:id="@+id/removeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#8B0000"
+        android:onClick="remove"
+        android:text="Remove Item"
+        tools:layout_editor_absoluteX="138dp"
+        tools:layout_editor_absoluteY="376dp" />
+
+    <Button
+        android:id="@+id/placeOrderCO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#8B0000"
+        android:text="Place Order"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="647dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/orderTotalLayout"
+        android:layout_width="417dp"
+        android:layout_height="53dp"
+        android:background="#8B0000"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-6dp"
+        tools:layout_editor_absoluteY="442dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order Total:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="105dp"
+            tools:layout_editor_absoluteY="10dp" />
+
+        <EditText
+            android:id="@+id/orderTotalEdit"
+            android:layout_width="104dp"
+            android:layout_height="47dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:inputType="none"
+            android:text="$0.00"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="231dp"
+            tools:layout_editor_absoluteY="3dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/salesTaxLayout"
+        android:layout_width="417dp"
+        android:layout_height="53dp"
+        android:background="#8B0000"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="509dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sales Tax:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="118dp"
+            tools:layout_editor_absoluteY="10dp" />
+
+        <EditText
+            android:id="@+id/salesTaxEdit"
+            android:layout_width="119dp"
+            android:layout_height="52dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:inputType="none"
+            android:text="$0.00"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="227dp"
+            tools:layout_editor_absoluteY="0dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/subtotalLayout"
+        android:layout_width="417dp"
+        android:layout_height="53dp"
+        android:background="#8B0000"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="575dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Subtotal:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="133dp"
+            tools:layout_editor_absoluteY="10dp" />
+
+        <EditText
+            android:id="@+id/subtotalEdit"
+            android:layout_width="135dp"
+            android:layout_height="47dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:inputType="none"
+            android:text="$0.00"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="229dp"
+            tools:layout_editor_absoluteY="3dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/currentListLayout"
+        android:layout_width="413dp"
+        android:layout_height="213dp"
+        tools:layout_editor_absoluteX="-2dp"
+        tools:layout_editor_absoluteY="155dp">
+
+        <LinearLayout
+            android:id="@+id/orderItemRecyclerView"
+            android:layout_width="410dp"
+            android:layout_height="211dp"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
+
+            <CheckBox
+                android:id="@+id/orderItemsCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="CheckBox" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/orderNumTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order #"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="138dp"
+        tools:layout_editor_absoluteY="78dp" />
+
+    <TextView
+        android:id="@+id/orderNumtextView"
+        android:layout_width="67dp"
+        android:layout_height="32dp"
+        tools:layout_editor_absoluteX="219dp"
+        tools:layout_editor_absoluteY="78dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
