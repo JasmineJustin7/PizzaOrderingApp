@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E5EBEF"
-    android:orientation="vertical">
+    android:background="#E5EBEF">
 
+    <!-- Header -->
     <LinearLayout
         android:id="@+id/headerCO"
         android:layout_width="0dp"
@@ -23,198 +23,219 @@
             android:id="@+id/header_titleCO"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:gravity="center"
             android:text="Current Orders"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
     </LinearLayout>
 
+    <!-- "Order #" and blank TextView -->
+    <TextView
+        android:id="@+id/orderNumTextView"
+        android:layout_width="81dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="16dp"
+        android:text="Order #"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.421"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerCO" />
+
+
+    <TextView
+        android:id="@+id/orderNumtextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintEnd_toStartOf="@+id/orderNumberText"
+        app:layout_constraintStart_toEndOf="@id/orderNumTextView"
+        app:layout_constraintTop_toTopOf="@id/orderNumTextView" />
+
     <TextView
         android:id="@+id/selectToRemove"
-        android:layout_width="167dp"
-        android:layout_height="19dp"
-        android:gravity="start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
         android:text="Select items to remove"
         android:textColor="#FF000000"
         android:textSize="16sp"
-        tools:ignore="UnknownId"
-        tools:layout_editor_absoluteX="10dp"
-        tools:layout_editor_absoluteY="127dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/orderNumTextView" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        tools:ignore="MissingConstraints"></LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recyclerViewConstraint"
+        android:layout_width="411dp"
+        android:layout_height="233dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@id/removeButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectToRemove">
 
+        <!-- RecyclerView inside the ConstraintLayout -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/orderItemRecyclerView"
+            android:layout_width="406dp"
+            android:layout_height="236dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/removeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
         android:backgroundTint="#8B0000"
-        android:onClick="remove"
+        android:onClick="removeItem"
         android:text="Remove Item"
-        tools:layout_editor_absoluteX="138dp"
-        tools:layout_editor_absoluteY="376dp" />
-
-    <Button
-        android:id="@+id/placeOrderCO"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#8B0000"
-        android:text="Place Order"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="647dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewConstraint" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/orderTotalLayout"
-        android:layout_width="417dp"
-        android:layout_height="53dp"
+        android:layout_width="413dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="20dp"
         android:background="#8B0000"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-6dp"
-        tools:layout_editor_absoluteY="442dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/removeButton">
 
         <TextView
+            android:id="@+id/orderTotalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="108dp"
+            android:layout_marginTop="8dp"
             android:text="Order Total:"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/white"
             android:textSize="24sp"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="105dp"
-            tools:layout_editor_absoluteY="10dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/orderTotalEdit"
-            android:layout_width="104dp"
-            android:layout_height="47dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:inputType="none"
+        <TextView
+            android:id="@+id/totalCurrentText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="$0.00"
-            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#FFFFFF"
             android:textSize="24sp"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="231dp"
-            tools:layout_editor_absoluteY="3dp" />
+            app:layout_constraintStart_toEndOf="@id/orderTotalText"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/salesTaxLayout"
-        android:layout_width="417dp"
-        android:layout_height="53dp"
+        android:layout_width="413dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="32dp"
         android:background="#8B0000"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="509dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/orderTotalLayout">
 
         <TextView
+            android:id="@+id/salesTaxText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="108dp"
+            android:layout_marginTop="8dp"
             android:text="Sales Tax:"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/white"
             android:textSize="24sp"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="118dp"
-            tools:layout_editor_absoluteY="10dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/salesTaxEdit"
-            android:layout_width="119dp"
-            android:layout_height="52dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:inputType="none"
+        <TextView
+            android:id="@+id/salesTaxCurrentText"
+            android:layout_width="68dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="$0.00"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@android:color/white"
+            android:textColor="#FFFFFF"
             android:textSize="24sp"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="227dp"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintStart_toEndOf="@+id/salesTaxText"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/subtotalLayout"
-        android:layout_width="417dp"
-        android:layout_height="53dp"
+        android:layout_width="413dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="32dp"
         android:background="#8B0000"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="575dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/salesTaxLayout">
 
         <TextView
+            android:id="@+id/subtotalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="108dp"
+            android:layout_marginTop="8dp"
             android:text="Subtotal:"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/white"
             android:textSize="24sp"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="133dp"
-            tools:layout_editor_absoluteY="10dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/subtotalEdit"
-            android:layout_width="135dp"
-            android:layout_height="47dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:inputType="none"
+        <TextView
+            android:id="@+id/subtotalCurrentText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="$0.00"
-            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#FFFFFF"
             android:textSize="24sp"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="229dp"
-            tools:layout_editor_absoluteY="3dp" />
+            app:layout_constraintStart_toEndOf="@id/subtotalText"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/currentListLayout"
-        android:layout_width="413dp"
-        android:layout_height="213dp"
-        tools:layout_editor_absoluteX="-2dp"
-        tools:layout_editor_absoluteY="155dp">
-
-        <LinearLayout
-            android:id="@+id/orderItemRecyclerView"
-            android:layout_width="410dp"
-            android:layout_height="211dp"
-            android:orientation="horizontal"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp">
-
-            <CheckBox
-                android:id="@+id/orderItemsCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="CheckBox" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/orderNumTextView"
+    <Button
+        android:id="@+id/placeOrderButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Order #"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="24dp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="138dp"
-        tools:layout_editor_absoluteY="78dp" />
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#8B0000"
+        android:text="Place Order"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.532"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subtotalLayout" />
 
     <TextView
-        android:id="@+id/orderNumtextView"
-        android:layout_width="67dp"
-        android:layout_height="32dp"
-        tools:layout_editor_absoluteX="219dp"
-        tools:layout_editor_absoluteY="78dp" />
+        android:id="@+id/orderNumberText"
+        android:layout_width="81dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@id/orderNumtextView"
+        app:layout_constraintTop_toBottomOf="@+id/headerCO" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
