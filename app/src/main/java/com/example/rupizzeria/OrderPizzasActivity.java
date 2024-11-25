@@ -22,20 +22,21 @@ public class OrderPizzasActivity extends AppCompatActivity {
      *  ID is consistent with the index of the associated menu item in the ArrayList.
      *  An image resource could also be an URI.
      */
-    /*private int [] toppingImages = {R.drawable.apple, R.drawable.banana, R.drawable.grapes,
-            R.drawable.mango, R.drawable.orange, R.drawable.peach, R.drawable.pineapple,
-            R.drawable.strawberry};*/
+    private int [] toppingImages = {R.drawable.anchovy, R.drawable.bbq_chicken, R.drawable.beef,
+            R.drawable.cheddar, R.drawable.green_pepper, R.drawable.ham, R.drawable.mushroom,
+            R.drawable.olive, R.drawable.pepperoni, R.drawable.pineapple, R.drawable.provolone,
+    R.drawable.red_onion, R.drawable.sausage};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_pizza);
-        RecyclerView recyclerViewc = findViewById(R.id.recycler_toppings);
+        RecyclerView recyclerView = findViewById(R.id.recycler_toppings);
         setupMenuItems(); //add the list of items to the ArrayList
-        //ItemsAdapter adapter = new ItemsAdapter(this, toppings); //create the adapter
-        //recyclerViewc.setAdapter(adapter); //bind the list of items to the RecyclerView
+        ToppingsAdapter adapter = new ToppingsAdapter(this, toppings); //create the adapter
+        recyclerView.setAdapter(adapter); //bind the list of items to the RecyclerView
         //use the LinearLayout for the RecyclerView
-        recyclerViewc.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
 
@@ -48,13 +49,28 @@ public class OrderPizzasActivity extends AppCompatActivity {
          * Your item names might come from other places, such as an external file, or the database
          * from the backend.
          */
-        //String [] itemNames = getResources().getStringArray(R.array.itemNames);
+        //String [] toppingNames;
+
         /* Add the items to the ArrayList.
          * Note that I use hardcoded prices for demo purpose. This should be replace by other
          * data sources.
          */
-        /*for (int i = 0; i < itemNames.length; i++) {
-            //toppings.add(new Items(itemNames[i], itemImages[i], "$1.39"));
+        toppings.add(Topping.ANCHOVY);
+        toppings.add(Topping.BBQ_CHICKEN);
+        toppings.add(Topping.BEEF);
+        toppings.add(Topping.CHEDDAR);
+        toppings.add(Topping.GREEN_PEPPER);
+        toppings.add(Topping.HAM);
+        toppings.add(Topping.MUSHROOM);
+        toppings.add(Topping.OLIVE);
+        toppings.add(Topping.PEPPERONI);
+        toppings.add(Topping.PINEAPPLE);
+        toppings.add(Topping.PROVOLONE);
+        toppings.add(Topping.ONION);
+        toppings.add(Topping.SAUSAGE);
+
+        /*for (int i = 0; i < toppingNames.length; i++) {
+            //toppings.add(itemNames[i], itemImages[i]);
         }*/
     }
 
