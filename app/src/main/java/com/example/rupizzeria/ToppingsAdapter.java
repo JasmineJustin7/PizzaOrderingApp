@@ -67,9 +67,9 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
     @Override
     public void onBindViewHolder(@NonNull ItemsHolder holder, int position) {
         //assign values for each row
-        //holder.tv_name.setText(toppingsArrayList.get(position).getItemName());
+        holder.tv_name.setText(toppingsArrayList.get(position).toString());
         //holder.tv_price.setText(toppingsArrayList.get(position).getUnitPrice());
-        //holder.im_topping.setImageResource(toppingsArrayList.get(position).getImage());
+        holder.im_topping.setImageResource(toppingsArrayList.get(position).getImage());
     }
 
     /**
@@ -85,7 +85,8 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
      * Get the views from the row layout file, similar to the onCreate() method.
      */
     public static class ItemsHolder extends RecyclerView.ViewHolder {
-        private TextView tv_name, tv_price;
+        private TextView tv_name;
+        private TextView tv_price;
         private ImageView im_topping;
         private Button btn_add;
         private ConstraintLayout parentLayout; //this is the row layout

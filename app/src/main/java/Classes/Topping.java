@@ -1,15 +1,20 @@
 package Classes;
 
+import android.media.Image;
+
 import androidx.annotation.NonNull;
 
 import com.example.rupizzeria.R;
+
+import android.net.Uri;
 
 /**enum class holding all possible toppings available at the pizzeria
  @author Jasmine Justin
  @author Jimena Reyes*/
 public enum Topping {
     /**anchovy topping*/
-    ANCHOVY(R.drawable.anchovy),
+    ANCHOVY(R.drawable.anchovy){
+    },
     /**bbq chicken topping*/
     BBQ_CHICKEN(R.drawable.bbq_chicken),
     /**beef topping*/
@@ -32,20 +37,27 @@ public enum Topping {
     PROVOLONE(R.drawable.provolone),
     /**pineapple topping*/
     PINEAPPLE(R.drawable.pineapple),
-    /**anchovy topping*/
+    /**sausage topping*/
     SAUSAGE(R.drawable.sausage);
 
     // Instance field to hold the image file path (or a URL or resource ID)
-    private int imagePath;
+    //private int imagePath;
+
+    private int itemUri;
 
     // Constructor for the enum constants
-    Topping(int imagePath) {
-        this.imagePath = imagePath;
+    Topping(int image) {
+        this.itemUri = image;
     }
 
     // Getter for the image path
-    public int getImagePath() {
+    /*public int getImagePath() {
         return imagePath;
+    }*/
+
+    // Getter for Uri
+    public int getImage() {
+        return itemUri;
     }
 
     /**returns the string for of the topping

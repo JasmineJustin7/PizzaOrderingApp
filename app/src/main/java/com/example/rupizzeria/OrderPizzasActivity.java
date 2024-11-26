@@ -46,21 +46,21 @@ public class OrderPizzasActivity extends AppCompatActivity {
     /**meatzza pizza*/
     private final Pizza defaultMeatzza = new Meatzza(Size.SMALL, false);
     /**URI of deluxe pizza image*/
-    private String deluxeNY = "android.resource://com.your.package/drawable/deluxe";
+    private String deluxeNY = "android.resource://com.example.rupizzeria/drawable/deluxe";
     /**URI of bbq chicken pizza image*/
-    private String bbqchickenNY = "android.resource://com.your.package/drawable/bbqchickenpizza";
+    private String bbqchickenNY = "android.resource://com.example.rupizzeria/drawable/bbqchickenpizza";
     /**URI of meatzza pizza image*/
-    private String meatzzaNY = "android.resource://com.your.package/drawable/meatzza";
+    private String meatzzaNY = "android.resource://com.example.rupizzeria/drawable/meatzza";
     /**URI of build your own pizza image*/
-    private String byoNY = "android.resource://com.your.package/drawable/newyorkstylepizza";
+    private String byoNY = "android.resource://com.example.rupizzeria/drawable/newyorkstylepizza";
     /**URI of deluxe pizza image*/
-    private String deluxeCS = "android.resource://com.your.package/drawable/deepdishdeluxe";
+    private String deluxeCS = "android.resource://com.example.rupizzeria/drawable/deepdishdeluxe";
     /**URI of bbq chicken pizza image*/
-    private String bbqchickenCS = "android.resource://com.your.package/drawable/deepdishbbq";
+    private String bbqchickenCS = "android.resource://com.example.rupizzeria/drawable/deepdishbbq";
     /**URI of meatzza pizza image*/
-    private String meatzzaCS = "android.resource://com.your.package/drawable/deepdishmeatzza";
+    private String meatzzaCS = "android.resource://com.example.rupizzeria/drawable/deepdishmeatzza";
     /**URI of build your own pizza image*/
-    private String byoCS = "android.resource://com.your.package/drawable/chicagopizzaimage";
+    private String byoCS = "android.resource://com.example.rupizzeria/drawable/chicagopizzaimage";
 
 
     /**Declare an instance of ArrayList to hold the items to be display with the RecyclerView*/
