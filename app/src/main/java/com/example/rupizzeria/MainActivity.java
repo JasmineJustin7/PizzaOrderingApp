@@ -27,44 +27,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, activities);
-        //listView = findViewById(R.id.main_listView);
         listView = findViewById(R.id.main_listView);
         listView.setOnItemClickListener(this); //register the listener for an OnItemClick event.
         listView.setAdapter(adapter);
     }
-        /*super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-        ImageButton cStyleIcon = findViewById(R.id.CStyleIcon);
-        ImageButton currentOrderIcon = findViewById(R.id.currentOrderIcon);
-        ImageButton ordersIcon = findViewById(R.id.ordersIcon);
-
-        //order pizza
-        cStyleIcon.setOnClickListener(v -> {
-            //Toast.makeText(MainActivity.this, "Order Pizza clicked", Toast.LENGTH_SHORT).show(); - test to see if button was being clicked
-            Intent intent = new Intent(MainActivity.this, OrderPizzasActivity.class);
-            startActivity(intent);
-        });
-
-        //current order
-        currentOrderIcon.setOnClickListener(v -> {
-            //Toast.makeText(MainActivity.this, "Current Order clicked", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainActivity.this, CurrentOrdersActivity.class);
-            startActivity(intent);
-        });
-
-        //view orders
-        ordersIcon.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ViewOrdersActivity.class);
-            startActivity(intent);
-        });
-    }*/
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

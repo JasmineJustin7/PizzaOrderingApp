@@ -45,17 +45,16 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
 
     /**
      * This method will inflate the row layout for the items in the RecyclerView
-     * @param parent
-     * @param viewType
-     * @return
+     * @param parent is the parent within constraint layout
+     * @param viewType is the type of view used
+     * @return items holder with parameter view
      */
     @NonNull
     @Override
     public ItemsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflate the row layout for the items
         LayoutInflater inflater = LayoutInflater.from(context);
-        //View view = inflater.inflate(R.layout.row_view, parent, false);
-        View view = null;
+        View view = inflater.inflate(R.layout.pizza_toppings_view, parent, false);
         return new ItemsHolder(view);
     }
 
@@ -70,7 +69,7 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
         //assign values for each row
         //holder.tv_name.setText(toppingsArrayList.get(position).getItemName());
         //holder.tv_price.setText(toppingsArrayList.get(position).getUnitPrice());
-        //holder.im_item.setImageResource(toppingsArrayList.get(position).getImage());
+        //holder.im_topping.setImageResource(toppingsArrayList.get(position).getImage());
     }
 
     /**
@@ -87,15 +86,15 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
      */
     public static class ItemsHolder extends RecyclerView.ViewHolder {
         private TextView tv_name, tv_price;
-        private ImageView im_item;
+        private ImageView im_topping;
         private Button btn_add;
         private ConstraintLayout parentLayout; //this is the row layout
 
         public ItemsHolder(@NonNull View itemView) {
             super(itemView);
-            tv_name = itemView.findViewById(R.id.tv_flavor);
+            tv_name = itemView.findViewById(R.id.tv_topping);
             tv_price = itemView.findViewById(R.id.tv_price);
-            im_item = itemView.findViewById(R.id.im_item);
+            im_topping = itemView.findViewById(R.id.im_topping);
             btn_add = itemView.findViewById(R.id.btn_add);
             parentLayout = itemView.findViewById(R.id.rowLayout);
             setAddButtonOnClick(itemView); //register the onClicklistener for the button on each row.
@@ -111,7 +110,7 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
                     itemView.getContext().startActivity(intent);
                 }
             });
-            /* Alternatively, use a lamda expression to set the onClickListener for the row layout
+            /* Alternatively, use a lambda expression to set the onClickListener for the row layout
             parentLayout.setOnClickListener(view -> {
                     Intent intent = new Intent(itemView.getContext(), ItemSelectedActivity.class);
                     intent.putExtra("ITEM", tv_name.getText());
@@ -122,25 +121,25 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
         /**
          * Set the onClickListener for the button on each row.
          * Clicking on the button will create an AlertDialog with the options of YES/NO.
-         * @param itemView
+         * @param toppingView is the recycler view of toppings
          */
-        private void setAddButtonOnClick(@NonNull View itemView) {
+        private void setAddButtonOnClick(@NonNull View toppingView) {
             btn_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(itemView.getContext());
+                    AlertDialog.Builder alert = new AlertDialog.Builder(toppingView.getContext());
                     alert.setTitle("Add to order");
                     alert.setMessage(tv_name.getText().toString());
                     //handle the "YES" click
                     alert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(itemView.getContext(),
+                            Toast.makeText(toppingView.getContext(),
                                     tv_name.getText().toString() + " added.", Toast.LENGTH_LONG).show();
                         }
                         //handle the "NO" click
                     }).setNegativeButton("no", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(itemView.getContext(),
+                            Toast.makeText(toppingView.getContext(),
                                     tv_name.getText().toString() + " not added.", Toast.LENGTH_LONG).show();
                         }
                     });
