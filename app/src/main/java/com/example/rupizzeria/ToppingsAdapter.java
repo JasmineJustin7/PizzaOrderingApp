@@ -34,7 +34,7 @@ import Classes.Topping;
  * you do something similar to the onCreate() method in an Activity.
  * @author Lily Chang
  */
-class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
+class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
     private Context context; //need the context to inflate the layout
     private ArrayList<Topping> toppingsArrayList; //need the data binding to each row of RecyclerView
 

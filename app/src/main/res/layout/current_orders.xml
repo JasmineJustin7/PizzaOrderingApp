@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E5EBEF">
@@ -99,12 +100,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/orderTotalLayout"
-        android:layout_width="413dp"
-        android:layout_height="58dp"
+        android:layout_width="499dp"
+        android:layout_height="54dp"
         android:layout_marginTop="20dp"
         android:background="#8B0000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/removeButton">
 
@@ -138,11 +139,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/salesTaxLayout"
-        android:layout_width="413dp"
-        android:layout_height="58dp"
+        android:layout_width="595dp"
+        android:layout_height="55dp"
         android:layout_marginTop="32dp"
         android:background="#8B0000"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.027"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/orderTotalLayout">
 
@@ -175,12 +177,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/subtotalLayout"
-        android:layout_width="413dp"
-        android:layout_height="58dp"
+        android:layout_width="462dp"
+        android:layout_height="56dp"
         android:layout_marginTop="32dp"
         android:background="#8B0000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.058"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/salesTaxLayout">
 
@@ -217,6 +219,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:backgroundTint="#8B0000"
+        android:onClick="placeOrder"
         android:text='@string/place_order'
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.532"
