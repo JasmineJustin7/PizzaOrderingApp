@@ -10,7 +10,8 @@ import java.util.List;
  */
 public abstract class Pizza {
     /**holds a list of toppings associated with each pizza*/
-    private List<Topping> toppings;
+    //private List<Topping> toppings;
+    private ArrayList<Topping> toppings;
     /** information about the crust of the pizza*/
     private Crust crust;
     /**size of the pizza*/
@@ -40,7 +41,7 @@ public abstract class Pizza {
      * Gets the list of toppings for the pizza.
      * @return the list of toppings
      */
-    public List<Topping> getToppings() {
+    public ArrayList<Topping> getToppings() {
         return toppings;
     }
 

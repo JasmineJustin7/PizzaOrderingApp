@@ -2,6 +2,7 @@ package com.example.rupizzeria;
 
 //package com.example.recyclerviewexample;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,7 +27,6 @@ import Classes.Topping;
  * This is an Adapter class to be used to instantiate an adapter for the RecyclerView.
  * Must extend RecyclerView.Adapter, which will enforce you to implement 3 methods:
  *      1. onCreateViewHolder, 2. onBindViewHolder, and 3. getItemCount
- *
  * You must use the data type <thisClassName.yourHolderName>, in this example
  * <ItemAdapter.ItemHolder>. This will enforce you to define a constructor for the
  * ItemAdapter and an inner class ItemsHolder (a static class)
@@ -36,11 +36,11 @@ import Classes.Topping;
  */
 class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
     private Context context; //need the context to inflate the layout
-    private ArrayList<Topping> toppingsArrayList; //need the data binding to each row of RecyclerView
+    private ArrayList<Topping> toppings; //need the data binding to each row of RecyclerView
 
     public ToppingsAdapter(Context context, ArrayList<Topping> items) {
         this.context = context;
-        this.toppingsArrayList = items;
+        this.toppings = items;
     }
 
     /**
@@ -67,9 +67,9 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
     @Override
     public void onBindViewHolder(@NonNull ItemsHolder holder, int position) {
         //assign values for each row
-        holder.tv_name.setText(toppingsArrayList.get(position).toString());
+        holder.tv_name.setText(toppings.get(position).toString());
         //holder.tv_price.setText(toppingsArrayList.get(position).getUnitPrice());
-        holder.im_topping.setImageResource(toppingsArrayList.get(position).getImage());
+        holder.im_topping.setImageResource(toppings.get(position).getImage());
     }
 
     /**
@@ -78,7 +78,23 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
      */
     @Override
     public int getItemCount() {
-        return toppingsArrayList.size(); //number of MenuItem in the array list.
+        return toppings.size(); //number of MenuItem in the array list.
+    }
+
+    /**Method to add an item
+     * @param item is the topping to add to recycler view*/
+    @SuppressLint("NotifyDataSetChanged")
+    public void addTopping(Topping item) {
+        toppings.add(item);
+        notifyItemInserted(toppings.size() - 1); // Notify RecyclerView about new topping
+    }
+
+    /**Method to remove an item
+     * @param position is the position of topping within list*/
+    @SuppressLint("NotifyDataSetChanged")
+    public void removeItem(int position) {
+        toppings.remove(position);
+        notifyItemRemoved(position); // Notify RecyclerView about topping removal
     }
 
     /**

@@ -15,13 +15,24 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+/**main view of pizzeria app that gives users the option to order pizzas, view their current order, or view all orders*/
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+    /**list view containing all options provided to users*/
     private ListView listView;
+    /**adapter to hold all list view items*/
     private ArrayAdapter<String> adapter;
+    /**string associated with opening order pizza activity*/
+    private final String orderPizzas = "Order Pizzas";
+    /**string associated with viewing current order activity*/
+    private final String viewCurrent = "View Current Order";
+    /**string associated with viewing all orders made*/
+    private final String viewOrders = "View all Orders";
+    /**list of all strings associated with activities users can access in the app*/
+    private final String[] activities = {orderPizzas, viewCurrent, viewOrders};
 
-    private String[] activities = {"Order Pizzas", "View Current Order", "View all Orders"};
-
+    /**initializes the main activity view
+     * @param savedInstanceState used to create view of main activity*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +43,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setAdapter(adapter);
     }
 
+    /**listener for clicking each item in list view
+     * @param view is main view
+     * @param id is the id
+     * @param parent adapter view of list view
+     * @param position is the position */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Open different activities based on the item clicked

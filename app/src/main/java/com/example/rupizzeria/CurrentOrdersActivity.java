@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import Classes.Pizza;
+
 public class CurrentOrdersActivity extends AppCompatActivity {
     private OrderItemsAdapter adapter;
-    private List<OrderItem> orderItems;
+    private ArrayList<Pizza> orderItems;
 
     private TextView totalCurrentText, salesTaxCurrentText, subtotalCurrentText;
 
@@ -29,9 +31,9 @@ public class CurrentOrdersActivity extends AppCompatActivity {
         OrderDetails orderDetails = OrderDetails.getInstance();
 
         //add tests
-        orderDetails.addSampleItems();
+        //orderDetails.addSampleItems();
 
-        orderItems = orderDetails.getOrderItems();
+        orderItems = orderDetails.getPizzas();
 
         //debug
         Log.d("CurrentOrdersActivity", "Order items: " + orderItems.toString());
@@ -51,14 +53,15 @@ public class CurrentOrdersActivity extends AppCompatActivity {
         //button to remove selected items
         findViewById(R.id.removeButton).setOnClickListener(v -> {
             //remove selected items from the adapter
-            List<OrderItem> selectedItems = adapter.getSelectedItems();
+            //List<OrderItem> selectedItems = adapter.getSelectedItems();
+            ArrayList<Pizza> selectedPizzas = adapter.getSelectedItems();
 
-            if (!selectedItems.isEmpty()) {
+            if (!selectedPizzas.isEmpty()) {
                 //remove items from the list
                 adapter.removeSelectedItems();
 
                 //remove from the Singleton data manager
-                for (OrderItem item : selectedItems) {
+                for (Pizza item : selectedPizzas) {
                     orderDetails.removeOrderItem(item);
                 }
                 // if items successfully removed
@@ -76,7 +79,7 @@ public class CurrentOrdersActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //get order items that weren't removed
-                List<OrderItem> remainingItems = orderDetails.getOrderItems();
+                ArrayList<Pizza> remainingItems = orderDetails.getPizzas();
 
                 //check if all items were removed
                 if (remainingItems.isEmpty()) {
@@ -105,7 +108,7 @@ public class CurrentOrdersActivity extends AppCompatActivity {
     }
 
     //tests to see if recycler view populates correctly
-    @SuppressLint("NotifyDataSetChanged")
+    /*@SuppressLint("NotifyDataSetChanged")
     private void testAddItemsToOrder() {
         OrderItem sampleItem1 = new OrderItem("NY Style", "BuildYourOwn", "Pan", "Small", 14.99,new ArrayList<>(List.of("Pepperonni", "Onion")));
         OrderItem sampleItem2 = new OrderItem("Chicago Style", "BuildYourOwn", "Deep Dish", "Medium", 17.99, new ArrayList<>(List.of("Cheddar", "Olives")));
@@ -119,14 +122,14 @@ public class CurrentOrdersActivity extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
         Log.d("OrderDetails", "Order Items: " + orderDetails.getOrderItems().toString());
-    }
+    }*/
     @SuppressLint("DefaultLocale")
     private void updateOrderSummary() {
         double subtotal = 0.0;
 
         //calculate subtotal
-        for (OrderItem item : orderItems) {
-            subtotal += item.getPrice();
+        for (Pizza item : orderItems) {
+            subtotal += item.price();
         }
 
         //calculate sales tax and total

@@ -1,6 +1,7 @@
 
 package com.example.rupizzeria;
 
+import android.annotation.SuppressLint;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +35,10 @@ import Classes.Pizza;
 import Classes.Size;
 import Classes.Topping;
 
-
+/**class asociated with creating and customizing pizzas to add to an order
+ * includes Chicago Style and New York Style pizzas, different types of pizzas such as
+ * Deluxe, BBQ chicken, Meatzza and Build Your Own pizzas
+ * offers small, medium and large sizes for each pizza*/
 public class OrderPizzasActivity extends AppCompatActivity {
 
     /**deluxe pizza*/
@@ -61,20 +65,27 @@ public class OrderPizzasActivity extends AppCompatActivity {
     private String meatzzaCS = "android.resource://com.example.rupizzeria/drawable/deepdishmeatzza";
     /**URI of build your own pizza image*/
     private String byoCS = "android.resource://com.example.rupizzeria/drawable/chicagopizzaimage";
-
-
+    /**string associated with deluxe pizza*/
+    private final String deluxe = "Deluxe";
+    /**string associated with bbq chicken pizza*/
+    private final String bbqchicken = "BBQ Chicken";
+    /**string associated with meatzza pizza*/
+    private final String meatzza = "Meatzza";
+    /**string associated with build your own pizza*/
+    private final String byo = "Build Your Own";
     /**Declare an instance of ArrayList to hold the items to be display with the RecyclerView*/
     private ArrayList<Topping> toppings = new ArrayList<>();
-
+    /**list of pizzas associated with an order*/
     private ArrayList<Pizza> pizzas;
+    /**spinner that contains the different types of pizza provided by the pizzeria*/
     private Spinner pizzaTypeSpinner;
-
+    /**recycler view that contains all possible toppings for a specific type of pizza*/
     private RecyclerView rv_toppingsView;
 
-    private int [] toppingImages = {R.drawable.anchovy, R.drawable.bbq_chicken, R.drawable.beef,
+    /*private int [] toppingImages = {R.drawable.anchovy, R.drawable.bbq_chicken, R.drawable.beef,
             R.drawable.cheddar, R.drawable.green_pepper, R.drawable.ham, R.drawable.mushroom,
             R.drawable.olive, R.drawable.pepperoni, R.drawable.pineapple, R.drawable.provolone,
-    R.drawable.red_onion, R.drawable.sausage};
+    R.drawable.red_onion, R.drawable.sausage};*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +94,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
         pizzas = new ArrayList<>();
         setContentView(R.layout.order_pizza);
         RecyclerView recyclerView = findViewById(R.id.recycler_toppings);
-        setupMenuItems(); //add the list of items to the ArrayList
+        setupMenuItems(byo); //add the list of items to the ArrayList
         ToppingsAdapter adapter = new ToppingsAdapter(this, toppings); //create the adapter
         recyclerView.setAdapter(adapter); //bind the list of items to the RecyclerView
         //use the LinearLayout for the RecyclerView
@@ -158,7 +169,8 @@ public class OrderPizzasActivity extends AppCompatActivity {
                     size = Size.LARGE;
                 }
                 switch (selectedItem) {
-                    case "Deluxe":
+                    case deluxe:
+                        setupMenuItems(deluxe);
                         if(nyStyle.isChecked()){
                             Pizza nyDeluxe = new NYPizza().createDeluxe(size);
                             loadPizza("Brooklyn", defaultDeluxe, nyDeluxe, deluxeNY);
@@ -169,7 +181,8 @@ public class OrderPizzasActivity extends AppCompatActivity {
                             updatePrice(csDeluxe, price);
                         }
                         break;
-                    case "BBQ Chicken":
+                    case bbqchicken:
+                        setupMenuItems(bbqchicken);
                         if(nyStyle.isChecked()){
                             Pizza nyBBQ = new NYPizza().createBBQChicken(size);
                             loadPizza("Thin", defaultBBQChicken, nyBBQ, bbqchickenNY);
@@ -180,7 +193,8 @@ public class OrderPizzasActivity extends AppCompatActivity {
                             updatePrice(csBBQ, price);
                         }
                         break;
-                    case "Meatzza":
+                    case meatzza:
+                        setupMenuItems(meatzza);
                         if(nyStyle.isChecked()){
                             Pizza nyMeatzza = new NYPizza().createMeatzza(size);
                             loadPizza("Hand-tossed", defaultMeatzza, nyMeatzza, meatzzaNY);
@@ -192,7 +206,8 @@ public class OrderPizzasActivity extends AppCompatActivity {
                             updatePrice(csMeatzza, price);
                         }
                         break;
-                    case "Build Your Own":
+                    case byo:
+                        setupMenuItems(byo);
                         if(nyStyle.isChecked()){
                             //rv_toppingsView.
                             //lv_availableToppingsNY.setDisable(true); //
@@ -218,12 +233,9 @@ public class OrderPizzasActivity extends AppCompatActivity {
                         break;
                 }
             }
-
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onNothingSelected(AdapterView<?> parent) { //left empty because it is not needed
             }
-
         });
 
         Button addPizza = findViewById(R.id.add_to_order_button);
@@ -244,16 +256,16 @@ public class OrderPizzasActivity extends AppCompatActivity {
                     size = Size.LARGE;
                 }
 
-                if(selectedItem.equalsIgnoreCase("deluxe")){
+                if(selectedItem.equalsIgnoreCase(deluxe)){
                     Pizza deluxe = new ChicagoPizza().createDeluxe(size);
                     //orderDetails.addOrderItem(new OrderItem());
                     pizzas.add(deluxe);
 
-                }else if(selectedItem.equalsIgnoreCase("meatzza")){
+                }else if(selectedItem.equalsIgnoreCase(meatzza)){
                     Pizza meatzza = new ChicagoPizza().createMeatzza(size);
                     pizzas.add(meatzza);
 
-                }else if(selectedItem.equalsIgnoreCase("BBQ chicken")){
+                }else if(selectedItem.equalsIgnoreCase(bbqchicken)){
                     Pizza bbq = new ChicagoPizza().createBBQChicken(size);
                     pizzas.add(bbq);
                 }else{ //build your own
@@ -294,15 +306,11 @@ public class OrderPizzasActivity extends AppCompatActivity {
                 }
                 return true;
             }
-
             @Override
             public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-
             }
-
             @Override
             public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
             }
         });
         //lv_availableToppingsCSP.setDisable(true); //disable list view of toppings so disable recycler view
@@ -318,70 +326,112 @@ public class OrderPizzasActivity extends AppCompatActivity {
 
     }
 
-    /**create pizza using info provided by user
-     * @param view is the view object that fired the event*/
-    public void setupAddToOrderListener(View view) {
-        Button addPizza = findViewById(R.id.add_to_order_button);
-        pizzaTypeSpinner = findViewById(R.id.pizza_type_spinner);
-        String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
-        addPizza.setOnClickListener(new View.OnClickListener() {
-            Size size;
-            RadioButton sizeMedium = findViewById(R.id.cs_medium_size);
-            RadioButton sizeLarge = findViewById(R.id.cs_large_size);
-            RadioButton sizeSmall = findViewById(R.id.cs_small_size);
-            @Override
-            public void onClick(View v) {
-                if(sizeSmall.isSelected()){
-                    size = Size.SMALL;
-                }else if(sizeMedium.isSelected()){
-                    size = Size.MEDIUM;
-                }else{
-                    size = Size.LARGE;
-                }
+    /**allows addition of toppings when customizing build your own pizza type
+     * removes toppings from available toppings list and adds to selected toppings list
+     * ties to add button in recycler view*/
+    /*private void addAvailableToppingCSP(){
+        if(selectedToppingsBYO.size() == 7){//error
+            showAlert("Invalid amount of toppings", "You cannot have more than 7 toppings at a given time.");
+            return;
+        }
 
-                if(selectedItem.equalsIgnoreCase("deluxe")){
-                    Pizza deluxe = new ChicagoPizza().createDeluxe(size);
-                    //mainController.pizzas.add(deluxe);
+        Size size;
+        if(rb_smallCSP.isSelected()){
+            size = Size.SMALL;
+        }else if(rb_mediumCSP.isSelected()){
+            size = Size.MEDIUM;
+        }else{
+            size = Size.LARGE;
+        }
 
-                }else if(selectedItem.equalsIgnoreCase("meatzza")){
-                    Pizza meatzza = new ChicagoPizza().createMeatzza(size);
-                    //mainController.pizzas.add(meatzza);
+        Pizza buildYourOwnPrototype = new ChicagoPizza().createBuildYourOwn(size); //create a new byo pizza everytime a topping is added
+        if(lv_availableToppingsCSP.getSelectionModel().getSelectedItem() == null) return;
+        Topping selectedTopping = lv_availableToppingsCSP.getSelectionModel().getSelectedItem();
+        availableToppingsBYO.remove(selectedTopping); //remove selected from available list view
+        selectedToppingsBYO.add(selectedTopping);//add selected available toppings from list view to selected list view
+        lv_selectedToppingsCSP.setItems(selectedToppingsBYO);
+        lv_availableToppingsCSP.setItems(availableToppingsBYO);
+        if(!selectedToppingsBYO.isEmpty()) bt_removeToppingsCSP.setDisable(false);
 
-                }else if(selectedItem.equalsIgnoreCase("BBQ chicken")){
-                    Pizza bbq = new ChicagoPizza().createBBQChicken(size);
-                    //mainController.pizzas.add(bbq);
-                }else{ //build your own
-                    Pizza buildYourOwn = new ChicagoPizza().createBuildYourOwn(size);
-                    /*for (Topping topping : selectedToppingsBYO) {
-                        buildYourOwn.addTopping(topping);
-                    }*/
-                    //mainController.pizzas.add(buildYourOwn);
-                }
+        for (Topping topping : selectedToppingsBYO) {
+            buildYourOwnPrototype.addTopping(topping);
+        }
 
-                Toast.makeText(OrderPizzasActivity.this, "Pizza added to order!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+        DecimalFormat df = new DecimalFormat("#.00");
+        String formattedPrice = df.format(buildYourOwnPrototype.price());
+        tf_pizzaPriceCSP.setText(formattedPrice);
+    }*/
+
+    /**allows deletion of toppings when customizing build your own pizza type
+     * removes toppings from selected toppings list and adds to available toppings list
+     * tied to remove buttons on toppings in recycler view*/
+    /*private void removeSelectedToppingCSP(){
+        if(selectedToppingsBYO.isEmpty()){
+            showAlert("Invalid amount of toppings.", "There are no toppings yet. Please select a topping or add to order.");
+            return;
+        }
+        Size size;
+        if(rb_smallCSP.isSelected()){
+            size = Size.SMALL;
+        }else if(rb_mediumCSP.isSelected()){
+            size = Size.MEDIUM;
+        }else{
+            size = Size.LARGE;
+        }
+
+        Pizza buildYourOwnPrototype = new ChicagoPizza().createBuildYourOwn(size); //create a new byo pizza everytime a topping is added
+
+        if(lv_selectedToppingsCSP.getSelectionModel().getSelectedItem() == null) return;
+        Topping selectedTopping = lv_selectedToppingsCSP.getSelectionModel().getSelectedItem();
+        bt_removeToppingsCSP.setDisable(false);
+        selectedToppingsBYO.remove(selectedTopping);
+        availableToppingsBYO.add(selectedTopping);
+        lv_availableToppingsCSP.setItems(availableToppingsBYO);
+
+        for (Topping topping : selectedToppingsBYO) {
+            buildYourOwnPrototype.addTopping(topping);
+        }
+        //dynamically update price
+        DecimalFormat df = new DecimalFormat("#.00");
+        String formattedPrice = df.format(buildYourOwnPrototype.price());
+        tf_pizzaPriceCSP.setText(formattedPrice);
+    }*/
+
 
 
     /**
      * Helper method to set up the data (the Model of the MVC).
+     * @param pizzaType is the type of pizza chosen
      */
-    private void setupMenuItems() {
-        toppings.add(Topping.ANCHOVY);
-        toppings.add(Topping.BBQ_CHICKEN);
-        toppings.add(Topping.BEEF);
-        toppings.add(Topping.CHEDDAR);
-        toppings.add(Topping.GREEN_PEPPER);
-        toppings.add(Topping.HAM);
-        toppings.add(Topping.MUSHROOM);
-        toppings.add(Topping.OLIVE);
-        toppings.add(Topping.PEPPERONI);
-        toppings.add(Topping.PINEAPPLE);
-        toppings.add(Topping.PROVOLONE);
-        toppings.add(Topping.ONION);
-        toppings.add(Topping.SAUSAGE);
-    }
+    @SuppressLint("NotifyDataSetChanged")
+    private void setupMenuItems(String pizzaType) {
+        switch (pizzaType) {
+            case deluxe:
+                toppings = defaultDeluxe.getToppings();
+                //notifyDataSetChanged();
+            case bbqchicken:
+                toppings = defaultBBQChicken.getToppings();
+                //notifyDataSetChanged();
+            case meatzza:
+                toppings = defaultMeatzza.getToppings();
+                //notifyDataSetChanged();
+            default:
+                toppings.add(Topping.ANCHOVY);
+                toppings.add(Topping.BBQ_CHICKEN);
+                toppings.add(Topping.BEEF);
+                toppings.add(Topping.CHEDDAR);
+                toppings.add(Topping.GREEN_PEPPER);
+                toppings.add(Topping.HAM);
+                toppings.add(Topping.MUSHROOM);
+                toppings.add(Topping.OLIVE);
+                toppings.add(Topping.PEPPERONI);
+                toppings.add(Topping.PINEAPPLE);
+                toppings.add(Topping.PROVOLONE);
+                toppings.add(Topping.ONION);
+                toppings.add(Topping.SAUSAGE);
+                //notifyDataSetChanged();
 
+        }
+    }
 
 }

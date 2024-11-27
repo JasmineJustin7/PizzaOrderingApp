@@ -15,14 +15,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import Classes.Pizza;
+import Classes.Topping;
+
 public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.OrderItemHolder> {
 
-    private List<OrderItem> orderItems;
-    private final List<OrderItem> selectedItems;
+    //private List<OrderItem> orderItems;
+    //private final List<OrderItem> selectedItems;
 
-    public OrderItemsAdapter(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-        this.selectedItems = new ArrayList<>();
+    private ArrayList<Pizza> pizzas;
+    private ArrayList<Pizza> selectedPizzas;
+
+    public OrderItemsAdapter(ArrayList<Pizza> orderItems) {
+        //this.orderItems = orderItems;
+        //this.selectedItems = new ArrayList<>();
+        this.pizzas = orderItems;
+        this.selectedPizzas = new ArrayList<>();
     }
 
     @NonNull
@@ -34,35 +42,36 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
 
     @Override
     public void onBindViewHolder(@NonNull OrderItemHolder holder, int position) {
-        OrderItem currentItem = orderItems.get(position);
+        Pizza currentItem = pizzas.get(position);
+        ArrayList<Topping> listToppings = currentItem.getToppings();
 
         //debug
         Log.d("OrderItemsAdapter", "Binding item: " + currentItem.toString());
 
-        holder.pizzaStyleTextView.setText(currentItem.getPizzaStyle());
-        holder.pizzaTypeTextView.setText(currentItem.getPizzaType());
-        holder.pizzaCrustTextView.setText(currentItem.getCrustType());
-        holder.pizzaSizeTextView.setText(currentItem.getSize());
-        holder.pizzaToppingsTextView.setText(String.join(", ", currentItem.getToppings()));
+        holder.pizzaStyleTextView.setText(currentItem.getStyle());
+        //holder.pizzaTypeTextView.setText(currentItem.getPizzaType());
+        holder.pizzaCrustTextView.setText(String.valueOf(currentItem.getCrust()));
+        holder.pizzaSizeTextView.setText(String.valueOf(currentItem.getSize()));
+        holder.pizzaToppingsTextView.setText(listToppings.toString()); //will fix if problems arise
 
-        holder.selectItemCheckBox.setChecked(selectedItems.contains(currentItem));
+        holder.selectItemCheckBox.setChecked(selectedPizzas.contains(currentItem));
 
         holder.selectItemCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                selectedItems.add(currentItem);
+                selectedPizzas.add(currentItem);
             } else {
-                selectedItems.remove(currentItem);
+                selectedPizzas.remove(currentItem);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return orderItems.size();
+        return pizzas.size();
     }
 
-    public List<OrderItem> getSelectedItems() {
-        return selectedItems;
+    public ArrayList<Pizza> getSelectedItems() {
+        return selectedPizzas;
     }
     public static class OrderItemHolder extends RecyclerView.ViewHolder {
 
@@ -86,16 +95,16 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
 
     // Method to update the orderItems list and refresh RecyclerView
     @SuppressLint("NotifyDataSetChanged")
-    public void updateOrderItems(List<OrderItem> updatedItems) {
-        this.orderItems = updatedItems; // Update the list with new items
+    public void updateOrderItems(ArrayList<Pizza> updatedItems) {
+        this.pizzas = updatedItems; // Update the list with new items
         notifyDataSetChanged(); // Notify adapter to refresh the RecyclerView
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void removeSelectedItems() {
         //remove selected items from the list and notify adapter
-        orderItems.removeAll(selectedItems);
-        selectedItems.clear();
+        pizzas.removeAll(selectedPizzas);
+        selectedPizzas.clear();
         notifyDataSetChanged();
     }
 }
