@@ -28,6 +28,8 @@
         android:layout_marginStart="120dp"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/alegreya"
+        android:background="@color/red"
+        android:textColor="@color/white"
         android:text="@string/order_pizza"
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -177,7 +179,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginBottom="84dp"
-        android:text="Price"
+        android:text="@string/price"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -204,11 +206,13 @@
         android:layout_width="412dp"
         android:layout_height="67dp"
         android:layout_weight="1"
+        android:fontFamily="@font/alegreya"
         android:text="@string/add_to_order"
-        android:translationX="15dp"
+        android:textSize="36sp"
+        android:translationX="-10dp"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
