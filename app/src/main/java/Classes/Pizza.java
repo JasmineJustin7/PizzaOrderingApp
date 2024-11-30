@@ -45,6 +45,12 @@ public abstract class Pizza {
         return toppings;
     }
 
+    /**sets toppings to given list of toppings
+     * @param toppings is a list of toppings provided by user*/
+    public void setToppings(ArrayList<Topping> toppings) {
+        this.toppings = toppings;
+    }
+
     /**
      * Gets the crust type of the pizza.
      * @return the crust of the pizza

@@ -10,8 +10,10 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,13 +37,25 @@ import Classes.Topping;
  * @author Lily Chang
  */
 class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
-    private Context context; //need the context to inflate the layout
-    private ArrayList<Topping> toppings; //need the data binding to each row of RecyclerView
+    /**need the context to inflate the layout*/
+    private Context context;
+    /**need the data binding to each row of RecyclerView*/
+    private ArrayList<Topping> toppings;
+    private ArrayList<Topping> currentToppings;
 
-    public ToppingsAdapter(Context context, ArrayList<Topping> items) {
+    //private OnItemClickListener listener;
+
+    public ToppingsAdapter(Context context, ArrayList<Topping> items,
+                           ArrayList<Topping> currentToppings /*, OnItemClickListener listener*/) {
         this.context = context;
         this.toppings = items;
+        this.currentToppings = currentToppings;
+        //this.listener = listener;
     }
+
+    /*public interface OnItemClickListener {
+        void onItemClick(int position);
+    }*/
 
     /**
      * This method will inflate the row layout for the items in the RecyclerView
@@ -68,7 +82,6 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
     public void onBindViewHolder(@NonNull ItemsHolder holder, int position) {
         //assign values for each row
         holder.tv_name.setText(toppings.get(position).toString());
-        //holder.tv_price.setText(toppingsArrayList.get(position).getUnitPrice());
         holder.im_topping.setImageResource(toppings.get(position).getImage());
     }
 
@@ -83,18 +96,10 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
 
     /**Method to add an item
      * @param item is the topping to add to recycler view*/
-    @SuppressLint("NotifyDataSetChanged")
+    //@SuppressLint("NotifyDataSetChanged")
     public void addTopping(Topping item) {
         toppings.add(item);
         notifyItemInserted(toppings.size() - 1); // Notify RecyclerView about new topping
-    }
-
-    /**Method to remove an item
-     * @param position is the position of topping within list*/
-    @SuppressLint("NotifyDataSetChanged")
-    public void removeItem(int position) {
-        toppings.remove(position);
-        notifyItemRemoved(position); // Notify RecyclerView about topping removal
     }
 
     /**
@@ -105,7 +110,10 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
         private TextView tv_price;
         private ImageView im_topping;
         private Button btn_add;
+        private Button btn_remove;
         private ConstraintLayout parentLayout; //this is the row layout
+        private Spinner pizzaType;
+        private ArrayList<Topping> currentToppings;
 
         public ItemsHolder(@NonNull View itemView) {
             super(itemView);
@@ -113,6 +121,7 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
             tv_price = itemView.findViewById(R.id.tv_price);
             im_topping = itemView.findViewById(R.id.im_topping);
             btn_add = itemView.findViewById(R.id.btn_add);
+            btn_remove = itemView.findViewById(R.id.btn_remove);
             parentLayout = itemView.findViewById(R.id.rowLayout);
             setAddButtonOnClick(itemView); //register the onClicklistener for the button on each row.
 
@@ -144,8 +153,47 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
             btn_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //pizzaType = itemView.findViewById(R.id.pizza_type_spinner);
                     AlertDialog.Builder alert = new AlertDialog.Builder(toppingView.getContext());
                     alert.setTitle("Add to order");
+                    alert.setMessage(tv_name.getText().toString());
+                    //handle the "YES" click
+                    alert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            pizzaType = itemView.findViewById(R.id.pizza_type_spinner);
+                            /*if(!pizzaType.getSelectedItem().toString().equalsIgnoreCase("Build Your Own")){
+                                Toast.makeText(toppingView.getContext(),
+                                        "Cannot customize this pizza type", Toast.LENGTH_LONG).show();
+                                return;
+                            }*/
+                            /*if(currentToppings.size() >= 7){
+                                Toast.makeText(toppingView.getContext(),
+                                        "Can only have a maximum of 7 toppings", Toast.LENGTH_LONG).show();
+                                return;
+                            }*/
+                            //currentToppings.add(Topping.valueOf(tv_name.getText().toString()));
+                            Toast.makeText(toppingView.getContext(),
+                                    tv_name.getText().toString() + " added.", Toast.LENGTH_LONG).show();
+                        }
+                        //handle the "NO" click
+                    }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(toppingView.getContext(),
+                                    tv_name.getText().toString() + " not added.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    AlertDialog dialog = alert.create();
+                    dialog.show();
+                }
+            });
+        }
+
+        private void setRemoveButtonOnClick(@NonNull View toppingView) {
+            btn_remove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(toppingView.getContext());
+                    alert.setTitle("Remove from order?");
                     alert.setMessage(tv_name.getText().toString());
                     //handle the "YES" click
                     alert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
