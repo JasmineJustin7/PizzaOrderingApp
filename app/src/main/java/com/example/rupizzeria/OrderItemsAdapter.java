@@ -49,7 +49,7 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
         Log.d("OrderItemsAdapter", "Binding item: " + currentItem.toString());
 
         holder.pizzaStyleTextView.setText(currentItem.getStyle());
-        //holder.pizzaTypeTextView.setText(currentItem.getPizzaType());
+        holder.pizzaTypeTextView.setText(currentItem.getPizzaType());
         holder.pizzaCrustTextView.setText(String.valueOf(currentItem.getCrust()));
         holder.pizzaSizeTextView.setText(String.valueOf(currentItem.getSize()));
         holder.pizzaToppingsTextView.setText(listToppings.toString()); //will fix if problems arise
@@ -59,9 +59,12 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
         holder.selectItemCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 selectedPizzas.add(currentItem);
+                //notifyItemChanged(position);
             } else {
                 selectedPizzas.remove(currentItem);
+                //notifyItemChanged(position);
             }
+            updateOrderItems(selectedPizzas);
         });
     }
 

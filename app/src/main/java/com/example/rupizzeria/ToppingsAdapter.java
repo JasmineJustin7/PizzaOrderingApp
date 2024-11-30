@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import Classes.ChicagoPizza;
+import Classes.Pizza;
+import Classes.Size;
 import Classes.Topping;
 
 /**
@@ -41,21 +45,24 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
     private Context context;
     /**need the data binding to each row of RecyclerView*/
     private ArrayList<Topping> toppings;
+    /**list of toppings in customizable pizza*/
     private ArrayList<Topping> currentToppings;
+    /**size of pizza*/
+    private RadioGroup size;
+    private TextView price;
 
-    //private OnItemClickListener listener;
+    private RadioGroup type;
 
     public ToppingsAdapter(Context context, ArrayList<Topping> items,
-                           ArrayList<Topping> currentToppings /*, OnItemClickListener listener*/) {
+                           ArrayList<Topping> currentToppings, TextView price, RadioGroup size,
+                           RadioGroup type) {
         this.context = context;
         this.toppings = items;
         this.currentToppings = currentToppings;
-        //this.listener = listener;
+        this.price = price;
+        this.size = size;
+        this.type = type;
     }
-
-    /*public interface OnItemClickListener {
-        void onItemClick(int position);
-    }*/
 
     /**
      * This method will inflate the row layout for the items in the RecyclerView
@@ -69,6 +76,8 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
         //inflate the row layout for the items
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.pizza_toppings_view, parent, false);
+        //Pizza currentPizza = new ChicagoPizza().createBuildYourOwn(Size.valueOf(size.toString()));
+        //price.setText(String.valueOf(currentPizza.price())); // Append new item to the TextView
         return new ItemsHolder(view);
     }
 
@@ -83,6 +92,43 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
         //assign values for each row
         holder.tv_name.setText(toppings.get(position).toString());
         holder.im_topping.setImageResource(toppings.get(position).getImage());
+
+        // Handle the "Add" button click to add item to addedItems list
+        holder.btn_add.setOnClickListener(v -> {
+            if(currentToppings.size() > 7){
+                Toast.makeText(this.context, "Cannot exceed more than 7 toppings",
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+            if(currentToppings.contains(Topping.valueOf(toppings.get(position).toString()))){
+                Toast.makeText(this.context, "Topping has already been added to pizza",
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (!currentToppings.contains(Topping.valueOf(toppings.get(position).toString()))) {
+                currentToppings.add(Topping.valueOf(toppings.get(position).toString()));
+                Toast.makeText(this.context,
+                        toppings.get(position).toString() + " added.", Toast.LENGTH_LONG).show();
+                // Notify the adapter that the data has changed
+                notifyItemChanged(position);
+            }
+        });
+
+        holder.btn_remove.setOnClickListener(v -> {
+            if(currentToppings.isEmpty()){
+                Toast.makeText(this.context, "No toppings on pizza currently. Please add toppings before removing",
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (currentToppings.contains(Topping.valueOf(toppings.get(position).toString()))) {
+                currentToppings.remove(Topping.valueOf(toppings.get(position).toString()));
+                Toast.makeText(this.context,
+                        toppings.get(position).toString() + " removed.", Toast.LENGTH_LONG).show();
+                // Notify the adapter that the data has changed
+                notifyItemChanged(position);
+            }
+
+        });
     }
 
     /**
@@ -94,23 +140,21 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
         return toppings.size(); //number of MenuItem in the array list.
     }
 
-    /**Method to add an item
-     * @param item is the topping to add to recycler view*/
-    //@SuppressLint("NotifyDataSetChanged")
-    public void addTopping(Topping item) {
-        toppings.add(item);
-        notifyItemInserted(toppings.size() - 1); // Notify RecyclerView about new topping
-    }
-
     /**
      * Get the views from the row layout file, similar to the onCreate() method.
      */
     public static class ItemsHolder extends RecyclerView.ViewHolder {
+        /**text associated with name of topping*/
         private TextView tv_name;
+        /**text view associated with price of pizza*/
         private TextView tv_price;
+        /**image of respective topping*/
         private ImageView im_topping;
+        /**button to add topping to order*/
         private Button btn_add;
+        /**button to remove topping from order*/
         private Button btn_remove;
+        /***/
         private ConstraintLayout parentLayout; //this is the row layout
         private Spinner pizzaType;
         private ArrayList<Topping> currentToppings;

@@ -67,4 +67,10 @@ public class BuildYourOwn extends Pizza {
         if(!getToppings().isEmpty()) return pizzaOrder + "Toppings: " + getToppings();
         return pizzaOrder;
     }
+    /**String form of class/pizza type
+     * @return the type of pizza*/
+    @Override
+    public String getPizzaType() {
+        return "Build Your Own";
+    }
 }

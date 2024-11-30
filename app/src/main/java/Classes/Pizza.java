@@ -81,4 +81,6 @@ public abstract class Pizza {
     public String toString() {
         return getSize() + " " + getCrust() + " Pizza with toppings: " + toppings.toString();
     }
+
+    public abstract String getPizzaType();
 }

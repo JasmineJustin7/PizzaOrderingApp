@@ -77,7 +77,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
     private ArrayList<Topping> toppings = new ArrayList<>();
     /**array list of toppings for current pizza selection*/
     private ArrayList<Topping> currentToppings = new ArrayList<>();
-    /**list of pizzas associated with an order*/
+    /**list of pizzas associated with an order, is shared amongst activities*/
     private ArrayList<Pizza> pizzas;
     /**spinner that contains the different types of pizza provided by the pizzeria*/
     private Spinner pizzaTypeSpinner;
@@ -94,7 +94,11 @@ public class OrderPizzasActivity extends AppCompatActivity {
         setContentView(R.layout.order_pizza);
         RecyclerView recyclerView = findViewById(R.id.recycler_toppings);
         setupMenuItems(); //add the list of items to the ArrayList
-        ToppingsAdapter adapter = new ToppingsAdapter(this, toppings, currentToppings); //create the adapter
+        RadioGroup sizeRadioGroup = findViewById(R.id.rg_size);
+        RadioGroup styleRadioGroup = findViewById(R.id.rg_pizzaStyle);
+        TextView price = findViewById(R.id.display_price);
+        ToppingsAdapter adapter = new ToppingsAdapter(this, toppings, currentToppings,
+                price,sizeRadioGroup, styleRadioGroup); //create the adapter
         recyclerView.setAdapter(adapter); //bind the list of items to the RecyclerView
         //use the LinearLayout for the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -105,20 +109,75 @@ public class OrderPizzasActivity extends AppCompatActivity {
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, pizzaTypes);
         pizzaTypeSpinner.setAdapter(pizzaTypeAdapter);
 
-        RadioGroup sizeRadioGroup = findViewById(R.id.rg_size);
         RadioButton sizeMedium = findViewById(R.id.cs_medium_size);
         RadioButton sizeLarge = findViewById(R.id.cs_large_size);
         RadioButton sizeSmall = findViewById(R.id.cs_small_size);
-        RadioGroup styleRadioGroup = findViewById(R.id.rg_pizzaStyle);
         RadioButton chicagoStyle = findViewById(R.id.choose_CStyle_RB);
         RadioButton nyStyle = findViewById(R.id.choose_NYStyle_RB);
         styleRadioGroup.check(R.id.choose_CStyle_RB); //automatically select Chicago-Style pizza
         sizeRadioGroup.check(R.id.cs_small_size); //automatically select small size when activity is created
 
+        styleRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            RadioButton sizeMedium1 = findViewById(R.id.cs_medium_size);
+            RadioButton sizeLarge1 = findViewById(R.id.cs_large_size);
+            RadioButton sizeSmall1 = findViewById(R.id.cs_small_size);
+            RadioButton selectedRadioButton = findViewById(checkedId);
+            String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
+            Size size;
+
+            if(sizeLarge1.isChecked()){
+                size = Size.LARGE;
+            }else if(sizeMedium1.isChecked()){
+                size = Size.MEDIUM;
+            }else{
+                size = Size.SMALL;
+            }
+
+            if (nyStyle.isChecked()) {
+                switch (selectedItem) {
+                    case deluxe:
+                        Pizza nyDeluxe = new NYPizza().createDeluxe(size);
+                        loadPizza("Brooklyn", defaultBBQChicken, nyDeluxe, bbqchickenCS);
+                        break;
+                    case bbqchicken:
+                        Pizza nyBBQ = new NYPizza().createBBQChicken(size);
+                        loadPizza("Thin", defaultBBQChicken, nyBBQ, bbqchickenCS);
+                        break;
+                    case meatzza:
+                        Pizza nyMeatzza = new NYPizza().createMeatzza(size);
+                        loadPizza("Hand-tossed", defaultBBQChicken, nyMeatzza, bbqchickenCS);
+                        break;
+                    case byo:
+                        Pizza BYOPrototype = new NYPizza().createBuildYourOwn(size);
+                        loadPizza("Hand-tossed", defaultBBQChicken, BYOPrototype, bbqchickenCS);
+                        break;
+                }
+            }else{//chicago style
+                switch (selectedItem)
+                {
+                    case deluxe:
+                        Pizza csDeluxe = new ChicagoPizza().createDeluxe(size);
+                        loadPizza("Deep Dish", defaultBBQChicken, csDeluxe, bbqchickenCS);
+                        break;
+                    case bbqchicken:
+                        Pizza csBBQ = new ChicagoPizza().createBBQChicken(size);
+                        loadPizza("Pan", defaultBBQChicken, csBBQ, bbqchickenCS);
+                        break;
+                    case meatzza:
+                        Pizza csMeatzza = new ChicagoPizza().createMeatzza(size);
+                        loadPizza("Stuffed", defaultBBQChicken, csMeatzza, bbqchickenCS);
+                        break;
+                    case byo:
+                        Pizza BYOPrototype = new ChicagoPizza().createBuildYourOwn(size);
+                        loadPizza("Pan", defaultBBQChicken, BYOPrototype, bbqchickenCS);
+                        break;
+                }
+            }
+        });
+
         sizeRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton selectedRadioButton = findViewById(checkedId);
             String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
-            TextView price = findViewById(R.id.display_price);
             Size size;
 
             if(selectedRadioButton.getText().toString().equalsIgnoreCase("small")){
@@ -176,7 +235,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
                 ImageView pizzaImage = findViewById(R.id.pizza_image);
                 TextView crustType = findViewById(R.id.display_crust_text);
                 TextView price = findViewById(R.id.display_price);
-                //rv_toppingsView = findViewById(R.id.recycler_toppings);
                 String selectedItem = pizzaTypeSpinner.getSelectedItem().toString(); //try this out instead of below line of code
                 Size size;
 
@@ -232,8 +290,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
                         }
                         break;
                     case byo:
-                        //setupMenuItems(); //add the list of items to the ArrayList
-                        //recyclerView.setAdapter(adapter);
                         recyclerView.setVisibility(View.VISIBLE); // Hide RecyclerView
                         if(!currentToppings.isEmpty()) currentToppings.clear();//clear current selection of toppings
                         if(nyStyle.isChecked()){
@@ -259,33 +315,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
             }
         });
 
-        /*rv_toppingsView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                String selectedItem = pizzaTypeSpinner.getSelectedItem().toString(); //try this out instead of below line of code
-
-                // Detect if the RecyclerView item is touched
-                View childView = rv.findChildViewUnder(e.getX(), e.getY());
-                if (childView != null) {
-                    int position = rv.getChildAdapterPosition(childView);
-                    if (position != RecyclerView.NO_POSITION) {
-                        // Check if a specific item is selected in the Spinner
-                        if (selectedItem != null && selectedItem.equalsIgnoreCase("Build Your Own")) {
-                            // Show AlertDialog if the Spinner has a specific item selected
-                            Toast.makeText(OrderPizzasActivity.this, "Recycler View message works!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-                return false;
-            }
-            @Override
-            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-            }
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-            }
-        });*/
-
         Button addPizza = findViewById(R.id.add_to_order_button);
         pizzaTypeSpinner = findViewById(R.id.pizza_type_spinner);
         String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
@@ -306,29 +335,33 @@ public class OrderPizzasActivity extends AppCompatActivity {
 
                 if(selectedItem.equalsIgnoreCase(deluxe)){
                     Pizza deluxe = new ChicagoPizza().createDeluxe(size);
-                    //orderDetails.addOrderItem(new OrderItem());
-                    pizzas.add(deluxe);
+                    orderDetails.addPizza(deluxe);
 
                 }else if(selectedItem.equalsIgnoreCase(meatzza)){
                     Pizza meatzza = new ChicagoPizza().createMeatzza(size);
-                    pizzas.add(meatzza);
+                    orderDetails.addPizza(meatzza);
 
                 }else if(selectedItem.equalsIgnoreCase(bbqchicken)){
                     Pizza bbq = new ChicagoPizza().createBBQChicken(size);
-                    pizzas.add(bbq);
+                    orderDetails.addPizza(bbq);
+
                 }else{ //build your own
                     Pizza buildYourOwn = new ChicagoPizza().createBuildYourOwn(size);
                     //add toppings that user added to build your own pizza
                     buildYourOwn.setToppings(currentToppings);
                     //add pizza to order
-                    pizzas.add(buildYourOwn);
+                    orderDetails.addPizza(buildYourOwn);
                 }
                 //orderDetails.
                 Toast.makeText(OrderPizzasActivity.this, "Pizza added to order!", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
+    /**updae prica according to changes in the activity
+     * @param price is the GUI object associated with price of pizza
+     * @param BYOPrototype is the type of pizza*/
     private static void updatePrice(Pizza BYOPrototype, TextView price) {
         DecimalFormat df = new DecimalFormat("#.00");
         String formattedPrice = df.format(BYOPrototype.price());
@@ -346,7 +379,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
         TextView crustType = findViewById(R.id.display_crust_text);
         TextView price = findViewById(R.id.display_price);
         rv_toppingsView = findViewById(R.id.recycler_toppings);
-        //rv_toppingsView.;
         crustType.setText(Crust); //set text for crust
         crustType.setClickable(false); //disable editing for crust
         updatePrice(size, price);
@@ -354,91 +386,8 @@ public class OrderPizzasActivity extends AppCompatActivity {
         pizzaImage.setImageURI(imageUri);
     }
 
-    /*private void onRecyclerViewItemClick(int position) {
-        if ("Special Item".equals(selectedSpinnerItem)) {
-            // If "Special Item" is selected in the spinner, show an error message
-            errorTextView.setVisibility(View.VISIBLE);
-            errorTextView.setText("Error: Cannot perform this action with the selected spinner item.");
-        } else {
-            // Otherwise, proceed with normal behavior (e.g., show item details)
-            errorTextView.setVisibility(View.GONE);
-            // Handle the RecyclerView item click here
-        }
-    }*/
-
-    /**allows addition of toppings when customizing build your own pizza type
-     * removes toppings from available toppings list and adds to selected toppings list
-     * ties to add button in recycler view*/
-    /*private void addAvailableToppingCSP(){
-        if(selectedToppingsBYO.size() == 7){//error
-            showAlert("Invalid amount of toppings", "You cannot have more than 7 toppings at a given time.");
-            return;
-        }
-
-        Size size;
-        if(rb_smallCSP.isSelected()){
-            size = Size.SMALL;
-        }else if(rb_mediumCSP.isSelected()){
-            size = Size.MEDIUM;
-        }else{
-            size = Size.LARGE;
-        }
-
-        Pizza buildYourOwnPrototype = new ChicagoPizza().createBuildYourOwn(size); //create a new byo pizza everytime a topping is added
-        if(lv_availableToppingsCSP.getSelectionModel().getSelectedItem() == null) return;
-        Topping selectedTopping = lv_availableToppingsCSP.getSelectionModel().getSelectedItem();
-        availableToppingsBYO.remove(selectedTopping); //remove selected from available list view
-        selectedToppingsBYO.add(selectedTopping);//add selected available toppings from list view to selected list view
-        lv_selectedToppingsCSP.setItems(selectedToppingsBYO);
-        lv_availableToppingsCSP.setItems(availableToppingsBYO);
-        if(!selectedToppingsBYO.isEmpty()) bt_removeToppingsCSP.setDisable(false);
-
-        for (Topping topping : selectedToppingsBYO) {
-            buildYourOwnPrototype.addTopping(topping);
-        }
-
-        DecimalFormat df = new DecimalFormat("#.00");
-        String formattedPrice = df.format(buildYourOwnPrototype.price());
-        tf_pizzaPriceCSP.setText(formattedPrice);
-    }*/
-
-    /**allows deletion of toppings when customizing build your own pizza type
-     * removes toppings from selected toppings list and adds to available toppings list
-     * tied to remove buttons on toppings in recycler view*/
-    /*private void removeSelectedToppingCSP(){
-        if(selectedToppingsBYO.isEmpty()){
-            showAlert("Invalid amount of toppings.", "There are no toppings yet. Please select a topping or add to order.");
-            return;
-        }
-        Size size;
-        if(rb_smallCSP.isSelected()){
-            size = Size.SMALL;
-        }else if(rb_mediumCSP.isSelected()){
-            size = Size.MEDIUM;
-        }else{
-            size = Size.LARGE;
-        }
-
-        Pizza buildYourOwnPrototype = new ChicagoPizza().createBuildYourOwn(size); //create a new byo pizza everytime a topping is added
-
-        if(lv_selectedToppingsCSP.getSelectionModel().getSelectedItem() == null) return;
-        Topping selectedTopping = lv_selectedToppingsCSP.getSelectionModel().getSelectedItem();
-        bt_removeToppingsCSP.setDisable(false);
-        selectedToppingsBYO.remove(selectedTopping);
-        availableToppingsBYO.add(selectedTopping);
-        lv_availableToppingsCSP.setItems(availableToppingsBYO);
-
-        for (Topping topping : selectedToppingsBYO) {
-            buildYourOwnPrototype.addTopping(topping);
-        }
-        //dynamically update price
-        DecimalFormat df = new DecimalFormat("#.00");
-        String formattedPrice = df.format(buildYourOwnPrototype.price());
-        tf_pizzaPriceCSP.setText(formattedPrice);
-    }*/
-
     /**
-     * Helper method to set up the data (the Model of the MVC).
+     * Helper method to set up the data of the recycler view.
      */
     private void setupMenuItems() {
         toppings.add(Topping.ANCHOVY);
@@ -454,7 +403,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
         toppings.add(Topping.PROVOLONE);
         toppings.add(Topping.ONION);
         toppings.add(Topping.SAUSAGE);
-        //tAdapter.updateData(toppings);
+        //adapter.updateData(toppings);
     }
 
 }
