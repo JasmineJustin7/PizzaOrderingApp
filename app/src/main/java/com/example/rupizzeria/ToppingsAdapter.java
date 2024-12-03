@@ -40,7 +40,7 @@ import Classes.Topping;
  * you do something similar to the onCreate() method in an Activity.
  * @author Lily Chang
  */
-class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
+class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
     /**need the context to inflate the layout*/
     private Context context;
     /**need the data binding to each row of RecyclerView*/
@@ -95,7 +95,7 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
 
         // Handle the "Add" button click to add item to addedItems list
         holder.btn_add.setOnClickListener(v -> {
-            if(currentToppings.size() > 7){
+            if(currentToppings.size() >= 7){
                 Toast.makeText(this.context, "Cannot exceed more than 7 toppings",
                         Toast.LENGTH_LONG).show();
                 return;
@@ -169,9 +169,6 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
             parentLayout = itemView.findViewById(R.id.rowLayout);
             setAddButtonOnClick(itemView); //register the onClicklistener for the button on each row.
 
-            /* set onClickListener for the row layout,
-             * clicking on a row will navigate to another Activity
-             */
             parentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -180,12 +177,6 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
                     itemView.getContext().startActivity(intent);
                 }
             });
-            /* Alternatively, use a lambda expression to set the onClickListener for the row layout
-            parentLayout.setOnClickListener(view -> {
-                    Intent intent = new Intent(itemView.getContext(), ItemSelectedActivity.class);
-                    intent.putExtra("ITEM", tv_name.getText());
-                    itemView.getContext().startActivity(intent);
-                }); */
         }
 
         /**
@@ -205,17 +196,6 @@ class  ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>
                     alert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             pizzaType = itemView.findViewById(R.id.pizza_type_spinner);
-                            /*if(!pizzaType.getSelectedItem().toString().equalsIgnoreCase("Build Your Own")){
-                                Toast.makeText(toppingView.getContext(),
-                                        "Cannot customize this pizza type", Toast.LENGTH_LONG).show();
-                                return;
-                            }*/
-                            /*if(currentToppings.size() >= 7){
-                                Toast.makeText(toppingView.getContext(),
-                                        "Can only have a maximum of 7 toppings", Toast.LENGTH_LONG).show();
-                                return;
-                            }*/
-                            //currentToppings.add(Topping.valueOf(tv_name.getText().toString()));
                             Toast.makeText(toppingView.getContext(),
                                     tv_name.getText().toString() + " added.", Toast.LENGTH_LONG).show();
                         }
