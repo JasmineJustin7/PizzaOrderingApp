@@ -50,21 +50,29 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
 
         holder.pizzaStyleTextView.setText(currentItem.getStyle());
         holder.pizzaTypeTextView.setText(currentItem.getPizzaType());
-        holder.pizzaCrustTextView.setText(String.valueOf(currentItem.getCrust()));
-        holder.pizzaSizeTextView.setText(String.valueOf(currentItem.getSize()));
-        holder.pizzaToppingsTextView.setText(listToppings.toString()); //will fix if problems arise
+        holder.pizzaCrustTextView.setText(currentItem.getCrust().toString());
+        holder.pizzaSizeTextView.setText(currentItem.getSize().toString());;
+        holder.pizzaToppingsTextView.setText(currentItem.getToppings().toString());//will fix if problems arise
+        holder.pizzaToppingsTextView.setText(listToppings.isEmpty() ? "No toppings" : listToppings.toString());
 
         holder.selectItemCheckBox.setChecked(selectedPizzas.contains(currentItem));
 
         holder.selectItemCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            //if (isChecked) {
+                //selectedPizzas.add(currentItem);
+                //notifyItemChanged(position);
+           // } else {
+                //selectedPizzas.remove(currentItem);
+                //notifyItemChanged(position);
+            //}
+            //updateOrderItems(selectedPizzas);
             if (isChecked) {
-                selectedPizzas.add(currentItem);
-                //notifyItemChanged(position);
+                if (!selectedPizzas.contains(currentItem)) {
+                    selectedPizzas.add(currentItem);  // Add to selected list
+                }
             } else {
-                selectedPizzas.remove(currentItem);
-                //notifyItemChanged(position);
+                selectedPizzas.remove(currentItem);  // Remove from selected list
             }
-            updateOrderItems(selectedPizzas);
         });
     }
 
