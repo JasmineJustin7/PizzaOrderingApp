@@ -95,7 +95,7 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
 
         // Handle the "Add" button click to add item to addedItems list
         holder.btn_add.setOnClickListener(v -> {
-            if(currentToppings.size() > 7){
+            if(currentToppings.size() >= 7){
                 Toast.makeText(this.context, "Cannot exceed more than 7 toppings",
                         Toast.LENGTH_LONG).show();
                 return;

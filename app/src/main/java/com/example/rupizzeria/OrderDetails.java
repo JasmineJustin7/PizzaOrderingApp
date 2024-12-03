@@ -76,7 +76,7 @@ public final class OrderDetails {
         return pizzas;
     }
 
-    //test codea
+    //test code
     /*public void addSampleItems() {
         OrderItem sampleItem1 = new OrderItem("NY Style", "BuildYourOwn", "Pan", "Small", 14.99,new ArrayList<>(List.of("Pepperoni", "Onion")));
         OrderItem sampleItem2 = new OrderItem("Chicago Style", "BuildYourOwn", "Deep Dish", "Medium", 17.99, new ArrayList<>(List.of("Cheddar", "Olives")));
@@ -122,7 +122,7 @@ public final class OrderDetails {
         for (Pizza item : items) {
             orderDetails.append("Pizza: ")
                     .append(item.getStyle()).append(", ")
-                    //.append(item.getPizzaType()).append(", ")
+                    .append(item.getPizzaType()).append(", ")
                     .append("Crust: ").append(item.getCrust()).append(", ")
                     .append("Size: ").append(item.getSize()).append("\n");
         }
