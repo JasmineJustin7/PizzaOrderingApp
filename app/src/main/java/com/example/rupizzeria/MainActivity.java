@@ -1,14 +1,18 @@
 package com.example.rupizzeria;
 
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,9 +42,33 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, activities);
-        listView = findViewById(R.id.main_listView);
+        try{
+            listView = findViewById(R.id.main_listView);
+        }catch(NullPointerException e){
+            Log.e("View Object Error", "List View is null");
+        }
+
         listView.setOnItemClickListener(this); //register the listener for an OnItemClick event.
         listView.setAdapter(adapter);
+    }
+
+    private void displayActivityException() {
+        // Create the AlertDialog builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        // Set the title, message, and buttons
+        builder.setTitle("Activity Failed")
+                .setMessage("Failure to open Activity.")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Code to run when the "OK" button is pressed
+                    }
+                })
+                .setCancelable(false); // Disable outside touch to dismiss the dialog
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     /**listener for clicking each item in list view
@@ -54,18 +82,44 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Intent intent;
         switch (position) {
             case 0:
-                intent = new Intent(MainActivity.this, OrderPizzasActivity.class);
-                break;
+                try{
+                    intent = new Intent(MainActivity.this, OrderPizzasActivity.class);
+                    startActivity(intent);
+                    break;
+                }catch(ActivityNotFoundException e){
+                    displayActivityException();
+                }
+
             case 1:
-                intent = new Intent(MainActivity.this, CurrentOrdersActivity.class);
-                break;
+                try{
+                    intent = new Intent(MainActivity.this, CurrentOrdersActivity.class);
+                    startActivity(intent);
+                    break;
+                }catch(ActivityNotFoundException e){
+                    displayActivityException();
+                }
+
             case 2:
-                intent = new Intent(MainActivity.this, ViewOrdersActivity.class);
-                break;
+                try{
+                    intent = new Intent(MainActivity.this, ViewOrdersActivity.class);
+                    startActivity(intent);
+                    break;
+                }catch(ActivityNotFoundException e){
+                    displayActivityException();
+                }
+
             default:
-                intent = new Intent(MainActivity.this, MainActivity.class);
-                break;
+                try{
+                    intent = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    break;
+                }catch(ActivityNotFoundException e){
+                    displayActivityException();
+                }
+
         }
-        startActivity(intent);
+        //startActivity(intent);
     }
+
+
 }
