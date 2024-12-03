@@ -21,7 +21,7 @@ public class CurrentOrdersActivity extends AppCompatActivity {
     private OrderItemsAdapter adapter;
     private ArrayList<Pizza> orderItems;
 
-    private TextView totalCurrentText, salesTaxCurrentText, subtotalCurrentText;
+    private TextView totalCurrentText, salesTaxCurrentText, subtotalCurrentText, orderNumberText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,28 +48,42 @@ public class CurrentOrdersActivity extends AppCompatActivity {
         totalCurrentText = findViewById(R.id.totalCurrentText);
         salesTaxCurrentText = findViewById(R.id.salesTaxCurrentText);
         subtotalCurrentText = findViewById(R.id.subtotalCurrentText);
+        orderNumberText = findViewById(R.id.orderNumberText);
+
+        //display order number
+        int orderNumber = orderDetails.getNextOrderNumber();
+        orderNumberText.setText(String.valueOf(orderNumber));
+        updateOrderSummary();
 
 
         //button to remove selected items
         findViewById(R.id.removeButton).setOnClickListener(v -> {
             //remove selected items from the adapter
             //List<OrderItem> selectedItems = adapter.getSelectedItems();
-            ArrayList<Pizza> selectedPizzas = adapter.getSelectedItems();
-
-            if (!selectedPizzas.isEmpty()) {
-                //remove items from the list
-                adapter.removeSelectedItems();
-
-                //remove from the Singleton data manager
-                for (Pizza item : selectedPizzas) {
-                    orderDetails.removeOrderItem(item);
-                }
-                // if items successfully removed
-                Toast.makeText(CurrentOrdersActivity.this, "Items have been removed from your order.", Toast.LENGTH_SHORT).show();
-                updateOrderSummary();
+            //check if order has no pizzas
+            if (orderDetails.getPizzas().isEmpty()) {
+                Toast.makeText(CurrentOrdersActivity.this, "No items in order.", Toast.LENGTH_SHORT).show();
             } else {
-                // if user tries to remove without selecting items
-                Toast.makeText(CurrentOrdersActivity.this, "No items selected for removal.", Toast.LENGTH_SHORT).show();
+
+                //remove items from the adapter
+                ArrayList<Pizza> selectedPizzas = adapter.getSelectedItems();
+
+                if (!selectedPizzas.isEmpty()) {
+                    // remove items from the list
+                    adapter.removeSelectedItems();
+
+                    // remove from the Singleton
+                    for (Pizza pizza : selectedPizzas) {
+                        orderDetails.removeOrderItem(pizza);
+                    }
+
+                    // if items successfully removed
+                    Toast.makeText(CurrentOrdersActivity.this, "Item(s) have been removed from your order.", Toast.LENGTH_SHORT).show();
+                    updateOrderSummary(); // Update the order summary after removal
+                } else {
+                    // if user tries to remove without selecting items
+                    Toast.makeText(CurrentOrdersActivity.this, "No items selected for removal.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -83,7 +97,7 @@ public class CurrentOrdersActivity extends AppCompatActivity {
 
                 //check if all items were removed
                 if (remainingItems.isEmpty()) {
-                    Toast.makeText(CurrentOrdersActivity.this, "No items in order.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CurrentOrdersActivity.this, "No items in order to place.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -103,6 +117,7 @@ public class CurrentOrdersActivity extends AppCompatActivity {
                 orderItems.clear();
                 adapter.notifyDataSetChanged();
                 updateOrderSummary();
+                //orderNumberText.setText(String.valueOf(orderNumber));//remove later maybe
             }
         });
     }
@@ -125,16 +140,16 @@ public class CurrentOrdersActivity extends AppCompatActivity {
     }*/
     @SuppressLint("DefaultLocale")
     private void updateOrderSummary() {
-        double subtotal = 0.0;
+        double total = 0.0;
 
         //calculate subtotal
         for (Pizza item : orderItems) {
-            subtotal += item.price();
+            total += item.price();
         }
 
         //calculate sales tax and total
-        double salesTax = subtotal * 0.06625;
-        double total = subtotal + salesTax;
+        double salesTax = total * 0.06625;
+        double subtotal = total + salesTax;
 
         //update
         subtotalCurrentText.setText(String.format("$%.2f", subtotal));

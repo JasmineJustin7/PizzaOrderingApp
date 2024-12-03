@@ -26,11 +26,11 @@
     <string name="current_order">Current Order</string>
     <string name="select_item">Select Item to remove</string>
     <string name="remove_item">Remove Item</string>
-    <string name="orderTotalText">Order Total</string>
+    <string name="orderTotalText">Order Total:</string>
     <string name="order_total">Order Total</string>
-    <string name="salesTaxText">Sales Tax</string>
+    <string name="salesTaxText">Sales Tax:</string>
     <string name="sales_tax">Sales Tax</string>
-    <string name="subtotalText">Subtotal</string>
+    <string name="subtotalText">Subtotal:</string>
     <string name="sub_total">Subtotal</string>
     <string name="place_order">Place Order</string>
     <string name="price_label">Price</string>
@@ -50,4 +50,7 @@
     <string name="btn_remove">Remove</string>
     <string name="remove">Remove</string>
     <string name="add">Add</string>
+    <string name="subtotalVOTextView">Subtotal:</string>
+    <string name="subtotalAmountVOTextView">Subtotal</string>
+
 </resources>

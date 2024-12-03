@@ -65,22 +65,20 @@
         android:id="@+id/cancelOrderButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="#8B0000"
         android:onClick="cancelOrder"
         android:text='@string/cancel_order'
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.537"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orderConstraint" />
+        app:layout_constraintTop_toBottomOf="@+id/subtotalVOLayout" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/orderConstraint"
         android:layout_width="409dp"
         android:layout_height="291dp"
         android:layout_marginEnd="2dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/cancelOrderButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/orderNumConstraint">
@@ -92,6 +90,42 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/subtotalVOLayout"
+        android:layout_width="458dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="32dp"
+        android:background="#8B0000"
+        app:layout_constraintTop_toBottomOf="@+id/orderConstraint"
+        tools:layout_editor_absoluteX="0dp"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/subtotalVOTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="108dp"
+            android:layout_marginTop="8dp"
+            android:text='@string/subtotalVOTextView'
+            android:textColor="#FFFFFF"
+            android:textColorLink="#000000"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/subtotalAmountVOTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text='@string/subtotalAmountVOTextView'
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/subtotalVOTextView"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
