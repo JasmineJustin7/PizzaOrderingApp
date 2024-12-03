@@ -46,7 +46,7 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
         ArrayList<Topping> listToppings = currentItem.getToppings();
 
         //debug
-        Log.d("OrderItemsAdapter", "Binding item: " + currentItem.toString());
+        Log.d("OrderItemsAdapter", "Binding item: " + currentItem);
 
         holder.pizzaStyleTextView.setText(currentItem.getStyle());
         holder.pizzaTypeTextView.setText(currentItem.getPizzaType());

@@ -58,6 +58,9 @@ public final class OrderDetails {
 
     //method to get the next order number
     public int getNextOrderNumber() {
+        //added
+        orderNumber = 0;//added ends here
+
         orderNumber++;
         return orderNumber;
     }

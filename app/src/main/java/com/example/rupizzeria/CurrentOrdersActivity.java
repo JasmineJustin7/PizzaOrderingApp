@@ -40,7 +40,7 @@ public class CurrentOrdersActivity extends AppCompatActivity {
 
         //set up RecyclerView with the OrderItemsAdapter
         RecyclerView orderItemRecyclerView = findViewById(R.id.orderItemRecyclerView);
-        orderItemRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        orderItemRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
         adapter = new OrderItemsAdapter(orderItems);
         orderItemRecyclerView.setAdapter(adapter);
 
@@ -111,6 +111,9 @@ public class CurrentOrdersActivity extends AppCompatActivity {
 
                 //second message to check is correct order number is placed
                 Toast.makeText(CurrentOrdersActivity.this, "Order #" + orderNumber + " placed successfully!", Toast.LENGTH_SHORT).show();
+
+                //save and place the order added 2:20
+                orderDetails.placeOrder(orderNumber, remainingItems);
 
                 orderDetails.clearOrder();
                 //update RecyclerView
