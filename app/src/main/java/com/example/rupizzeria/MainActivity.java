@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setAdapter(adapter);
     }
 
+    /**private method to display message when activity not found exception is encountered*/
     private void displayActivityException() {
-        // Create the AlertDialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
         // Set the title, message, and buttons
@@ -75,10 +75,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      * @param view is main view
      * @param id is the id
      * @param parent adapter view of list view
-     * @param position is the position */
+     * @param position is the position
+     *Open different activities based on the item clicked*/
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // Open different activities based on the item clicked
         Intent intent;
         switch (position) {
             case 0:
@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }catch(ActivityNotFoundException e){
                     displayActivityException();
                 }
-
             case 1:
                 try{
                     intent = new Intent(MainActivity.this, CurrentOrdersActivity.class);
@@ -98,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }catch(ActivityNotFoundException e){
                     displayActivityException();
                 }
-
             case 2:
                 try{
                     intent = new Intent(MainActivity.this, ViewOrdersActivity.class);
@@ -107,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }catch(ActivityNotFoundException e){
                     displayActivityException();
                 }
-
             default:
                 try{
                     intent = new Intent(MainActivity.this, MainActivity.class);
@@ -116,9 +113,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }catch(ActivityNotFoundException e){
                     displayActivityException();
                 }
-
         }
-        //startActivity(intent);
     }
 
 
