@@ -1,6 +1,5 @@
 package com.example.rupizzeria;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -15,24 +14,18 @@ import Classes.Pizza;
  * This will be used to store and share the order data across different activities.
  */
 public final class OrderDetails {
-    @SuppressLint("StaticFieldLeak")
     private static OrderDetails instance;
     private ArrayList<Pizza> pizzas;
-    private int orderNumber = 1;//changed from 1 to 0 at 6:57
+    private int orderNumber = 1;
 
     private Context context;
-
-    //added at 6:52
-    //private static final String PREFS_NAME = "OrderHistory";
-    //private static final String ORDER_NUMBER_KEY = "NextOrderNumber";
     /**
      * Private constructor to prevent instantiation from outside this class
      */
     private OrderDetails() {
-        this.context = context;//added .getApplicationContext();
+        this.context = context;
         pizzas = new ArrayList<>();
-        //orderNumber = 1;
-        //orderNumber = 0;//added at 6:57
+        orderNumber = 1;
     }
 
     /**
@@ -65,8 +58,6 @@ public final class OrderDetails {
 
     //method to get the next order number
     public int getNextOrderNumber() {
-        //added
-        orderNumber = 0;//added ends here
         orderNumber++;
         return orderNumber;
     }
@@ -119,21 +110,12 @@ public final class OrderDetails {
     //method to place the order
     public void placeOrder(int orderNumber, ArrayList<Pizza> pizzas) {
         saveOrderToSharedPreferences(orderNumber, pizzas);
-
-        //debug
-        Log.d("PlaceOrder", "Placing order #" + orderNumber);
     }
 
     /**
      * Save the order to SharedPreferences
      */
     public void saveOrderToSharedPreferences(int orderNumber, List<Pizza> items) {
-        //test
-        if (context == null) {
-            Log.e("OrderDetails", "Context is null!");
-            return;  // Avoid proceeding if context is null
-        }
-
         StringBuilder orderDetails = new StringBuilder();
         orderDetails.append("Order Number: #").append(orderNumber).append("\n");
 

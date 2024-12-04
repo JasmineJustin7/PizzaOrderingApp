@@ -185,6 +185,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
                             orderDetails.addPizza(buildYourOwnCS);
                         }break;
                 }
+                //currentToppings.clear();
             }
 
             private void assignSize() {

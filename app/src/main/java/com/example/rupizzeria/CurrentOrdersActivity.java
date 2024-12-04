@@ -30,8 +30,6 @@ public class CurrentOrdersActivity extends AppCompatActivity {
 
         OrderDetails orderDetails = OrderDetails.getInstance();
 
-        //OrderDetails orderDetails = new OrderDetails(CurrentOrdersActivity.this);
-
         //add tests
         //orderDetails.addSampleItems();
 
@@ -42,7 +40,7 @@ public class CurrentOrdersActivity extends AppCompatActivity {
 
         //set up RecyclerView with the OrderItemsAdapter
         RecyclerView orderItemRecyclerView = findViewById(R.id.orderItemRecyclerView);
-        orderItemRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
+        orderItemRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new OrderItemsAdapter(orderItems);
         orderItemRecyclerView.setAdapter(adapter);
 
@@ -94,114 +92,32 @@ public class CurrentOrdersActivity extends AppCompatActivity {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
-
-                //check to see if button was clicked
-                Log.d("PlaceOrder", "Button clicked");
-
-                //check if null and debug
-
-                if (orderDetails == null) {
-                    Log.e("PlaceOrder", "orderDetails is null!");
-                    return;
-                }
-
-                if (orderItems == null) {
-                    Log.e("PlaceOrder", "orderItems is null!");
-                    return;
-                }
-
-                if (adapter == null) {
-                    Log.e("PlaceOrder", "adapter is null!");
-                    return;
-                }
-
-                if (orderNumberText == null) {
-                    Log.e("PlaceOrder", "orderNumberText is null!");
-                    return;
-                }
-
                 //get order items that weren't removed
                 ArrayList<Pizza> remainingItems = orderDetails.getPizzas();
 
                 //check if all items were removed
-                //if (remainingItems.isEmpty()) {//removed
-
-                //debug
-                if (remainingItems == null) {
-                    Log.e("PlaceOrder", "remainingItems is null!");
-                    Toast.makeText(CurrentOrdersActivity.this, "No items in order to place.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                // Check if the list is empty
                 if (remainingItems.isEmpty()) {
-                    Log.d("PlaceOrder", "No items in the order");
                     Toast.makeText(CurrentOrdersActivity.this, "No items in order to place.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-
-                //new line add after checking debug statements 6:27
-                //if (remainingItems == null || remainingItems.isEmpty()) {
-                    //Toast.makeText(CurrentOrdersActivity.this, "No items in order to place.", Toast.LENGTH_SHORT).show();
-                    //eturn;
-                //}
-
-                int orderNumber = orderDetails.getNextOrderNumber(); //remove here 6:11
-                Log.d("PlaceOrder", "Next Order Number: " + orderNumber);
+                int orderNumber = orderDetails.getNextOrderNumber();
 
                 // Save the order in SharedPreferences
-                try {
-                    orderDetails.saveOrderToSharedPreferences(orderNumber, remainingItems);
-                } catch (Exception e) {
-                    Log.e("PlaceOrder", "Error saving order to SharedPreferences", e);
-                    return;
-                }
+                orderDetails.saveOrderToSharedPreferences(orderNumber, remainingItems);
 
-                // Place the order
-                try {
-                    orderDetails.placeOrder(orderNumber, remainingItems);
-                } catch (Exception e) {
-                    Log.e("PlaceOrder", "Error placing order", e);
-                    return;
-                }
-
-
-                // Save the order in SharedPreferences
-                //orderDetails.saveOrderToSharedPreferences(orderNumber, remainingItems);//add after testing 6:27
-
-                //orderDetails.placeOrder(orderNumber, remainingItems); add later after testing 6:27
+                orderDetails.placeOrder(orderNumber, remainingItems);
                 //Toast.makeText(CurrentOrdersActivity.this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
 
                 //second message to check is correct order number is placed
                 Toast.makeText(CurrentOrdersActivity.this, "Order #" + orderNumber + " placed successfully!", Toast.LENGTH_SHORT).show();
 
-                try {
-                    orderDetails.clearOrder();
-                    orderItems.clear();  // Clear the order items list
-                    adapter.notifyDataSetChanged();  // Update the adapter
-
-                    // Update order summary
-                    updateOrderSummary();
-
-                    // Update the order number TextView
-                    orderNumberText.setText(String.valueOf(orderNumber));
-                    //orderNumber++;
-
-                } catch (Exception e) {
-                    Log.e("PlaceOrder", "Error while clearing order or updating UI", e);
-                }
-
-                //save and place the order added 2:20
-                //orderDetails.placeOrder(orderNumber, remainingItems);
-
-                //orderDetails.clearOrder(); //add after 6:27
+                orderDetails.clearOrder();
                 //update RecyclerView
-                //orderItems.clear();//add after 6:27
-                //adapter.notifyDataSetChanged();//add after 6L27
-                //updateOrderSummary();//add after 6:27
-
-                //orderNumberText.setText(String.valueOf(orderNumber));//add after 6:27
+                orderItems.clear();
+                adapter.notifyDataSetChanged();
+                updateOrderSummary();
+                //orderNumberText.setText(String.valueOf(orderNumber));//remove later maybe
             }
         });
     }
