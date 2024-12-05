@@ -28,7 +28,7 @@ public class CurrentOrdersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.current_orders);
 
-        OrderDetails orderDetails = OrderDetails.getInstance();
+        OrderDetails orderDetails = OrderDetails.getInstance(this);
 
         //add tests
         //orderDetails.addSampleItems();

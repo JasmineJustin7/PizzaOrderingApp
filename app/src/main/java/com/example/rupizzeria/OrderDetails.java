@@ -32,7 +32,7 @@ public final class OrderDetails {
      * Get the singleton instance of OrderDetails.
      * @return the single instance of OrderDetails
      */
-    public static synchronized OrderDetails getInstance() {
+    public static synchronized OrderDetails getInstance(Context context) {
         if (instance == null) {
             instance = new OrderDetails();
         }

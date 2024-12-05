@@ -89,7 +89,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
     /**recycler view that contains all possible toppings for a specific type of pizza*/
     private RecyclerView rv_toppingsView;
     /**singleton used by this activity*/
-    private final OrderDetails orderDetails = OrderDetails.getInstance();
+    private final OrderDetails orderDetails = OrderDetails.getInstance(this);
 
     /**create and initializes the gui objects and implements
      * listeners and handlers
