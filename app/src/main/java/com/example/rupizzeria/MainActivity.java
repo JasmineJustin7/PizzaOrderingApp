@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }catch(ActivityNotFoundException e){
                     displayActivityException();
                 }
-
         }
         //startActivity(intent);
     }

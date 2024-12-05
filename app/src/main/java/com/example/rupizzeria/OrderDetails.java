@@ -22,8 +22,8 @@ public final class OrderDetails {
     /**
      * Private constructor to prevent instantiation from outside this class
      */
-    private OrderDetails(Context context) {
-        this.context = this.context;
+    private OrderDetails() {
+        this.context = context;
         pizzas = new ArrayList<>();
         orderNumber = 1;
     }
@@ -32,9 +32,9 @@ public final class OrderDetails {
      * Get the singleton instance of OrderDetails.
      * @return the single instance of OrderDetails
      */
-    public static synchronized OrderDetails getInstance(Context context) {
+    public static synchronized OrderDetails getInstance() {
         if (instance == null) {
-            instance = new OrderDetails(context);
+            instance = new OrderDetails();
         }
         return instance;
     }
@@ -58,7 +58,7 @@ public final class OrderDetails {
 
     //method to get the next order number
     public int getNextOrderNumber() {
-        //orderNumber++;
+        orderNumber++;
         return orderNumber;
     }
 
@@ -110,28 +110,16 @@ public final class OrderDetails {
     //method to place the order
     public void placeOrder(int orderNumber, ArrayList<Pizza> pizzas) {
         saveOrderToSharedPreferences(orderNumber, pizzas);
-
-        //debug
-        Log.d("PlaceOrder", "Placing order #" + orderNumber);
-        clearOrder();
-
     }
 
     /**
      * Save the order to SharedPreferences
      */
-    public void saveOrderToSharedPreferences(int orderNumber, List<Pizza> pizzas) {
-        //test
-        if (context == null) {
-            Log.e("OrderDetails", "Context is null!");
-            return;  // Avoid proceeding if context is null
-        }
-
-
+    public void saveOrderToSharedPreferences(int orderNumber, List<Pizza> items) {
         StringBuilder orderDetails = new StringBuilder();
         orderDetails.append("Order Number: #").append(orderNumber).append("\n");
 
-        for (Pizza item : pizzas) {
+        for (Pizza item : items) {
             orderDetails.append("Pizza: ")
                     .append(item.getStyle()).append(", ")
                     .append(item.getPizzaType()).append(", ")
@@ -152,7 +140,6 @@ public final class OrderDetails {
      * Clear all items in the current order
      */
     public void clearOrder () {
-        orderNumber++;
         pizzas.clear();
     }
 }

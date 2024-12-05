@@ -15,7 +15,7 @@ public class BuildYourOwn extends Pizza {
     /**price for a large build your own pizza*/
     private static final double LARGE_PRICE = 12.99;
     /**boolean to check style of pizza*/
-    private static boolean isChicagoStyle;
+    private boolean isChicagoStyle;
 
     /**
      * Creates a Build Your Own pizza with the checked size and crust type.

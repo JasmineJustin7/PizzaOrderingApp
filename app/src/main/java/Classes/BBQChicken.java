@@ -13,7 +13,7 @@ public class BBQChicken extends Pizza {
     /**price for a large bbq chicken pizza*/
     private static final double LARGE_PRICE = 19.99;
     /**boolean to check style of pizza*/
-    private static boolean isChicagoStyle;
+    private boolean isChicagoStyle;
 
     /**
      * Creates a BBQ Chicken pizza with the checked size and crust type.

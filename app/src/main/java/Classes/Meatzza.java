@@ -13,7 +13,7 @@ public class Meatzza extends Pizza {
     /**price for a large meatzza pizza*/
     private static final double LARGE_PRICE = 21.99;
     /**boolean to check style of pizza*/
-    private static boolean isChicagoStyle;
+    private boolean isChicagoStyle;
 
 
     /**

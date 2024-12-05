@@ -14,7 +14,7 @@ public class Deluxe extends Pizza {
     /**price for a large deluxe pizza*/
     private static final double LARGE_PRICE = 20.99;
     /**boolean to check style of pizza*/
-    private static boolean isChicagoStyle;
+    private boolean isChicagoStyle;
 
     /**
      * Constructs a Deluxe pizza with the specified size and style.
