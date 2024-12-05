@@ -20,7 +20,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -89,11 +88,12 @@ public class OrderPizzasActivity extends AppCompatActivity {
     private Spinner pizzaTypeSpinner;
     /**recycler view that contains all possible toppings for a specific type of pizza*/
     private RecyclerView rv_toppingsView;
-    /**toppings adapter used by this activity*/
-    //private ToppingsAdapter tAdapter = new ToppingsAdapter(this, toppings, currentToppings);
-
+    /**singleton used by this activity*/
     private final OrderDetails orderDetails = OrderDetails.getInstance();
 
+    /**create and initializes the gui objects and implements
+     * listeners and handlers
+     * @param savedInstanceState is the state needed to run this activity*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,286 +122,300 @@ public class OrderPizzasActivity extends AppCompatActivity {
             styleRadioGroup.check(R.id.choose_CStyle_RB); //automatically select Chicago-Style pizza
             sizeRadioGroup.check(R.id.cs_small_size); //automatically select small size when activity is created
 
-            styleRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-                RadioButton sizeMedium1 = findViewById(R.id.cs_medium_size);
-                RadioButton sizeLarge1 = findViewById(R.id.cs_large_size);
-                RadioButton sizeSmall1 = findViewById(R.id.cs_small_size);
-                RadioButton selectedRadioButton = findViewById(checkedId);
-                String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
-                Size size;
-
-                if(sizeLarge1.isChecked()){
-                    size = Size.LARGE;
-                }else if(sizeMedium1.isChecked()){
-                    size = Size.MEDIUM;
-                }else{
-                    size = Size.SMALL;
-                }
-                try{
-                    if (nyStyle.isChecked()) {
-                        switch (selectedItem) {
-                            case deluxe:
-                                Pizza nyDeluxe = new NYPizza().createDeluxe(size);
-                                loadPizza("Brooklyn", defaultDeluxe, nyDeluxe, deluxeNY);
-                                break;
-                            case bbqchicken:
-                                Pizza nyBBQ = new NYPizza().createBBQChicken(size);
-                                loadPizza("Thin", defaultBBQChicken, nyBBQ, bbqchickenNY);
-                                break;
-                            case meatzza:
-                                Pizza nyMeatzza = new NYPizza().createMeatzza(size);
-                                loadPizza("Hand-tossed", defaultMeatzza, nyMeatzza, meatzzaNY);
-                                break;
-                            case byo:
-                                Pizza BYOPrototype = new NYPizza().createBuildYourOwn(size);
-                                loadPizza("Hand-tossed", defaultBuildYourOwn, BYOPrototype, byoNY);
-                                break;
-                        }
-                    }else{//chicago style
-                        switch (selectedItem)
-                        {
-                            case deluxe:
-                                Pizza csDeluxe = new ChicagoPizza().createDeluxe(size);
-                                loadPizza("Deep Dish", defaultDeluxe, csDeluxe, deluxeCS);
-                                break;
-                            case bbqchicken:
-                                Pizza csBBQ = new ChicagoPizza().createBBQChicken(size);
-                                loadPizza("Pan", defaultBBQChicken, csBBQ, bbqchickenCS);
-                                break;
-                            case meatzza:
-                                Pizza csMeatzza = new ChicagoPizza().createMeatzza(size);
-                                loadPizza("Stuffed", defaultMeatzza, csMeatzza, meatzzaCS);
-                                break;
-                            case byo:
-                                //test clear toppings option, so when style button is clicked, clear toppings
-                                //if(!currentToppings.isEmpty()) currentToppings.clear();
-                                Pizza BYOPrototype = new ChicagoPizza().createBuildYourOwn(size);
-                                loadPizza("Pan", defaultBuildYourOwn, BYOPrototype, byoCS);
-                                break;
-                        }
-                    }
-                }catch(Resources.NotFoundException e){
-                    alertResourceError();
-                }
-            });
-
-            sizeRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-                RadioButton selectedRadioButton = findViewById(checkedId);
-                String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
-                Size size;
-
-                if(selectedRadioButton.getText().toString().equalsIgnoreCase("small")){
-                    size = Size.SMALL;
-                }else if(selectedRadioButton.getText().toString().equalsIgnoreCase("medium")){
-                    size = Size.MEDIUM;
-                }else{
-                    size = Size.LARGE;
-                }
-                if (nyStyle.isChecked()) {
-                    switch (selectedItem) {
-                        case deluxe:
-                            Pizza nyDeluxe = new NYPizza().createDeluxe(size);
-                            updatePrice(nyDeluxe, price, currentToppings);
-                            break;
-                        case bbqchicken:
-                            Pizza nyBBQ = new NYPizza().createBBQChicken(size);
-                            updatePrice(nyBBQ, price, currentToppings);
-                            break;
-                        case meatzza:
-                            Pizza nyMeatzza = new NYPizza().createMeatzza(size);
-                            updatePrice(nyMeatzza, price, currentToppings);
-                            break;
-                        case byo:
-                            Pizza BYOPrototype = new NYPizza().createBuildYourOwn(size);
-                            updatePrice(BYOPrototype, price, currentToppings);
-                            break;
-                    }
-                }else{//chicago style
-                    switch (selectedItem)
-                    {
-                        case deluxe:
-                            Pizza csDeluxe = new ChicagoPizza().createDeluxe(size);
-                            updatePrice(csDeluxe, price, currentToppings);
-                            break;
-                        case bbqchicken:
-                            Pizza csBBQ = new ChicagoPizza().createBBQChicken(size);
-                            updatePrice(csBBQ, price, currentToppings);
-                            break;
-                        case meatzza:
-                            Pizza csMeatzza = new ChicagoPizza().createMeatzza(size);
-                            updatePrice(csMeatzza, price, currentToppings);
-                            break;
-                        case byo:
-                            Pizza BYOPrototype = new ChicagoPizza().createBuildYourOwn(size);
-                            updatePrice(BYOPrototype, price, currentToppings);
-                            break;
-                    }
-                }
-            });
-
-            pizzaTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    ImageView pizzaImage = findViewById(R.id.pizza_image);
-                    TextView crustType = findViewById(R.id.display_crust_text);
-                    TextView price = findViewById(R.id.display_price);
-                    String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
-                    Size size;
-
-                    if(sizeSmall.isChecked()){
-                        size = Size.SMALL;
-                    }else if(sizeMedium.isChecked()){
-                        size = Size.MEDIUM;
-                    }else{
-                        size = Size.LARGE;
-                    }
-                    try{
-                        switch (selectedItem) {
-                            case deluxe:
-                                recyclerView.setVisibility(View.GONE); // Hide RecyclerView
-                                if(nyStyle.isChecked()){
-                                    Pizza nyDeluxe = new NYPizza().createDeluxe(size);
-                                    loadPizza("Brooklyn", defaultDeluxe, nyDeluxe, deluxeNY);
-                                    currentToppings = nyDeluxe.getToppings();
-                                    updatePrice(nyDeluxe, price, currentToppings);
-                                }else{ //Chicago style is chosen
-                                    Pizza csDeluxe = new ChicagoPizza().createDeluxe(size);
-                                    loadPizza("Deep Dish", defaultDeluxe, csDeluxe, deluxeCS);
-                                    currentToppings = csDeluxe.getToppings();
-                                    updatePrice(csDeluxe, price, currentToppings);
-                                }
-                                break;
-                            case bbqchicken:
-                                recyclerView.setVisibility(View.GONE); // Hide RecyclerView
-                                if(nyStyle.isChecked()){
-                                    Pizza nyBBQ = new NYPizza().createBBQChicken(size);
-                                    loadPizza("Thin", defaultBBQChicken, nyBBQ, bbqchickenNY);
-                                    currentToppings = nyBBQ.getToppings();
-                                    updatePrice(nyBBQ, price, currentToppings);
-                                }else{//Chicago style is chosen
-                                    Pizza csBBQ = new ChicagoPizza().createBBQChicken(size);
-                                    loadPizza("Pan", defaultBBQChicken, csBBQ, bbqchickenCS);
-                                    currentToppings = csBBQ.getToppings();
-                                    updatePrice(csBBQ, price, currentToppings);
-                                }
-                                break;
-                            case meatzza:
-                                recyclerView.setVisibility(View.GONE); // Hide RecyclerView
-                                if(nyStyle.isChecked()){
-                                    Pizza nyMeatzza = new NYPizza().createMeatzza(size);
-                                    loadPizza("Hand-tossed", defaultMeatzza, nyMeatzza, meatzzaNY);
-                                    currentToppings = nyMeatzza.getToppings();
-                                    updatePrice(nyMeatzza, price, currentToppings);
-
-                                }else{//Chicago style is chosen
-                                    Pizza csMeatzza = new ChicagoPizza().createMeatzza(size);
-                                    loadPizza("Stuffed", defaultMeatzza, csMeatzza, meatzzaCS);
-                                    currentToppings = csMeatzza.getToppings();
-                                    updatePrice(csMeatzza, price, currentToppings);
-                                }
-                                break;
-                            case byo:
-                                recyclerView.setVisibility(View.VISIBLE); // Hide RecyclerView
-                                if(!currentToppings.isEmpty()) currentToppings.clear();//clear current selection of toppings
-                                if(nyStyle.isChecked()){
-                                    crustType.setText(R.string.hand_tossed);
-                                    crustType.setClickable(false);
-                                    Pizza BYOPrototype = new NYPizza().createBuildYourOwn(size);
-                                    updatePrice(BYOPrototype, price, currentToppings);
-                                    Uri imageUri = Uri.parse(byoNY);
-                                    pizzaImage.setImageURI(imageUri);
-                                }else{//Chicago style is chosen
-                                    crustType.setText(R.string.pan);
-                                    crustType.setClickable(false);
-                                    Pizza BYOPrototype = new ChicagoPizza().createBuildYourOwn(size);
-                                    updatePrice(BYOPrototype, price, currentToppings);
-                                    Uri imageUri = Uri.parse(byoCS);
-                                    pizzaImage.setImageURI(imageUri);
-                                }
-                                break;
-                        }
-                    }catch(Resources.NotFoundException e){
-                        alertResourceError();
-                    }
-                }
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) { //left empty because it is not needed
-                }
-            });
+            onClickPizzaStyle(styleRadioGroup, nyStyle);
+            onClickPizzaSize(sizeRadioGroup, nyStyle, price);
+            onClickPizzaType(sizeSmall, sizeMedium, recyclerView, nyStyle);
 
             Button addPizza = findViewById(R.id.add_to_order_button);
             pizzaTypeSpinner = findViewById(R.id.pizza_type_spinner);
-
-
-            addPizza.setOnClickListener(new View.OnClickListener() {
-                //final Boolean NYChecked = nyStyle.isChecked();
-                Size size;
-                RadioButton sizeMedium = findViewById(R.id.cs_medium_size);
-                RadioButton sizeLarge = findViewById(R.id.cs_large_size);
-                RadioButton sizeSmall = findViewById(R.id.cs_small_size);
-                @Override
-                public void onClick(View v) {
-                    final String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
-                    if(sizeSmall.isChecked()){
-                        size = Size.SMALL;
-                    }else if(sizeMedium.isChecked()){
-                        size = Size.MEDIUM;
-                    }else{
-                        size = Size.LARGE;
-                    }
-
-                    switch (selectedItem) {
-                        case deluxe:
-                            if(nyStyle.isChecked()){
-                                Pizza deluxeNY = new NYPizza().createDeluxe(size);
-                                orderDetails.addPizza(deluxeNY);
-                            }else{ //Chicago style is chosen
-                                Pizza deluxeCS = new ChicagoPizza().createDeluxe(size);
-                                orderDetails.addPizza(deluxeCS);
-                            }
-                            break;
-                        case bbqchicken:
-                            if(nyStyle.isChecked()){
-                                Pizza bbqNY = new NYPizza().createBBQChicken(size);
-                                orderDetails.addPizza(bbqNY);
-                            }else{//Chicago style is chosen
-                                Pizza bbqCS = new ChicagoPizza().createBBQChicken(size);
-                                orderDetails.addPizza(bbqCS);
-                            }
-                            break;
-                        case meatzza:
-                            if(nyStyle.isChecked()){
-                                Pizza meatzzaNY = new NYPizza().createMeatzza(size);
-                                orderDetails.addPizza(meatzzaNY);
-
-                            }else{//Chicago style is chosen
-                                Pizza meatzzaCS = new ChicagoPizza().createMeatzza(size);
-                                orderDetails.addPizza(meatzzaCS);
-                            }
-                            break;
-                        case byo:
-                            //if(!currentToppings.isEmpty()) currentToppings.clear();//clear current selection of toppings
-                            if(nyStyle.isChecked()){
-                                Pizza buildYourOwnNY = new NYPizza().createBuildYourOwn(size);
-                                buildYourOwnNY.setToppings(currentToppings);
-                                orderDetails.addPizza(buildYourOwnNY);
-                            }else{
-                                Pizza buildYourOwnCS = new ChicagoPizza().createBuildYourOwn(size);
-                                buildYourOwnCS.setToppings(currentToppings);
-                                orderDetails.addPizza(buildYourOwnCS);
-
-                            }
-                            break;
-                    }
-                    //currentToppings.clear(); //test to see if this erases toppings in current activity
-                    Toast.makeText(OrderPizzasActivity.this, "Pizza added to order!", Toast.LENGTH_SHORT).show();
-                }
-            });
+            onClickAddPizza(addPizza, nyStyle);
         }catch(NullPointerException e){
             Log.e("View Object Error", "GUI Object is null");
         }
 
 
+    }
+
+    private void onClickPizzaStyle(RadioGroup styleRadioGroup, RadioButton nyStyle) {
+        styleRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            RadioButton sizeMedium1 = findViewById(R.id.cs_medium_size);
+            RadioButton sizeLarge1 = findViewById(R.id.cs_large_size);
+            RadioButton sizeSmall1 = findViewById(R.id.cs_small_size);
+            RadioButton selectedRadioButton = findViewById(checkedId);
+            String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
+            Size size;
+
+            if(sizeLarge1.isChecked()){
+                size = Size.LARGE;
+            }else if(sizeMedium1.isChecked()){
+                size = Size.MEDIUM;
+            }else{
+                size = Size.SMALL;
+            }
+            try{
+                loadPizzaImages(nyStyle, selectedItem, size);
+            }catch(Resources.NotFoundException e){
+                alertResourceError();
+            }
+        });
+    }
+
+    private void loadPizzaImages(RadioButton nyStyle, String selectedItem, Size size) {
+        if (nyStyle.isChecked()) {
+            switch (selectedItem)
+            {   case deluxe:
+                    Pizza nyDeluxe = new NYPizza().createDeluxe(size);
+                    loadPizza("Brooklyn", defaultDeluxe, nyDeluxe, deluxeNY);
+                    break;
+                case bbqchicken:
+                    Pizza nyBBQ = new NYPizza().createBBQChicken(size);
+                    loadPizza("Thin", defaultBBQChicken, nyBBQ, bbqchickenNY);
+                    break;
+                case meatzza:
+                    Pizza nyMeatzza = new NYPizza().createMeatzza(size);
+                    loadPizza("Hand-tossed", defaultMeatzza, nyMeatzza, meatzzaNY);
+                    break;
+                case byo:
+                    Pizza BYOPrototype = new NYPizza().createBuildYourOwn(size);
+                    loadPizza("Hand-tossed", defaultBuildYourOwn, BYOPrototype, byoNY);
+                    break;
+            }
+        }else{//chicago style
+            switch (selectedItem)
+            {   case deluxe:
+                    Pizza csDeluxe = new ChicagoPizza().createDeluxe(size);
+                    loadPizza("Deep Dish", defaultDeluxe, csDeluxe, deluxeCS);
+                    break;
+                case bbqchicken:
+                    Pizza csBBQ = new ChicagoPizza().createBBQChicken(size);
+                    loadPizza("Pan", defaultBBQChicken, csBBQ, bbqchickenCS);
+                    break;
+                case meatzza:
+                    Pizza csMeatzza = new ChicagoPizza().createMeatzza(size);
+                    loadPizza("Stuffed", defaultMeatzza, csMeatzza, meatzzaCS);
+                    break;
+                case byo:
+                    //if(!currentToppings.isEmpty()) currentToppings.clear();
+                    Pizza BYOPrototype = new ChicagoPizza().createBuildYourOwn(size);
+                    loadPizza("Pan", defaultBuildYourOwn, BYOPrototype, byoCS);
+                    break;
+            }
+        }
+    }
+
+    private void onClickPizzaSize(RadioGroup sizeRadioGroup, RadioButton nyStyle, TextView price) {
+        sizeRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            RadioButton selectedRadioButton = findViewById(checkedId);
+            String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
+            Size size;
+
+            if(selectedRadioButton.getText().toString().equalsIgnoreCase("small")){
+                size = Size.SMALL;
+            }else if(selectedRadioButton.getText().toString().equalsIgnoreCase("medium")){
+                size = Size.MEDIUM;
+            }else{
+                size = Size.LARGE;
+            }
+            if (nyStyle.isChecked()) {
+                switch (selectedItem) {
+                    case deluxe:
+                        Pizza nyDeluxe = new NYPizza().createDeluxe(size);
+                        updatePrice(nyDeluxe, price, currentToppings);
+                        break;
+                    case bbqchicken:
+                        Pizza nyBBQ = new NYPizza().createBBQChicken(size);
+                        updatePrice(nyBBQ, price, currentToppings);
+                        break;
+                    case meatzza:
+                        Pizza nyMeatzza = new NYPizza().createMeatzza(size);
+                        updatePrice(nyMeatzza, price, currentToppings);
+                        break;
+                    case byo:
+                        Pizza BYOPrototype = new NYPizza().createBuildYourOwn(size);
+                        updatePrice(BYOPrototype, price, currentToppings);
+                        break;
+                }
+            }else{//chicago style
+                switch (selectedItem)
+                {
+                    case deluxe:
+                        Pizza csDeluxe = new ChicagoPizza().createDeluxe(size);
+                        updatePrice(csDeluxe, price, currentToppings);
+                        break;
+                    case bbqchicken:
+                        Pizza csBBQ = new ChicagoPizza().createBBQChicken(size);
+                        updatePrice(csBBQ, price, currentToppings);
+                        break;
+                    case meatzza:
+                        Pizza csMeatzza = new ChicagoPizza().createMeatzza(size);
+                        updatePrice(csMeatzza, price, currentToppings);
+                        break;
+                    case byo:
+                        Pizza BYOPrototype = new ChicagoPizza().createBuildYourOwn(size);
+                        updatePrice(BYOPrototype, price, currentToppings);
+                        break;
+                }
+            }
+        });
+    }
+
+    private void onClickPizzaType(RadioButton sizeSmall, RadioButton sizeMedium, RecyclerView recyclerView, RadioButton nyStyle) {
+        pizzaTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ImageView pizzaImage = findViewById(R.id.pizza_image);
+                TextView crustType = findViewById(R.id.display_crust_text);
+                TextView price = findViewById(R.id.display_price);
+                String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
+                Size size;
+
+                if(sizeSmall.isChecked()){
+                    size = Size.SMALL;
+                }else if(sizeMedium.isChecked()){
+                    size = Size.MEDIUM;
+                }else{
+                    size = Size.LARGE;
+                }
+                try{
+                    switch (selectedItem) {
+                        case deluxe:
+                            recyclerView.setVisibility(View.GONE); // Hide RecyclerView
+                            if(nyStyle.isChecked()){
+                                Pizza nyDeluxe = new NYPizza().createDeluxe(size);
+                                loadPizza("Brooklyn", defaultDeluxe, nyDeluxe, deluxeNY);
+                                currentToppings = nyDeluxe.getToppings();
+                                updatePrice(nyDeluxe, price, currentToppings);
+                            }else{ //Chicago style is chosen
+                                Pizza csDeluxe = new ChicagoPizza().createDeluxe(size);
+                                loadPizza("Deep Dish", defaultDeluxe, csDeluxe, deluxeCS);
+                                currentToppings = csDeluxe.getToppings();
+                                updatePrice(csDeluxe, price, currentToppings);
+                            }
+                            break;
+                        case bbqchicken:
+                            recyclerView.setVisibility(View.GONE); // Hide RecyclerView
+                            if(nyStyle.isChecked()){
+                                Pizza nyBBQ = new NYPizza().createBBQChicken(size);
+                                loadPizza("Thin", defaultBBQChicken, nyBBQ, bbqchickenNY);
+                                currentToppings = nyBBQ.getToppings();
+                                updatePrice(nyBBQ, price, currentToppings);
+                            }else{//Chicago style is chosen
+                                Pizza csBBQ = new ChicagoPizza().createBBQChicken(size);
+                                loadPizza("Pan", defaultBBQChicken, csBBQ, bbqchickenCS);
+                                currentToppings = csBBQ.getToppings();
+                                updatePrice(csBBQ, price, currentToppings);
+                            }
+                            break;
+                        case meatzza:
+                            recyclerView.setVisibility(View.GONE); // Hide RecyclerView
+                            if(nyStyle.isChecked()){
+                                Pizza nyMeatzza = new NYPizza().createMeatzza(size);
+                                loadPizza("Hand-tossed", defaultMeatzza, nyMeatzza, meatzzaNY);
+                                currentToppings = nyMeatzza.getToppings();
+                                updatePrice(nyMeatzza, price, currentToppings);
+
+                            }else{//Chicago style is chosen
+                                Pizza csMeatzza = new ChicagoPizza().createMeatzza(size);
+                                loadPizza("Stuffed", defaultMeatzza, csMeatzza, meatzzaCS);
+                                currentToppings = csMeatzza.getToppings();
+                                updatePrice(csMeatzza, price, currentToppings);
+                            }
+                            break;
+                        case byo:
+                            recyclerView.setVisibility(View.VISIBLE); // Hide RecyclerView
+                            if(!currentToppings.isEmpty()) currentToppings.clear();//clear current selection of toppings
+                            if(nyStyle.isChecked()){
+                                crustType.setText(R.string.hand_tossed);
+                                crustType.setClickable(false);
+                                Pizza BYOPrototype = new NYPizza().createBuildYourOwn(size);
+                                updatePrice(BYOPrototype, price, currentToppings);
+                                Uri imageUri = Uri.parse(byoNY);
+                                pizzaImage.setImageURI(imageUri);
+                            }else{//Chicago style is chosen
+                                crustType.setText(R.string.pan);
+                                crustType.setClickable(false);
+                                Pizza BYOPrototype = new ChicagoPizza().createBuildYourOwn(size);
+                                updatePrice(BYOPrototype, price, currentToppings);
+                                Uri imageUri = Uri.parse(byoCS);
+                                pizzaImage.setImageURI(imageUri);
+                            }
+                            break;
+                    }
+                }catch(Resources.NotFoundException e){
+                    alertResourceError();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { //left empty because it is not needed
+            }
+        });
+    }
+
+    private void onClickAddPizza(Button addPizza, RadioButton nyStyle) {
+        addPizza.setOnClickListener(new View.OnClickListener() {
+            //final Boolean NYChecked = nyStyle.isChecked();
+            Size size;
+            RadioButton sizeMedium = findViewById(R.id.cs_medium_size);
+            RadioButton sizeLarge = findViewById(R.id.cs_large_size);
+            RadioButton sizeSmall = findViewById(R.id.cs_small_size);
+            @Override
+            public void onClick(View v) {
+                final String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
+                if(sizeSmall.isChecked()){
+                    size = Size.SMALL;
+                }else if(sizeMedium.isChecked()){
+                    size = Size.MEDIUM;
+                }else{
+                    size = Size.LARGE;
+                }
+
+                switch (selectedItem) {
+                    case deluxe:
+                        if(nyStyle.isChecked()){
+                            Pizza deluxeNY = new NYPizza().createDeluxe(size);
+                            orderDetails.addPizza(deluxeNY);
+                        }else{ //Chicago style is chosen
+                            Pizza deluxeCS = new ChicagoPizza().createDeluxe(size);
+                            orderDetails.addPizza(deluxeCS);
+                        }
+                        break;
+                    case bbqchicken:
+                        if(nyStyle.isChecked()){
+                            Pizza bbqNY = new NYPizza().createBBQChicken(size);
+                            orderDetails.addPizza(bbqNY);
+                        }else{//Chicago style is chosen
+                            Pizza bbqCS = new ChicagoPizza().createBBQChicken(size);
+                            orderDetails.addPizza(bbqCS);
+                        }
+                        break;
+                    case meatzza:
+                        if(nyStyle.isChecked()){
+                            Pizza meatzzaNY = new NYPizza().createMeatzza(size);
+                            orderDetails.addPizza(meatzzaNY);
+
+                        }else{//Chicago style is chosen
+                            Pizza meatzzaCS = new ChicagoPizza().createMeatzza(size);
+                            orderDetails.addPizza(meatzzaCS);
+                        }
+                        break;
+                    case byo:
+                        //if(!currentToppings.isEmpty()) currentToppings.clear();//clear current selection of toppings
+                        if(nyStyle.isChecked()){
+                            Pizza buildYourOwnNY = new NYPizza().createBuildYourOwn(size);
+                            buildYourOwnNY.setToppings(currentToppings);
+                            orderDetails.addPizza(buildYourOwnNY);
+                        }else{
+                            Pizza buildYourOwnCS = new ChicagoPizza().createBuildYourOwn(size);
+                            buildYourOwnCS.setToppings(currentToppings);
+                            orderDetails.addPizza(buildYourOwnCS);
+
+                        }
+                        break;
+                }
+                //currentToppings.clear(); //test to see if this erases toppings in current activity
+                Toast.makeText(OrderPizzasActivity.this, "Pizza added to order!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**update price according to changes in the activity
