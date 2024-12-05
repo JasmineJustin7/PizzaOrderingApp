@@ -18,6 +18,7 @@ import Classes.Topping;
 public class FinalOrderItemsAdapter extends RecyclerView.Adapter<FinalOrderItemsAdapter.OrderItemHolder> {
 
     private ArrayList<Pizza> pizzas; // List of pizzas to display
+    private ArrayList<Pizza> selectedPizzas = new ArrayList<>();
 
     public FinalOrderItemsAdapter(ArrayList<Pizza> pizzas) {
         this.pizzas = pizzas;
@@ -36,7 +37,7 @@ public class FinalOrderItemsAdapter extends RecyclerView.Adapter<FinalOrderItems
         ArrayList<Topping> listToppings = currentItem.getToppings();
 
         // Debug log to ensure items are bound correctly
-        Log.d("FinalOrderItemsAdapter", "Binding item: " + currentItem.toString());
+        Log.d("FinalOrderItemsAdapter", "Binding item: " + currentItem);
 
         // Setting text for each item
         holder.pizzaStyleTextView.setText(currentItem.getStyle());
@@ -44,11 +45,26 @@ public class FinalOrderItemsAdapter extends RecyclerView.Adapter<FinalOrderItems
         holder.pizzaCrustTextView.setText(currentItem.getCrust().toString());
         holder.pizzaSizeTextView.setText(currentItem.getSize().toString());
         holder.pizzaToppingsTextView.setText(listToppings.isEmpty() ? "No toppings" : listToppings.toString());
+
+        // Handle item selection for cancellation
+        holder.itemView.setOnClickListener(v -> {
+            if (selectedPizzas.contains(currentItem)) {
+                selectedPizzas.remove(currentItem);
+            } else {
+                selectedPizzas.add(currentItem);
+            }
+            notifyDataSetChanged();
+        });
     }
 
     @Override
     public int getItemCount() {
         return pizzas.size();
+    }
+
+    // Method to get selected pizzas
+    public ArrayList<Pizza> getSelectedPizzas() {
+        return selectedPizzas;
     }
 
     public static class OrderItemHolder extends RecyclerView.ViewHolder {
