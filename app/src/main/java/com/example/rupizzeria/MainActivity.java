@@ -5,18 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 /**main view of pizzeria app that gives users the option to order pizzas, view their current order, or view all orders*/
@@ -52,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setAdapter(adapter);
     }
 
+    /**display error message if activity fails to load*/
     private void displayActivityException() {
         // Create the AlertDialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -117,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     displayActivityException();
                 }
         }
-        //startActivity(intent);
     }
 
 

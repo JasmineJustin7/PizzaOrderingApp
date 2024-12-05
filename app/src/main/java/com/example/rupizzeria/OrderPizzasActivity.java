@@ -136,6 +136,9 @@ public class OrderPizzasActivity extends AppCompatActivity {
 
     }
 
+    /**listener that implements actions to take when clicking on a pizza style
+     * @param nyStyle is the ny-style radio button
+     * @param styleRadioGroup is the radio group associated with the style of pizza*/
     private void onClickPizzaStyle(RadioGroup styleRadioGroup, RadioButton nyStyle) {
         styleRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton sizeMedium1 = findViewById(R.id.cs_medium_size);
@@ -160,6 +163,10 @@ public class OrderPizzasActivity extends AppCompatActivity {
         });
     }
 
+    /**method to load pizza images based on type of pizza
+     * @param nyStyle needed to choose specific pizza image
+     * @param size is the size of the pizza to create a pizza object
+     * @param selectedItem is the pizza type selection in string form*/
     private void loadPizzaImages(RadioButton nyStyle, String selectedItem, Size size) {
         if (nyStyle.isChecked()) {
             switch (selectedItem)
@@ -203,6 +210,10 @@ public class OrderPizzasActivity extends AppCompatActivity {
         }
     }
 
+    /**listener that implements anonymous inner class to handle pizza size selection by
+     * @param nyStyle is the ny-style radio button
+     * @param price is the associated price of pizza based on current selection by user
+     * @param sizeRadioGroup is the radio group that stores all possible pizza sizes*/
     private void onClickPizzaSize(RadioGroup sizeRadioGroup, RadioButton nyStyle, TextView price) {
         sizeRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton selectedRadioButton = findViewById(checkedId);
@@ -259,6 +270,11 @@ public class OrderPizzasActivity extends AppCompatActivity {
         });
     }
 
+    /**listener that implements anonymous inner class to handle pizza type selection by
+     * @param sizeSmall is the small size radio button
+     * @param sizeMedium is the medium size radio button
+     * @param recyclerView is the recycler view that displays
+     * @param nyStyle is the NY style radio button*/
     private void onClickPizzaType(RadioButton sizeSmall, RadioButton sizeMedium, RecyclerView recyclerView, RadioButton nyStyle) {
         pizzaTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -279,78 +295,112 @@ public class OrderPizzasActivity extends AppCompatActivity {
                 try{
                     switch (selectedItem) {
                         case deluxe:
-                            recyclerView.setVisibility(View.GONE); // Hide RecyclerView
-                            if(nyStyle.isChecked()){
-                                Pizza nyDeluxe = new NYPizza().createDeluxe(size);
-                                loadPizza("Brooklyn", defaultDeluxe, nyDeluxe, deluxeNY);
-                                currentToppings = nyDeluxe.getToppings();
-                                updatePrice(nyDeluxe, price, currentToppings);
-                            }else{ //Chicago style is chosen
-                                Pizza csDeluxe = new ChicagoPizza().createDeluxe(size);
-                                loadPizza("Deep Dish", defaultDeluxe, csDeluxe, deluxeCS);
-                                currentToppings = csDeluxe.getToppings();
-                                updatePrice(csDeluxe, price, currentToppings);
-                            }
+                            loadDeluxe(size, price);
                             break;
                         case bbqchicken:
-                            recyclerView.setVisibility(View.GONE); // Hide RecyclerView
-                            if(nyStyle.isChecked()){
-                                Pizza nyBBQ = new NYPizza().createBBQChicken(size);
-                                loadPizza("Thin", defaultBBQChicken, nyBBQ, bbqchickenNY);
-                                currentToppings = nyBBQ.getToppings();
-                                updatePrice(nyBBQ, price, currentToppings);
-                            }else{//Chicago style is chosen
-                                Pizza csBBQ = new ChicagoPizza().createBBQChicken(size);
-                                loadPizza("Pan", defaultBBQChicken, csBBQ, bbqchickenCS);
-                                currentToppings = csBBQ.getToppings();
-                                updatePrice(csBBQ, price, currentToppings);
-                            }
+                            loadBBQ(size, price);
                             break;
                         case meatzza:
-                            recyclerView.setVisibility(View.GONE); // Hide RecyclerView
-                            if(nyStyle.isChecked()){
-                                Pizza nyMeatzza = new NYPizza().createMeatzza(size);
-                                loadPizza("Hand-tossed", defaultMeatzza, nyMeatzza, meatzzaNY);
-                                currentToppings = nyMeatzza.getToppings();
-                                updatePrice(nyMeatzza, price, currentToppings);
-
-                            }else{//Chicago style is chosen
-                                Pizza csMeatzza = new ChicagoPizza().createMeatzza(size);
-                                loadPizza("Stuffed", defaultMeatzza, csMeatzza, meatzzaCS);
-                                currentToppings = csMeatzza.getToppings();
-                                updatePrice(csMeatzza, price, currentToppings);
-                            }
+                            loadMeatzza(size, price);
                             break;
                         case byo:
-                            recyclerView.setVisibility(View.VISIBLE); // Hide RecyclerView
-                            if(!currentToppings.isEmpty()) currentToppings.clear();//clear current selection of toppings
-                            if(nyStyle.isChecked()){
-                                crustType.setText(R.string.hand_tossed);
-                                crustType.setClickable(false);
-                                Pizza BYOPrototype = new NYPizza().createBuildYourOwn(size);
-                                updatePrice(BYOPrototype, price, currentToppings);
-                                Uri imageUri = Uri.parse(byoNY);
-                                pizzaImage.setImageURI(imageUri);
-                            }else{//Chicago style is chosen
-                                crustType.setText(R.string.pan);
-                                crustType.setClickable(false);
-                                Pizza BYOPrototype = new ChicagoPizza().createBuildYourOwn(size);
-                                updatePrice(BYOPrototype, price, currentToppings);
-                                Uri imageUri = Uri.parse(byoCS);
-                                pizzaImage.setImageURI(imageUri);
-                            }
+                            loadBYO(crustType, size, price, pizzaImage);
                             break;
                     }
                 }catch(Resources.NotFoundException e){
                     alertResourceError();
                 }
             }
+
+            /**loads deluxe info to interface
+             * @param size is the size of the pizza
+             * @param price is the pirce of the current pizza*/
+            private void loadDeluxe(Size size, TextView price) {
+                recyclerView.setVisibility(View.GONE); // Hide RecyclerView
+                if(nyStyle.isChecked()){
+                    Pizza nyDeluxe = new NYPizza().createDeluxe(size);
+                    loadPizza("Brooklyn", defaultDeluxe, nyDeluxe, deluxeNY);
+                    currentToppings = nyDeluxe.getToppings();
+                    updatePrice(nyDeluxe, price, currentToppings);
+                }else{ //Chicago style is chosen
+                    Pizza csDeluxe = new ChicagoPizza().createDeluxe(size);
+                    loadPizza("Deep Dish", defaultDeluxe, csDeluxe, deluxeCS);
+                    currentToppings = csDeluxe.getToppings();
+                    updatePrice(csDeluxe, price, currentToppings);
+                }
+            }
+
+            /**loads bbq chicken pizza info to interface
+             * @param size is the size of the pizza
+             * @param price is the pirce of the current pizza*/
+            private void loadBBQ(Size size, TextView price) {
+                recyclerView.setVisibility(View.GONE); // Hide RecyclerView
+                if(nyStyle.isChecked()){
+                    Pizza nyBBQ = new NYPizza().createBBQChicken(size);
+                    loadPizza("Thin", defaultBBQChicken, nyBBQ, bbqchickenNY);
+                    currentToppings = nyBBQ.getToppings();
+                    updatePrice(nyBBQ, price, currentToppings);
+                }else{//Chicago style is chosen
+                    Pizza csBBQ = new ChicagoPizza().createBBQChicken(size);
+                    loadPizza("Pan", defaultBBQChicken, csBBQ, bbqchickenCS);
+                    currentToppings = csBBQ.getToppings();
+                    updatePrice(csBBQ, price, currentToppings);
+                }
+            }
+
+            /**loads meatzza info to interface
+             * @param size is the size of the pizza
+             * @param price is the pirce of the current pizza*/
+            private void loadMeatzza(Size size, TextView price) {
+                recyclerView.setVisibility(View.GONE); // Hide RecyclerView
+                if(nyStyle.isChecked()){
+                    Pizza nyMeatzza = new NYPizza().createMeatzza(size);
+                    loadPizza("Hand-tossed", defaultMeatzza, nyMeatzza, meatzzaNY);
+                    currentToppings = nyMeatzza.getToppings();
+                    updatePrice(nyMeatzza, price, currentToppings);
+
+                }else{//Chicago style is chosen
+                    Pizza csMeatzza = new ChicagoPizza().createMeatzza(size);
+                    loadPizza("Stuffed", defaultMeatzza, csMeatzza, meatzzaCS);
+                    currentToppings = csMeatzza.getToppings();
+                    updatePrice(csMeatzza, price, currentToppings);
+                }
+            }
+            /**loads build your own info to interface
+             * @param size is the size of the pizza
+             * @param price is the price of the current pizza*/
+            private void loadBYO(TextView crustType, Size size, TextView price, ImageView pizzaImage) {
+                recyclerView.setVisibility(View.VISIBLE); // Hide RecyclerView
+                if(!currentToppings.isEmpty()) currentToppings.clear();//clear current selection of toppings
+                if(nyStyle.isChecked()){
+                    crustType.setText(R.string.hand_tossed);
+                    crustType.setClickable(false);
+                    Pizza BYOPrototype = new NYPizza().createBuildYourOwn(size);
+                    updatePrice(BYOPrototype, price, currentToppings);
+                    Uri imageUri = Uri.parse(byoNY);
+                    pizzaImage.setImageURI(imageUri);
+                }else{//Chicago style is chosen
+                    crustType.setText(R.string.pan);
+                    crustType.setClickable(false);
+                    Pizza BYOPrototype = new ChicagoPizza().createBuildYourOwn(size);
+                    updatePrice(BYOPrototype, price, currentToppings);
+                    Uri imageUri = Uri.parse(byoCS);
+                    pizzaImage.setImageURI(imageUri);
+                }
+            }
+
+            /**does nothing in this class
+             * @param parent is the view of the activity*/
             @Override
             public void onNothingSelected(AdapterView<?> parent) { //left empty because it is not needed
             }
         });
     }
 
+    /**listener associated with clicking the add to order button
+     * adds current pizza and its selection to a singleton list of orders
+     * @param nyStyle is the ny-style radio button
+     * @param addPizza is the button*/
     private void onClickAddPizza(Button addPizza, RadioButton nyStyle) {
         addPizza.setOnClickListener(new View.OnClickListener() {
             //final Boolean NYChecked = nyStyle.isChecked();
@@ -358,17 +408,13 @@ public class OrderPizzasActivity extends AppCompatActivity {
             RadioButton sizeMedium = findViewById(R.id.cs_medium_size);
             RadioButton sizeLarge = findViewById(R.id.cs_large_size);
             RadioButton sizeSmall = findViewById(R.id.cs_small_size);
+
+            /**handles onClick listener for add to order button
+             * @param v is the view associated with this activity*/
             @Override
             public void onClick(View v) {
                 final String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
-                if(sizeSmall.isChecked()){
-                    size = Size.SMALL;
-                }else if(sizeMedium.isChecked()){
-                    size = Size.MEDIUM;
-                }else{
-                    size = Size.LARGE;
-                }
-
+                selectSize();
                 switch (selectedItem) {
                     case deluxe:
                         if(nyStyle.isChecked()){
@@ -399,21 +445,36 @@ public class OrderPizzasActivity extends AppCompatActivity {
                         }
                         break;
                     case byo:
-                        //if(!currentToppings.isEmpty()) currentToppings.clear();//clear current selection of toppings
-                        if(nyStyle.isChecked()){
-                            Pizza buildYourOwnNY = new NYPizza().createBuildYourOwn(size);
-                            buildYourOwnNY.setToppings(currentToppings);
-                            orderDetails.addPizza(buildYourOwnNY);
-                        }else{
-                            Pizza buildYourOwnCS = new ChicagoPizza().createBuildYourOwn(size);
-                            buildYourOwnCS.setToppings(currentToppings);
-                            orderDetails.addPizza(buildYourOwnCS);
-
-                        }
+                        addBYOPizzaToOrder();
                         break;
                 }
                 //currentToppings.clear(); //test to see if this erases toppings in current activity
                 Toast.makeText(OrderPizzasActivity.this, "Pizza added to order!", Toast.LENGTH_SHORT).show();
+            }
+
+            /**selects size according to current radio button selection*/
+            private void selectSize() {
+                if(sizeSmall.isChecked()){
+                    size = Size.SMALL;
+                }else if(sizeMedium.isChecked()){
+                    size = Size.MEDIUM;
+                }else{
+                    size = Size.LARGE;
+                }
+            }
+
+            /**adds build your own pizza to order including */
+            private void addBYOPizzaToOrder() {
+                //if(!currentToppings.isEmpty()) currentToppings.clear();//clear current selection of toppings
+                if(nyStyle.isChecked()){
+                    Pizza buildYourOwnNY = new NYPizza().createBuildYourOwn(size);
+                    buildYourOwnNY.setToppings(currentToppings);
+                    orderDetails.addPizza(buildYourOwnNY);
+                }else{
+                    Pizza buildYourOwnCS = new ChicagoPizza().createBuildYourOwn(size);
+                    buildYourOwnCS.setToppings(currentToppings);
+                    orderDetails.addPizza(buildYourOwnCS);
+                }
             }
         });
     }
