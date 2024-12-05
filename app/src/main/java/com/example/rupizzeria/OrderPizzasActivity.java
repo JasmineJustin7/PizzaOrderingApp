@@ -1,5 +1,7 @@
 
+
 package com.example.rupizzeria;
+
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -20,14 +22,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
 
 import Classes.BBQChicken;
 import Classes.BuildYourOwn;
@@ -39,11 +44,13 @@ import Classes.Pizza;
 import Classes.Size;
 import Classes.Topping;
 
+
 /**class associated with creating and customizing pizzas to add to an order
  * includes Chicago Style and New York Style pizzas, different types of pizzas such as
  * Deluxe, BBQ chicken, Meatzza and Build Your Own pizzas
  * offers small, medium and large sizes for each pizza*/
 public class OrderPizzasActivity extends AppCompatActivity {
+
 
     /**deluxe pizza*/
     private final Pizza defaultDeluxe = new Deluxe(Size.SMALL, false);
@@ -82,6 +89,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
     /**array list of toppings for current pizza selection*/
     private ArrayList<Topping> currentToppings = new ArrayList<>();
 
+
     private ArrayList<Topping> selectedToppings = new ArrayList<>();
     /**list of pizzas associated with an order, is shared amongst activities*/
 //    private ArrayList<Pizza> pizzas;
@@ -92,7 +100,9 @@ public class OrderPizzasActivity extends AppCompatActivity {
     /**toppings adapter used by this activity*/
     //private ToppingsAdapter tAdapter = new ToppingsAdapter(this, toppings, currentToppings);
 
+
     private final OrderDetails orderDetails = OrderDetails.getInstance(this);//added this at 12:45
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +124,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
                     androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, pizzaTypes);
             pizzaTypeSpinner.setAdapter(pizzaTypeAdapter);
 
+
             RadioButton sizeMedium = findViewById(R.id.cs_medium_size);
             RadioButton sizeLarge = findViewById(R.id.cs_large_size);
             RadioButton sizeSmall = findViewById(R.id.cs_small_size);
@@ -122,6 +133,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
             styleRadioGroup.check(R.id.choose_CStyle_RB); //automatically select Chicago-Style pizza
             sizeRadioGroup.check(R.id.cs_small_size); //automatically select small size when activity is created
 
+
             styleRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
                 RadioButton sizeMedium1 = findViewById(R.id.cs_medium_size);
                 RadioButton sizeLarge1 = findViewById(R.id.cs_large_size);
@@ -129,6 +141,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
                 RadioButton selectedRadioButton = findViewById(checkedId);
                 String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
                 Size size;
+
 
                 if(sizeLarge1.isChecked()){
                     size = Size.LARGE;
@@ -185,10 +198,12 @@ public class OrderPizzasActivity extends AppCompatActivity {
                 }
             });
 
+
             sizeRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
                 RadioButton selectedRadioButton = findViewById(checkedId);
                 String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
                 Size size;
+
 
                 if(selectedRadioButton.getText().toString().equalsIgnoreCase("small")){
                     size = Size.SMALL;
@@ -239,6 +254,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
                 }
             });
 
+
             pizzaTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -247,6 +263,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
                     TextView price = findViewById(R.id.display_price);
                     String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
                     Size size;
+
 
                     if(sizeSmall.isChecked()){
                         size = Size.SMALL;
@@ -293,6 +310,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
                                     currentToppings = nyMeatzza.getToppings();
                                     updatePrice(nyMeatzza, price, currentToppings);
 
+
                                 }else{//Chicago style is chosen
                                     Pizza csMeatzza = new ChicagoPizza().createMeatzza(size);
                                     loadPizza("Stuffed", defaultMeatzza, csMeatzza, meatzzaCS);
@@ -329,8 +347,11 @@ public class OrderPizzasActivity extends AppCompatActivity {
                 }
             });
 
+
             Button addPizza = findViewById(R.id.add_to_order_button);
             pizzaTypeSpinner = findViewById(R.id.pizza_type_spinner);
+
+
 
 
             addPizza.setOnClickListener(new View.OnClickListener() {
@@ -349,6 +370,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
                     }else{
                         size = Size.LARGE;
                     }
+
 
                     switch (selectedItem) {
                         case deluxe:
@@ -374,6 +396,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
                                 Pizza meatzzaNY = new NYPizza().createMeatzza(size);
                                 orderDetails.addPizza(meatzzaNY);
 
+
                             }else{//Chicago style is chosen
                                 Pizza meatzzaCS = new ChicagoPizza().createMeatzza(size);
                                 orderDetails.addPizza(meatzzaCS);
@@ -390,6 +413,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
                                 buildYourOwnCS.setToppings(currentToppings);
                                 orderDetails.addPizza(buildYourOwnCS);
 
+
                             }
                             break;
                     }
@@ -402,7 +426,10 @@ public class OrderPizzasActivity extends AppCompatActivity {
         }
 
 
+
+
     }
+
 
     /**update price according to changes in the activity
      * @param price is the GUI object associated with price of pizza
@@ -418,6 +445,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
             price.setText(formattedPriceByo);
         }
     }
+
 
     /**loads the info for each pizza given type
      * @param Crust is the crust
@@ -440,7 +468,9 @@ public class OrderPizzasActivity extends AppCompatActivity {
             alertResourceError();
         }
 
+
     }
+
 
     /**alert message to display if issues with resource recovery is encountered*/
     private void alertResourceError() {
@@ -454,9 +484,11 @@ public class OrderPizzasActivity extends AppCompatActivity {
                 })
                 .setCancelable(false); // Disable outside touch to dismiss the dialog
 
+
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
 
     /**Helper method to set up the data of the recycler view.*/
     private void setupMenuItems() {
@@ -474,5 +506,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
         toppings.add(Topping.ONION);
         toppings.add(Topping.SAUSAGE);
     }
+
 
 }
