@@ -1,6 +1,5 @@
 package com.example.rupizzeria;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -15,33 +14,27 @@ import Classes.Pizza;
  * This will be used to store and share the order data across different activities.
  */
 public final class OrderDetails {
-    @SuppressLint("StaticFieldLeak")
     private static OrderDetails instance;
     private ArrayList<Pizza> pizzas;
-    private int orderNumber = 1;//changed from 1 to 0 at 6:57
+    private int orderNumber = 1;
 
     private Context context;
-
-    //added at 6:52
-    //private static final String PREFS_NAME = "OrderHistory";
-    //private static final String ORDER_NUMBER_KEY = "NextOrderNumber";
     /**
      * Private constructor to prevent instantiation from outside this class
      */
-    private OrderDetails() {
-        this.context = context;//added .getApplicationContext();
+    private OrderDetails(Context context) {
+        this.context = this.context;
         pizzas = new ArrayList<>();
-        //orderNumber = 1;
-        //orderNumber = 0;//added at 6:57
+        orderNumber = 1;
     }
 
     /**
      * Get the singleton instance of OrderDetails.
      * @return the single instance of OrderDetails
      */
-    public static synchronized OrderDetails getInstance() {
+    public static synchronized OrderDetails getInstance(Context context) {
         if (instance == null) {
-            instance = new OrderDetails();
+            instance = new OrderDetails(context);
         }
         return instance;
     }
@@ -65,9 +58,7 @@ public final class OrderDetails {
 
     //method to get the next order number
     public int getNextOrderNumber() {
-        //added
-        orderNumber = 0;//added ends here
-        orderNumber++;
+        //orderNumber++;
         return orderNumber;
     }
 
@@ -100,21 +91,21 @@ public final class OrderDetails {
 
     // New method to build order details
     //private String buildOrderDetails(int orderNumber, List<OrderItem> items) {
-        //StringBuilder orderDetails = new StringBuilder();
-        //orderDetails.append("Order Number: #").append(orderNumber).append("\n");
+    //StringBuilder orderDetails = new StringBuilder();
+    //orderDetails.append("Order Number: #").append(orderNumber).append("\n");
 
-        // Iterate through the items and append details to the string
-        //for (OrderItem item : items) {
-            //orderDetails.append("Pizza: ")
-                    //.append(item.getPizzaStyle()).append(", ")
-                   // .append(item.getPizzaType()).append(", ")
-                    //.append("Crust: ").append(item.getCrustType()).append(", ")
-                    //.append("Size: ").append(item.getSize()).append(", ")
-                    //.append("Price: $").append(item.getPrice()).append("\n");
-       // }
+    // Iterate through the items and append details to the string
+    //for (OrderItem item : items) {
+    //orderDetails.append("Pizza: ")
+    //.append(item.getPizzaStyle()).append(", ")
+    // .append(item.getPizzaType()).append(", ")
+    //.append("Crust: ").append(item.getCrustType()).append(", ")
+    //.append("Size: ").append(item.getSize()).append(", ")
+    //.append("Price: $").append(item.getPrice()).append("\n");
+    // }
 
-        //return orderDetails.toString();  // Return the final order details string
-   // }
+    //return orderDetails.toString();  // Return the final order details string
+    // }
 
     //method to place the order
     public void placeOrder(int orderNumber, ArrayList<Pizza> pizzas) {
@@ -122,22 +113,25 @@ public final class OrderDetails {
 
         //debug
         Log.d("PlaceOrder", "Placing order #" + orderNumber);
+        clearOrder();
+
     }
 
     /**
      * Save the order to SharedPreferences
      */
-    public void saveOrderToSharedPreferences(int orderNumber, List<Pizza> items) {
+    public void saveOrderToSharedPreferences(int orderNumber, List<Pizza> pizzas) {
         //test
         if (context == null) {
             Log.e("OrderDetails", "Context is null!");
             return;  // Avoid proceeding if context is null
         }
 
+
         StringBuilder orderDetails = new StringBuilder();
         orderDetails.append("Order Number: #").append(orderNumber).append("\n");
 
-        for (Pizza item : items) {
+        for (Pizza item : pizzas) {
             orderDetails.append("Pizza: ")
                     .append(item.getStyle()).append(", ")
                     .append(item.getPizzaType()).append(", ")
@@ -158,6 +152,7 @@ public final class OrderDetails {
      * Clear all items in the current order
      */
     public void clearOrder () {
+        orderNumber++;
         pizzas.clear();
-        }
     }
+}

@@ -26,10 +26,10 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
     private ArrayList<Pizza> pizzas;
     private ArrayList<Pizza> selectedPizzas;
 
-    public OrderItemsAdapter(ArrayList<Pizza> orderItems) {
+    public OrderItemsAdapter(ArrayList<Pizza> pizzas) {
         //this.orderItems = orderItems;
         //this.selectedItems = new ArrayList<>();
-        this.pizzas = orderItems;
+        this.pizzas = pizzas;
         this.selectedPizzas = new ArrayList<>();
     }
 
@@ -42,20 +42,20 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
 
     @Override
     public void onBindViewHolder(@NonNull OrderItemHolder holder, int position) {
-        Pizza currentItem = pizzas.get(position);
-        ArrayList<Topping> listToppings = currentItem.getToppings();
+        Pizza currentPizza = pizzas.get(position);
+        ArrayList<Topping> listToppings = currentPizza.getToppings();
 
         //debug
-        Log.d("OrderItemsAdapter", "Binding item: " + currentItem);
+        Log.d("OrderItemsAdapter", "Binding item: " + currentPizza);
 
-        holder.pizzaStyleTextView.setText(currentItem.getStyle());
-        holder.pizzaTypeTextView.setText(currentItem.getPizzaType());
-        holder.pizzaCrustTextView.setText(currentItem.getCrust().toString());
-        holder.pizzaSizeTextView.setText(currentItem.getSize().toString());;
-        holder.pizzaToppingsTextView.setText(currentItem.getToppings().toString());//will fix if problems arise
+        holder.pizzaStyleTextView.setText(currentPizza.getStyle());
+        holder.pizzaTypeTextView.setText(currentPizza.getPizzaType());
+        holder.pizzaCrustTextView.setText(currentPizza.getCrust().toString());
+        holder.pizzaSizeTextView.setText(currentPizza.getSize().toString());;
+        holder.pizzaToppingsTextView.setText(currentPizza.getToppings().toString());//will fix if problems arise
         holder.pizzaToppingsTextView.setText(listToppings.isEmpty() ? "No toppings" : listToppings.toString());
 
-        holder.selectItemCheckBox.setChecked(selectedPizzas.contains(currentItem));
+        holder.selectItemCheckBox.setChecked(selectedPizzas.contains(currentPizza));
 
         holder.selectItemCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             //if (isChecked) {
@@ -67,11 +67,11 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
             //}
             //updateOrderItems(selectedPizzas);
             if (isChecked) {
-                if (!selectedPizzas.contains(currentItem)) {
-                    selectedPizzas.add(currentItem);  // Add to selected list
+                if (!selectedPizzas.contains(currentPizza)) {
+                    selectedPizzas.add(currentPizza);  // Add to selected list
                 }
             } else {
-                selectedPizzas.remove(currentItem);  // Remove from selected list
+                selectedPizzas.remove(currentPizza);  // Remove from selected list
             }
         });
     }

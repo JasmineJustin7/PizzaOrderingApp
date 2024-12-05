@@ -19,7 +19,7 @@ import Classes.Pizza;
 
 public class CurrentOrdersActivity extends AppCompatActivity {
     private OrderItemsAdapter adapter;
-    private ArrayList<Pizza> orderItems;
+    private ArrayList<Pizza> pizzas;
 
     private TextView totalCurrentText, salesTaxCurrentText, subtotalCurrentText, orderNumberText;
 
@@ -28,22 +28,22 @@ public class CurrentOrdersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.current_orders);
 
-        OrderDetails orderDetails = OrderDetails.getInstance();
+        OrderDetails orderDetails = OrderDetails.getInstance(this);
 
         //OrderDetails orderDetails = new OrderDetails(CurrentOrdersActivity.this);
 
         //add tests
         //orderDetails.addSampleItems();
 
-        orderItems = orderDetails.getPizzas();
+        pizzas = orderDetails.getPizzas();
 
         //debug
-        Log.d("CurrentOrdersActivity", "Order items: " + orderItems.toString());
+        Log.d("CurrentOrdersActivity", "Order items: " + pizzas.toString());
 
         //set up RecyclerView with the OrderItemsAdapter
         RecyclerView orderItemRecyclerView = findViewById(R.id.orderItemRecyclerView);
         orderItemRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
-        adapter = new OrderItemsAdapter(orderItems);
+        adapter = new OrderItemsAdapter(pizzas);
         orderItemRecyclerView.setAdapter(adapter);
 
         //initialize TextViews for the summary
@@ -105,7 +105,7 @@ public class CurrentOrdersActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (orderItems == null) {
+                if (pizzas == null) {
                     Log.e("PlaceOrder", "orderItems is null!");
                     return;
                 }
@@ -143,16 +143,16 @@ public class CurrentOrdersActivity extends AppCompatActivity {
 
                 //new line add after checking debug statements 6:27
                 //if (remainingItems == null || remainingItems.isEmpty()) {
-                    //Toast.makeText(CurrentOrdersActivity.this, "No items in order to place.", Toast.LENGTH_SHORT).show();
-                    //eturn;
+                //Toast.makeText(CurrentOrdersActivity.this, "No items in order to place.", Toast.LENGTH_SHORT).show();
+                //eturn;
                 //}
 
-                int orderNumber = orderDetails.getNextOrderNumber(); //remove here 6:11
+                //int orderNumber = orderDetails.getNextOrderNumber(); //remove here 6:11
                 Log.d("PlaceOrder", "Next Order Number: " + orderNumber);
 
                 // Save the order in SharedPreferences
                 try {
-                    orderDetails.saveOrderToSharedPreferences(orderNumber, remainingItems);
+                    orderDetails.saveOrderToSharedPreferences(orderNumber, pizzas);
                 } catch (Exception e) {
                     Log.e("PlaceOrder", "Error saving order to SharedPreferences", e);
                     return;
@@ -160,7 +160,7 @@ public class CurrentOrdersActivity extends AppCompatActivity {
 
                 // Place the order
                 try {
-                    orderDetails.placeOrder(orderNumber, remainingItems);
+                    orderDetails.placeOrder(orderNumber, pizzas);//changed from remianingItems to pizza
                 } catch (Exception e) {
                     Log.e("PlaceOrder", "Error placing order", e);
                     return;
@@ -178,7 +178,7 @@ public class CurrentOrdersActivity extends AppCompatActivity {
 
                 try {
                     orderDetails.clearOrder();
-                    orderItems.clear();  // Clear the order items list
+                    pizzas.clear();  // Clear the order items list
                     adapter.notifyDataSetChanged();  // Update the adapter
 
                     // Update order summary
@@ -227,7 +227,7 @@ public class CurrentOrdersActivity extends AppCompatActivity {
         double total = 0.0;
 
         //calculate subtotal
-        for (Pizza item : orderItems) {
+        for (Pizza item : pizzas) {
             total += item.price();
         }
 
