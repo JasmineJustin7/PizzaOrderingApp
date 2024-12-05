@@ -1,8 +1,5 @@
 package com.example.rupizzeria;
 
-//package com.example.recyclerviewexample;
-
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,23 +20,13 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import Classes.ChicagoPizza;
-import Classes.Pizza;
-import Classes.Size;
 import Classes.Topping;
 
 /**
  * This is an Adapter class to be used to instantiate an adapter for the RecyclerView.
- * Must extend RecyclerView.Adapter, which will enforce you to implement 3 methods:
- *      1. onCreateViewHolder, 2. onBindViewHolder, and 3. getItemCount
- * You must use the data type <thisClassName.yourHolderName>, in this example
- * <ItemAdapter.ItemHolder>. This will enforce you to define a constructor for the
- * ItemAdapter and an inner class ItemsHolder (a static class)
- * The ItemsHolder class must extend RecyclerView.ViewHolder. In the constructor of this class,
- * you do something similar to the onCreate() method in an Activity.
- * @author Lily Chang
  */
 class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
     /**need the context to inflate the layout*/
@@ -47,12 +35,20 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
     private ArrayList<Topping> toppings;
     /**list of toppings in customizable pizza*/
     private ArrayList<Topping> currentToppings;
-    /**size of pizza*/
-    private RadioGroup size;
+    /**radio group that stores the sizes of pizza*/
+    private RadioGroup sizeRG;
+    /**GUI object reference that stores price of current pizza selection*/
     private TextView price;
-
+    /**radio group associated with pizza type*/
     private RadioGroup type;
 
+    /**constructor of recycler view
+     * @param price is the reference of GUI object from order pizzas activity
+     * @param context is the reference to order pizzas activity
+     * @param currentToppings is the current toppings selected by user
+     * @param items are all possible toppings for pizzas on the menu
+     * @param size is the radio group that stores all possible sizes
+     * @param type is the radio group associated with pizza type*/
     public ToppingsAdapter(Context context, ArrayList<Topping> items,
                            ArrayList<Topping> currentToppings, TextView price, RadioGroup size,
                            RadioGroup type) {
@@ -60,7 +56,7 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
         this.toppings = items;
         this.currentToppings = currentToppings;
         this.price = price;
-        this.size = size;
+        this.sizeRG = size;
         this.type = type;
     }
 
@@ -73,11 +69,8 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
     @NonNull
     @Override
     public ItemsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //inflate the row layout for the items
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(context); //inflate the row layout for the items
         View view = inflater.inflate(R.layout.pizza_toppings_view, parent, false);
-        //Pizza currentPizza = new ChicagoPizza().createBuildYourOwn(Size.valueOf(size.toString()));
-        //price.setText(String.valueOf(currentPizza.price())); // Append new item to the TextView
         return new ItemsHolder(view);
     }
 
@@ -95,6 +88,7 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
 
         // Handle the "Add" button click to add item to addedItems list
         holder.btn_add.setOnClickListener(v -> {
+
             if(currentToppings.size() >= 7){
                 Toast.makeText(this.context, "Cannot exceed more than 7 toppings",
                         Toast.LENGTH_LONG).show();
@@ -109,9 +103,9 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
                 currentToppings.add(Topping.valueOf(toppings.get(position).toString()));
                 Toast.makeText(this.context,
                         toppings.get(position).toString() + " added.", Toast.LENGTH_LONG).show();
-                // Notify the adapter that the data has changed
-                notifyItemChanged(position);
+                notifyItemChanged(position);// Notify the adapter that the data has changed
             }
+            updatePrice();
         });
 
         holder.btn_remove.setOnClickListener(v -> {
@@ -127,8 +121,27 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
                 // Notify the adapter that the data has changed
                 notifyItemChanged(position);
             }
-
+            updatePrice();
         });
+    }
+
+    /**updates the price of a build your own pizza whenever toppings are added or removed*/
+    private void updatePrice() {
+        //check what size is being chosen
+        int selectedRadioButton = sizeRG.getCheckedRadioButtonId();
+        RadioButton checkedSize = sizeRG.findViewById(selectedRadioButton);
+        double basePrice = 0;
+        if(checkedSize.getText().toString().equalsIgnoreCase("small")){
+            basePrice = 8.99;
+        }else if(checkedSize.getText().toString().equalsIgnoreCase("medium")){
+            basePrice = 10.99;
+        }else{
+            basePrice = 12.99;
+        }
+        basePrice = basePrice + (currentToppings.size() * 1.69);
+        DecimalFormat df = new DecimalFormat("#.00");
+        String formattedPrice = df.format(basePrice);
+        price.setText(formattedPrice);
     }
 
     /**
@@ -140,9 +153,7 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
         return toppings.size(); //number of MenuItem in the array list.
     }
 
-    /**
-     * Get the views from the row layout file, similar to the onCreate() method.
-     */
+    /**Get the views from the row layout file, similar to the onCreate() method.*/
     public static class ItemsHolder extends RecyclerView.ViewHolder {
         /**text associated with name of topping*/
         private TextView tv_name;
@@ -167,7 +178,6 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
             btn_add = itemView.findViewById(R.id.btn_add);
             btn_remove = itemView.findViewById(R.id.btn_remove);
             parentLayout = itemView.findViewById(R.id.rowLayout);
-            //setAddButtonOnClick(itemView); //register the onClicklistener for the button on each row.
 
             parentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
