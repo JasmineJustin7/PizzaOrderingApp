@@ -91,21 +91,21 @@ public final class OrderDetails {
 
     // New method to build order details
     //private String buildOrderDetails(int orderNumber, List<OrderItem> items) {
-        //StringBuilder orderDetails = new StringBuilder();
-        //orderDetails.append("Order Number: #").append(orderNumber).append("\n");
+    //StringBuilder orderDetails = new StringBuilder();
+    //orderDetails.append("Order Number: #").append(orderNumber).append("\n");
 
-        // Iterate through the items and append details to the string
-        //for (OrderItem item : items) {
-            //orderDetails.append("Pizza: ")
-                    //.append(item.getPizzaStyle()).append(", ")
-                   // .append(item.getPizzaType()).append(", ")
-                    //.append("Crust: ").append(item.getCrustType()).append(", ")
-                    //.append("Size: ").append(item.getSize()).append(", ")
-                    //.append("Price: $").append(item.getPrice()).append("\n");
-       // }
+    // Iterate through the items and append details to the string
+    //for (OrderItem item : items) {
+    //orderDetails.append("Pizza: ")
+    //.append(item.getPizzaStyle()).append(", ")
+    // .append(item.getPizzaType()).append(", ")
+    //.append("Crust: ").append(item.getCrustType()).append(", ")
+    //.append("Size: ").append(item.getSize()).append(", ")
+    //.append("Price: $").append(item.getPrice()).append("\n");
+    // }
 
-        //return orderDetails.toString();  // Return the final order details string
-   // }
+    //return orderDetails.toString();  // Return the final order details string
+    // }
 
     //method to place the order
     public void placeOrder(int orderNumber, ArrayList<Pizza> pizzas) {
@@ -141,5 +141,5 @@ public final class OrderDetails {
      */
     public void clearOrder () {
         pizzas.clear();
-        }
     }
+}

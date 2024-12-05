@@ -167,7 +167,7 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
             btn_add = itemView.findViewById(R.id.btn_add);
             btn_remove = itemView.findViewById(R.id.btn_remove);
             parentLayout = itemView.findViewById(R.id.rowLayout);
-            setAddButtonOnClick(itemView); //register the onClicklistener for the button on each row.
+            //setAddButtonOnClick(itemView); //register the onClicklistener for the button on each row.
 
             parentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -184,7 +184,7 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
          * Clicking on the button will create an AlertDialog with the options of YES/NO.
          * @param toppingView is the recycler view of toppings
          */
-        private void setAddButtonOnClick(@NonNull View toppingView) {
+        /*private void setAddButtonOnClick(@NonNull View toppingView) {
             btn_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -210,7 +210,7 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
                     dialog.show();
                 }
             });
-        }
+        }*/
 
         private void setRemoveButtonOnClick(@NonNull View toppingView) {
             btn_remove.setOnClickListener(new View.OnClickListener() {

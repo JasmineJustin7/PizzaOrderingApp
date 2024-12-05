@@ -81,8 +81,10 @@ public class OrderPizzasActivity extends AppCompatActivity {
     private ArrayList<Topping> toppings = new ArrayList<>();
     /**array list of toppings for current pizza selection*/
     private ArrayList<Topping> currentToppings = new ArrayList<>();
+
+    private ArrayList<Topping> selectedToppings = new ArrayList<>();
     /**list of pizzas associated with an order, is shared amongst activities*/
-    private ArrayList<Pizza> pizzas;
+//    private ArrayList<Pizza> pizzas;
     /**spinner that contains the different types of pizza provided by the pizzeria*/
     private Spinner pizzaTypeSpinner;
     /**recycler view that contains all possible toppings for a specific type of pizza*/
@@ -96,7 +98,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //OrderDetails orderDetails = OrderDetails.getInstance();
-        pizzas = new ArrayList<>();
+//        pizzas = new ArrayList<>();
         try{
             setContentView(R.layout.order_pizza);
             RecyclerView recyclerView = findViewById(R.id.recycler_toppings);
@@ -175,6 +177,8 @@ public class OrderPizzasActivity extends AppCompatActivity {
                                 loadPizza("Stuffed", defaultMeatzza, csMeatzza, meatzzaCS);
                                 break;
                             case byo:
+                                //test clear toppings option, so when style button is clicked, clear toppings
+                                //if(!currentToppings.isEmpty()) currentToppings.clear();
                                 Pizza BYOPrototype = new ChicagoPizza().createBuildYourOwn(size);
                                 loadPizza("Pan", defaultBuildYourOwn, BYOPrototype, byoCS);
                                 break;
@@ -183,7 +187,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
                 }catch(Resources.NotFoundException e){
                     alertResourceError();
                 }
-
             });
 
             sizeRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -247,7 +250,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
                     TextView crustType = findViewById(R.id.display_crust_text);
                     TextView price = findViewById(R.id.display_price);
                     String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
-                    System.out.println("This is the spinner item that was selected: " + selectedItem);
                     Size size;
 
                     if(sizeSmall.isChecked()){
@@ -344,7 +346,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     final String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
-                    //currentToppings.clear();
                     if(sizeSmall.isChecked()){
                         size = Size.SMALL;
                     }else if(sizeMedium.isChecked()){
@@ -353,98 +354,32 @@ public class OrderPizzasActivity extends AppCompatActivity {
                         size = Size.LARGE;
                     }
 
-                    /*
-                    if(NYChecked){
-                         if (selectedItem.equalsIgnoreCase(deluxe)){
-                            Pizza deluxeNY = new NYPizza().createDeluxe(size);
-                            System.out.println("This is a NY deluxe pizza : Crust: " + deluxeNY.getCrust() + " Pizza Type: " + deluxeNY.getPizzaType());
-                            orderDetails.addPizza(deluxeNY);
-
-
-                        }else if(selectedItem.equalsIgnoreCase(meatzza)){
-                            Pizza meatzzaNY = new NYPizza().createMeatzza(size);
-                            System.out.println("This is a NY meatzza pizza : Crust: " + meatzzaNY.getCrust() + " Pizza Type: " + meatzzaNY.getPizzaType());
-                            orderDetails.addPizza(meatzzaNY);
-
-
-                        }else if(selectedItem.equalsIgnoreCase(bbqchicken)){
-                            Pizza bbqNY = new NYPizza().createBBQChicken(size);
-                            System.out.println("This is a NY bbq pizza : Crust: " + bbqNY.getCrust() + " Pizza Type: " + bbqNY.getPizzaType());
-                            orderDetails.addPizza(bbqNY);
-
-
-                        }else{ //build your own
-                            Pizza buildYourOwnNY = new NYPizza().createBuildYourOwn(size);
-                            //add toppings that user added to build your own pizza
-                            buildYourOwnNY.setToppings(currentToppings);
-                            System.out.println("This is a NY byo pizza : Crust: " + buildYourOwnNY.getCrust() + " Pizza Type: " + buildYourOwnNY.getPizzaType());
-                            //add pizza to order
-                            orderDetails.addPizza(buildYourOwnNY);
-
-                        }
-                    }else{
-                        if(selectedItem.equalsIgnoreCase(deluxe)){
-                            Pizza deluxeCS = new ChicagoPizza().createDeluxe(size);
-                            System.out.println("This is a CS deluxe pizza : Crust: " + deluxeCS.getCrust() + " Pizza Type: " + deluxeCS.getPizzaType());
-                            orderDetails.addPizza(deluxeCS);
-
-
-                        }else if(selectedItem.equalsIgnoreCase(meatzza)){
-                            Pizza meatzzaCS = new ChicagoPizza().createMeatzza(size);
-                            System.out.println("This is a CS meatzza pizza : Crust: " + meatzzaCS.getCrust() + " Pizza Type: " + meatzzaCS.getPizzaType());
-                            orderDetails.addPizza(meatzzaCS);
-
-
-                        }else if(selectedItem.equalsIgnoreCase(bbqchicken)){
-                            Pizza bbqCS = new ChicagoPizza().createBBQChicken(size);
-                            System.out.println("This is a CS bbq pizza : Crust: " + bbqCS.getCrust() + " Pizza Type: " + bbqCS.getPizzaType());
-                            orderDetails.addPizza(bbqCS);
-
-
-                        }else{ //build your own
-                            Pizza buildYourOwnCS = new ChicagoPizza().createBuildYourOwn(size);
-                            //add toppings that user added to build your own pizza
-                            buildYourOwnCS.setToppings(currentToppings);
-                            System.out.println("This is a CS byo pizza : Crust: " + buildYourOwnCS.getCrust() + " Pizza Type: " + buildYourOwnCS.getPizzaType());
-                            //add pizza to order
-                            orderDetails.addPizza(buildYourOwnCS);
-
-                        }
-                    }*/
-
-                    System.out.println(" This is the selected Item after clicking add to order: " + selectedItem);
                     switch (selectedItem) {
                         case deluxe:
                             if(nyStyle.isChecked()){
                                 Pizza deluxeNY = new NYPizza().createDeluxe(size);
-                                System.out.println("This is a NY deluxe pizza : Crust: " + deluxeNY.getCrust() + " Pizza Type: " + deluxeNY.getPizzaType());
                                 orderDetails.addPizza(deluxeNY);
                             }else{ //Chicago style is chosen
                                 Pizza deluxeCS = new ChicagoPizza().createDeluxe(size);
-                                System.out.println("This is a CS deluxe pizza : Crust: " + deluxeCS.getCrust() + " Pizza Type: " + deluxeCS.getPizzaType());
                                 orderDetails.addPizza(deluxeCS);
                             }
                             break;
                         case bbqchicken:
                             if(nyStyle.isChecked()){
                                 Pizza bbqNY = new NYPizza().createBBQChicken(size);
-                                System.out.println("This is a NY bbq pizza : Crust: " + bbqNY.getCrust() + " Pizza Type: " + bbqNY.getPizzaType());
                                 orderDetails.addPizza(bbqNY);
                             }else{//Chicago style is chosen
                                 Pizza bbqCS = new ChicagoPizza().createBBQChicken(size);
-                                System.out.println("This is a CS bbq pizza : Crust: " + bbqCS.getCrust() + " Pizza Type: " + bbqCS.getPizzaType());
                                 orderDetails.addPizza(bbqCS);
                             }
                             break;
                         case meatzza:
                             if(nyStyle.isChecked()){
                                 Pizza meatzzaNY = new NYPizza().createMeatzza(size);
-                                System.out.println("This is a NY meatzza pizza : Crust: " + meatzzaNY.getCrust() + " Pizza Type: " + meatzzaNY.getPizzaType());
                                 orderDetails.addPizza(meatzzaNY);
 
                             }else{//Chicago style is chosen
                                 Pizza meatzzaCS = new ChicagoPizza().createMeatzza(size);
-                                System.out.println("This is a CS meatzza pizza : Crust: " + meatzzaCS.getCrust() + " Pizza Type: " + meatzzaCS.getPizzaType());
                                 orderDetails.addPizza(meatzzaCS);
                             }
                             break;
@@ -452,24 +387,21 @@ public class OrderPizzasActivity extends AppCompatActivity {
                             //if(!currentToppings.isEmpty()) currentToppings.clear();//clear current selection of toppings
                             if(nyStyle.isChecked()){
                                 Pizza buildYourOwnNY = new NYPizza().createBuildYourOwn(size);
+
                                 //add toppings that user added to build your own pizza
                                 buildYourOwnNY.setToppings(currentToppings);
-                                System.out.println("This is a NY byo pizza : Crust: " + buildYourOwnNY.getCrust() + " Pizza Type: " + buildYourOwnNY.getPizzaType());
                                 //add pizza to order
                                 orderDetails.addPizza(buildYourOwnNY);
                             }else{//Chicago style is chosen
                                 Pizza buildYourOwnCS = new ChicagoPizza().createBuildYourOwn(size);
                                 //add toppings that user added to build your own pizza
                                 buildYourOwnCS.setToppings(currentToppings);
-                                System.out.println("This is a CS byo pizza : Crust: " + buildYourOwnCS.getCrust() + " Pizza Type: " + buildYourOwnCS.getPizzaType());
                                 //add pizza to order
                                 orderDetails.addPizza(buildYourOwnCS);
                             }
                             break;
                     }
-
-
-
+                    //currentToppings.clear(); //test to see if this erases toppings in current activity
                     Toast.makeText(OrderPizzasActivity.this, "Pizza added to order!", Toast.LENGTH_SHORT).show();
                 }
             });
