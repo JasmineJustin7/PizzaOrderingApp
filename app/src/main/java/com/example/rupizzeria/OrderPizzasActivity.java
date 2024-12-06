@@ -1,14 +1,10 @@
-
 package com.example.rupizzeria;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,15 +15,12 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
 import Classes.BBQChicken;
 import Classes.BuildYourOwn;
 import Classes.ChicagoPizza;
@@ -80,8 +73,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
     private ArrayList<Topping> toppings = new ArrayList<>();
     /**array list of toppings for current pizza selection*/
     private ArrayList<Topping> currentToppings = new ArrayList<>();
-
-    private ArrayList<Topping> selectedToppings = new ArrayList<>();
     /**list of pizzas associated with an order, is shared amongst activities*/
 //    private ArrayList<Pizza> pizzas;
     /**spinner that contains the different types of pizza provided by the pizzeria*/
@@ -132,8 +123,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
         }catch(NullPointerException e){
             Log.e("View Object Error", "GUI Object is null");
         }
-
-
     }
 
     /**listener that implements actions to take when clicking on a pizza style
@@ -147,7 +136,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
             RadioButton selectedRadioButton = findViewById(checkedId);
             String selectedItem = pizzaTypeSpinner.getSelectedItem().toString();
             Size size;
-
             if(sizeLarge1.isChecked()){
                 size = Size.LARGE;
             }else if(sizeMedium1.isChecked()){
@@ -512,7 +500,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
         }catch(Resources.NotFoundException e){
             alertResourceError();
         }
-
     }
 
     /**alert message to display if issues with resource recovery is encountered*/

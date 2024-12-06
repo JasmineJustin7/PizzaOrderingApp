@@ -43,20 +43,12 @@
             android:id="@+id/ordernumtextView"
             android:layout_width="76dp"
             android:layout_height="29dp"
-            android:layout_marginStart="120dp"
             android:text='@string/order_number'
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Spinner
-            android:id="@+id/orderNumSpinner"
-            android:layout_width="113dp"
-            android:layout_height="28dp"
-            android:layout_marginEnd="68dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

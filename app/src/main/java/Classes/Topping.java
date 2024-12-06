@@ -1,12 +1,8 @@
 package Classes;
 
-import android.media.Image;
-
 import androidx.annotation.NonNull;
-
 import com.example.rupizzeria.R;
 
-import android.net.Uri;
 
 /**enum class holding all possible toppings available at the pizzeria
  @author Jasmine Justin

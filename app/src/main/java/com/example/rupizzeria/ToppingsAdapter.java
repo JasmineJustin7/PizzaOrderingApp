@@ -1,32 +1,27 @@
 package com.example.rupizzeria;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
 import Classes.Topping;
 
 /**
  * This is an Adapter class to be used to instantiate an adapter for the RecyclerView.
+ * @author Jimena Reyes
+ * @author Jasmine Justin
  */
 class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
     /**need the context to inflate the layout*/
@@ -150,26 +145,38 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
      */
     @Override
     public int getItemCount() {
-        return toppings.size(); //number of MenuItem in the array list.
+        return toppings.size();
     }
 
     /**Get the views from the row layout file, similar to the onCreate() method.*/
     public static class ItemsHolder extends RecyclerView.ViewHolder {
-        /**text associated with name of topping*/
+        /**
+         * text associated with name of topping
+         */
         private TextView tv_name;
-        /**text view associated with price of pizza*/
+        /**
+         * text view associated with price of pizza
+         */
         private TextView tv_price;
-        /**image of respective topping*/
+        /**
+         * image of respective topping
+         */
         private ImageView im_topping;
-        /**button to add topping to order*/
+        /**
+         * button to add topping to order
+         */
         private Button btn_add;
-        /**button to remove topping from order*/
+        /**
+         * button to remove topping from order
+         */
         private Button btn_remove;
         /***/
         private ConstraintLayout parentLayout; //this is the row layout
-        private Spinner pizzaType;
-        private ArrayList<Topping> currentToppings;
 
+        /**
+         * Constructs an instance of {@code ItemsHolder}, initializing views and handling click events.
+         * @param itemView the view representing an individual item in the RecyclerView
+         */
         public ItemsHolder(@NonNull View itemView) {
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_topping);
@@ -179,72 +186,10 @@ class ToppingsAdapter extends RecyclerView.Adapter<ToppingsAdapter.ItemsHolder>{
             btn_remove = itemView.findViewById(R.id.btn_remove);
             parentLayout = itemView.findViewById(R.id.rowLayout);
 
-            parentLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(itemView.getContext(), OrderPizzasActivity.class);
-                    intent.putExtra("ITEM", tv_name.getText());
-                    itemView.getContext().startActivity(intent);
-                }
-            });
-        }
-
-        /**
-         * Set the onClickListener for the button on each row.
-         * Clicking on the button will create an AlertDialog with the options of YES/NO.
-         * @param toppingView is the recycler view of toppings
-         */
-        /*private void setAddButtonOnClick(@NonNull View toppingView) {
-            btn_add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //pizzaType = itemView.findViewById(R.id.pizza_type_spinner);
-                    AlertDialog.Builder alert = new AlertDialog.Builder(toppingView.getContext());
-                    alert.setTitle("Add to order");
-                    alert.setMessage(tv_name.getText().toString());
-                    //handle the "YES" click
-                    alert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            pizzaType = itemView.findViewById(R.id.pizza_type_spinner);
-                            Toast.makeText(toppingView.getContext(),
-                                    tv_name.getText().toString() + " added.", Toast.LENGTH_LONG).show();
-                        }
-                        //handle the "NO" click
-                    }).setNegativeButton("no", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(toppingView.getContext(),
-                                    tv_name.getText().toString() + " not added.", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    AlertDialog dialog = alert.create();
-                    dialog.show();
-                }
-            });
-        }*/
-
-        private void setRemoveButtonOnClick(@NonNull View toppingView) {
-            btn_remove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(toppingView.getContext());
-                    alert.setTitle("Remove from order?");
-                    alert.setMessage(tv_name.getText().toString());
-                    //handle the "YES" click
-                    alert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(toppingView.getContext(),
-                                    tv_name.getText().toString() + " added.", Toast.LENGTH_LONG).show();
-                        }
-                        //handle the "NO" click
-                    }).setNegativeButton("no", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(toppingView.getContext(),
-                                    tv_name.getText().toString() + " not added.", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    AlertDialog dialog = alert.create();
-                    dialog.show();
-                }
+            parentLayout.setOnClickListener(view -> {
+                Intent intent = new Intent(itemView.getContext(), OrderPizzasActivity.class);
+                intent.putExtra("ITEM", tv_name.getText());
+                itemView.getContext().startActivity(intent);
             });
         }
     }

@@ -39,7 +39,6 @@ public class Meatzza extends Pizza {
         return "New York Style";
     }
 
-
     /**
      * Returns the price of the Meatzza pizza based only on the size.
      * @return the price of the Meatzza pizza
@@ -58,7 +57,6 @@ public class Meatzza extends Pizza {
                 throw new IllegalArgumentException("Invalid size");
         }
     }
-
 
     /**returns pizza in order including style, size, crust, and toppings if there are any
      * @return string form of order*/

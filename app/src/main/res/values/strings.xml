@@ -21,7 +21,7 @@
     <string name="order_pizzas">Order Pizzas</string>
     <string name="add_to_order">Add to Order</string>
     <string name= "placed_orders">Placed Orders</string>
-    <string name="order_number">Order#</string>
+    <string name="order_number">Orders</string>
     <string name="cancel_order">Cancel Order</string>
     <string name="current_order">Current Order</string>
     <string name="select_item">Select Item to remove</string>

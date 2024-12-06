@@ -1,157 +1,89 @@
 package com.example.rupizzeria;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
-import java.util.List;
-
 import Classes.Order;
-import Classes.Pizza;
 
+/**
+ * This class class displays a list of orders in a RecyclerView,
+ * allows users to view the subtotal, and provides functionality to cancel selected orders.
+ * @author Jimena Reyes
+ * @author Jasmine Justin
+ */
 public class ViewOrdersActivity extends AppCompatActivity {
+
+    /**Adapter for RecyclerView*/
     private FinalOrderItemsAdapter finalOrderItemsAdapter;
 
+    /**List of current orders*/
     private ArrayList<Order> ordersList;
-    private TextView subtotalAmountVOTextView;
-    private Button cancelOrderButton;
-    private Spinner orderNumSpinner;
 
+    /**Displays subtotal*/
+    private TextView subtotalAmountVOTextView;
+
+    /**Cancels selected orders*/
+    private Button cancelOrderButton;
+
+    /**reference to singleton*/
     private final OrderDetails orderDetails = OrderDetails.getInstance(this);
 
+    /**
+     * Initialize order list, UI components
+     * Set up RecyclerView with adapter and layout manager
+     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_orders);
-
         ordersList = orderDetails.getOrders();
-
-        //debug
-        Log.d("ViewOrdersActivity", "Order items: " + ordersList.toString());
-
-        //populate spinner with order numbers
-        //loadOrderNumbersIntoSpinner();
-
         subtotalAmountVOTextView = findViewById(R.id.subtotalAmountVOTextView);
         cancelOrderButton = findViewById(R.id.cancelOrderButton);
-        orderNumSpinner = findViewById(R.id.orderNumSpinner); //set spinner view
         subtotalAmountVOTextView = findViewById(R.id.subtotalAmountVOTextView);
-
-        //set up RecyclerView with the FinalOrderItemsAdapter
         RecyclerView orderRecyclerView = findViewById(R.id.orderRecyclerView);
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
         finalOrderItemsAdapter = new FinalOrderItemsAdapter(ordersList, subtotalAmountVOTextView);
         orderRecyclerView.setAdapter(finalOrderItemsAdapter);
         updateSubtotal();
-
-        // Set up the cancel entire order button
         cancelOrder();
+        updateSubtotal();
     }
 
+    /**
+     * Sets up the cancel button to remove selected orders.
+     */
     private void cancelOrder() {
-        cancelOrderButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (orderDetails.getOrders().isEmpty()) {
-                    Toast.makeText(ViewOrdersActivity.this, "No items in order.", Toast.LENGTH_SHORT).show();
-                } else {
-
-                    //remove items from the adapter
-                    ArrayList<Order> selectedOrders = finalOrderItemsAdapter.getSelectedOrders();
-
-                    if (!selectedOrders.isEmpty()) {
-                        // remove items from the list
-                        finalOrderItemsAdapter.removeSelectedItems();
-
-                        // remove from the Singleton
-                        for (Order order : selectedOrders) {
-                            orderDetails.removeOrder(order);
-                        }
-
-                        // if items successfully removed
-                        Toast.makeText(ViewOrdersActivity.this, "Item(s) have been removed from your order.", Toast.LENGTH_SHORT).show();
-                        updateOrderSummary(); // Update the order summary after removal
-                    } else {
-                        // if user tries to remove without selecting items
-                        Toast.makeText(ViewOrdersActivity.this, "No items selected for removal.", Toast.LENGTH_SHORT).show();
+        cancelOrderButton.setOnClickListener(v -> {
+            if (orderDetails.getOrders().isEmpty()) {
+                Toast.makeText(ViewOrdersActivity.this, "No items in order.", Toast.LENGTH_SHORT).show();
+            } else {
+                ArrayList<Order> selectedOrders = finalOrderItemsAdapter.getSelectedOrders();
+                if (!selectedOrders.isEmpty()) {
+                    finalOrderItemsAdapter.removeSelectedItems();
+                    for (Order order : selectedOrders) {
+                        orderDetails.removeOrder(order);
                     }
+                    Toast.makeText(ViewOrdersActivity.this, "Item(s) have been removed from your order.", Toast.LENGTH_SHORT).show();
+                    updateOrderSummary(); // Update the order summary after removal
+                } else {
+                    Toast.makeText(ViewOrdersActivity.this, "No items selected for removal.", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }
 
-
-    private void loadOrderNumbersIntoSpinner() {
-        SharedPreferences sharedPreferences = getSharedPreferences("OrderHistory", MODE_PRIVATE);
-        List<String> orderNumbers = new ArrayList<>();
-
-        for (String key : sharedPreferences.getAll().keySet()) {
-            if (key.matches("\\d+")) {
-                orderNumbers.add(key);
-                orderNumbers.add(key.replace("Order_", ""));//added 12:19}
-
-
-                Log.d("ViewOrdersActivity", "Order Numbers: " + orderNumbers);
-
-
-                // If no orders exist, show a message
-                if (orderNumbers.isEmpty()) {
-                    Toast.makeText(this, "No orders placed yet", Toast.LENGTH_SHORT).show();
-                }
-                // Set up the spinner adapter with the order numbers
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, orderNumbers);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                orderNumSpinner.setAdapter(adapter);
-            }
-            orderNumSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    String selectedOrderNumber = (String) parentView.getItemAtPosition(position);
-                    loadOrderItems(selectedOrderNumber);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-                }
-
-            });
-        }
-    }
-
-
-    @SuppressLint("NotifyDataSetChanged")
-    private void loadOrderItems(String orderNumber) {
-        SharedPreferences sharedPreferences = getSharedPreferences("OrderHistory", MODE_PRIVATE);
-        ArrayList<Order> orders = OrderDetails.getInstance(this).getOrders();
-        ordersList.addAll(orders);
-        finalOrderItemsAdapter.notifyDataSetChanged();
-        updateSubtotal();
-        Log.d("ViewOrdersActivity", "No pizzas found for Order #" + orderNumber);
-    }
-
-
-    // Method to calculate and update the subtotal
+    /**
+     * Updates and displays the subtotal amount.
+     */
     @SuppressLint("DefaultLocale")
     private void updateSubtotal() {
         double subtotal = 0.0;
-        /*for (Pizza pizza : pizzasList) {
-            subtotal += pizza.price();
-        }*/
-
         for(Order order : ordersList){
             subtotal = order.getTotal();
         }
@@ -159,7 +91,11 @@ public class ViewOrdersActivity extends AppCompatActivity {
         subtotalAmountVOTextView.setText(String.format("$%.2f", subtotal));
     }
 
-    private void updateOrderSummary() { //clear textview
+    /**
+     * Resets the subtotal display after clearing orders.
+     */
+    @SuppressLint("SetTextI18n")
+    private void updateOrderSummary() {
         subtotalAmountVOTextView.setText("");
     }
 }
