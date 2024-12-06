@@ -97,7 +97,6 @@ public class CurrentOrdersActivity extends AppCompatActivity {
 
         // Button to place the order
         findViewById(R.id.placeOrderButton).setOnClickListener(new View.OnClickListener() {
-            //@SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
                 //check to see if button was clicked
@@ -126,15 +125,14 @@ public class CurrentOrdersActivity extends AppCompatActivity {
                 }
 
                 //get order items that weren't removed - Jasmine
-                ArrayList<Pizza> remainingItems = orderDetails.getPizzas();
-                Order newOrder = new Order();
+                ArrayList<Pizza> remainingItems = new ArrayList<>(orderDetails.getPizzas());
+                Order newOrder = new Order(remainingItems);
                 newOrder.setPizzas(remainingItems);
-                Toast.makeText(CurrentOrdersActivity.this, "newOrder now has current list of pizzas.", Toast.LENGTH_SHORT).show();
                 orderDetails.addOrder(newOrder);
-                //adapter.clearRecycler();
-                //orderDetails.placeOrder(newOrder.getNumber(), pizzas);
+                adapter.clearRecycler();
+
+                //notify adapter
                 Toast.makeText(CurrentOrdersActivity.this, "Order added to list of orders.", Toast.LENGTH_SHORT).show();
-                System.out.println("These are the details of all pizzas in each order: " + orderDetails.getOrders());
 
             }
         });

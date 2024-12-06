@@ -56,14 +56,7 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
         holder.selectItemCheckBox.setChecked(selectedPizzas.contains(currentItem));
 
         holder.selectItemCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            //if (isChecked) {
-                //selectedPizzas.add(currentItem);
-                //notifyItemChanged(position);
-           // } else {
-                //selectedPizzas.remove(currentItem);
-                //notifyItemChanged(position);
-            //}
-            //updateOrderItems(selectedPizzas);
+
             if (isChecked) {
                 if (!selectedPizzas.contains(currentItem)) {
                     selectedPizzas.add(currentItem);  // Add to selected list

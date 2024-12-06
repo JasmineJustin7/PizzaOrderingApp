@@ -18,9 +18,7 @@ public class Order {
     /**increments order number by 1 for every new order created*/
     private static int nextOrderNumber = 1;
 
-    /**default constructor*/
-    public Order(){
-    }
+
 
     /** Constructor to create a new order
      * @param pizzas the list of pizzas included in the order

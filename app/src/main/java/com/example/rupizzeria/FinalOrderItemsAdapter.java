@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import Classes.Order;
@@ -27,10 +28,13 @@ public class FinalOrderItemsAdapter extends RecyclerView.Adapter<FinalOrderItems
     /**selected list of orders*/
     private ArrayList<Order> selectedOrders;
 
+    private TextView subtotal;
+
     /**constructor of recycler view adaptor*/
-    public FinalOrderItemsAdapter(ArrayList<Order> orders) {
+    public FinalOrderItemsAdapter(ArrayList<Order> orders, TextView subTotalOrder) {
         this.orders = orders;
         this.selectedOrders = new ArrayList<>();
+        this.subtotal = subTotalOrder;
     }
 
 
@@ -61,7 +65,7 @@ public class FinalOrderItemsAdapter extends RecyclerView.Adapter<FinalOrderItems
         for (Pizza pizza : listPizzas) {
             pizzaDetails.append(pizza.getPizzaType()).append(" - ").append(pizza.getSize()).append("\n");
         }
-        holder.pizzaTypeTextViewFinal.setText(pizzaDetails.toString());
+        holder.pizzaTypeTextViewFinal.setText("");
 
         StringBuilder toppingsDetails = new StringBuilder();
         for (Pizza pizza : listPizzas) {
@@ -71,12 +75,17 @@ public class FinalOrderItemsAdapter extends RecyclerView.Adapter<FinalOrderItems
 
 
         holder.pizzaStyleTextViewFinal.setText(String.valueOf(currentOrder.getNumber()));
-        holder.pizzaCrustTextViewFinal.setText(String.valueOf(currentOrder.getNumber()));
+        holder.pizzaCrustTextViewFinal.setText("");
         holder.pizzaSizeTextViewFinal.setText(currentOrder.getPizzas().toString());
-        holder.pizzaToppingsTextViewFinal.setText(listPizzas.isEmpty() ? "No pizzas" : listPizzas.toString());
+        holder.pizzaToppingsTextViewFinal.setText("");
         holder.pizzaSizeTextViewFinal.setText(listPizzas.isEmpty() ? "No pizzas" : listPizzas.toString());
+        holder.selectItemCheckBoxFinal.setChecked(selectedOrders.contains(currentOrder));
 
-        holder.itemView.setOnClickListener(v -> {
+
+        holder.selectItemCheckBoxFinal.setOnClickListener(v -> {
+            DecimalFormat df = new DecimalFormat("#.00");
+            String formattedPrice = df.format(currentOrder.getTotal());
+            subtotal.setText(formattedPrice);
             if (selectedOrders.contains(currentOrder)) {
                 selectedOrders.remove(currentOrder);
             } else {
@@ -110,6 +119,8 @@ public class FinalOrderItemsAdapter extends RecyclerView.Adapter<FinalOrderItems
         TextView pizzaSizeTextViewFinal;
         /**displays toppings*/
         TextView pizzaToppingsTextViewFinal;
+        /**checkbox in holder*/
+        CheckBox selectItemCheckBoxFinal;
 
         /**constructor of holder
          * @param itemView is reference to view*/
@@ -120,6 +131,7 @@ public class FinalOrderItemsAdapter extends RecyclerView.Adapter<FinalOrderItems
             pizzaCrustTextViewFinal = itemView.findViewById(R.id.crustTypeTextViewFinal);
             pizzaSizeTextViewFinal = itemView.findViewById(R.id.sizeTextViewFinal);
             pizzaToppingsTextViewFinal = itemView.findViewById(R.id.toppingsTextViewFinal);
+            selectItemCheckBoxFinal = itemView.findViewById(R.id.checkBoxFinal);
         }
     }
 
