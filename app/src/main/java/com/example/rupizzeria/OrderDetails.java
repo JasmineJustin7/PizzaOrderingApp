@@ -1,15 +1,13 @@
 package com.example.rupizzeria;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
-
+import Classes.Order;
 import Classes.Pizza;
 
 
@@ -20,16 +18,17 @@ import Classes.Pizza;
 public final class OrderDetails {
     private static OrderDetails instance;
     private ArrayList<Pizza> pizzas;
+
+    private ArrayList<Order> orders;
     private int orderNumber = 1;
-
-
     private Context context;
     /**
      * Private constructor to prevent instantiation from outside this class
      */
     private OrderDetails(Context context) {
-        this.context = this.context;
+        this.context = context;
         pizzas = new ArrayList<>();
+        orders = new ArrayList<>();
         orderNumber = 1;
     }
 
@@ -52,6 +51,14 @@ public final class OrderDetails {
      */
     public void addPizza(Pizza orderItem) {
         pizzas.add(orderItem);
+    }
+
+    public void addOrder(Order selectedOrder){
+        orders.add(selectedOrder);
+    }
+
+    public void removeOrder(Order selectedOrder){
+        orders.remove(selectedOrder);
     }
 
 
@@ -85,6 +92,27 @@ public final class OrderDetails {
         }
         //debug ends here
         return pizzas;
+    }
+
+    public void setPizzas(ArrayList<Pizza> selectedPizzas){
+        this.pizzas = selectedPizzas;
+    }
+    /**
+     * Get the list of items in the current order
+     * @return A list of current order items
+     */
+    public ArrayList<Order> getOrders(){
+        //debug
+        Log.d("OrderDetails", "Order items size: " + orders.size());
+        for (Order order : orders) {
+            Log.d("OrderDetails", order.toString());
+        }
+        //debug ends here
+        return orders;
+    }
+
+    public void setOrders(ArrayList<Order> orders) {
+        this.orders = orders;
     }
 
 

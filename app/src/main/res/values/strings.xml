@@ -52,5 +52,6 @@
     <string name="add">Add</string>
     <string name="subtotalVOTextView">Subtotal:</string>
     <string name="subtotalAmountVOTextView">Subtotal</string>
+    <string name="checkbox">Select</string>
 
 </resources>

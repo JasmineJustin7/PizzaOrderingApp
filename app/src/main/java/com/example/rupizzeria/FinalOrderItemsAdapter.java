@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,83 +13,130 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import Classes.Order;
 import Classes.Pizza;
-import Classes.Topping;
 
-public class FinalOrderItemsAdapter extends RecyclerView.Adapter<FinalOrderItemsAdapter.OrderItemHolder> {
+/**adaptor to hold all orders created on the app in a recycler view
+ * @author Jasmine Justin
+ * @author Jimena Reyes*/
+public class FinalOrderItemsAdapter extends RecyclerView.Adapter<FinalOrderItemsAdapter.FinalOrderItemHolder> {
 
-    private ArrayList<Pizza> pizzas; // List of pizzas to display
-    private ArrayList<Pizza> selectedPizzas = new ArrayList<>();
+    /**list of orders*/
+    private ArrayList<Order> orders;
 
-    public FinalOrderItemsAdapter(ArrayList<Pizza> pizzas) {
-        this.pizzas = pizzas;
+    /**selected list of orders*/
+    private ArrayList<Order> selectedOrders;
+
+    /**constructor of recycler view adaptor*/
+    public FinalOrderItemsAdapter(ArrayList<Order> orders) {
+        this.orders = orders;
+        this.selectedOrders = new ArrayList<>();
     }
 
+
+    /**initializes recycler view adapter to hold view for each order
+     * @param parent is the parent view
+     * @param viewType is the type of view
+     * @return final order item holder*/
     @NonNull
     @Override
-    public OrderItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FinalOrderItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.finalorder_item, parent, false);
-        return new OrderItemHolder(view);
+        return new FinalOrderItemHolder(view);
     }
 
+    /**initializes values associated with each GUI object within each item
+     * @param position is the position of the collection of orders
+     * @param holder is the inner class that binds GUI objects to recycler view window*/
     @Override
-    public void onBindViewHolder(@NonNull OrderItemHolder holder, int position) {
-        Pizza currentItem = pizzas.get(position);
-        ArrayList<Topping> listToppings = currentItem.getToppings();
+    public void onBindViewHolder(@NonNull FinalOrderItemHolder holder, int position) {
+        Order currentOrder = orders.get(position);
+        ArrayList<Pizza> listPizzas = currentOrder.getPizzas();
 
         // Debug log to ensure items are bound correctly
-        Log.d("FinalOrderItemsAdapter", "Binding item: " + currentItem);
+        Log.d("FinalOrderItemsAdapter", "Binding item: " + currentOrder.toString());
 
-        // Setting text for each item
-        holder.pizzaStyleTextView.setText(currentItem.getStyle());
-        holder.pizzaTypeTextView.setText(currentItem.getPizzaType());
-        holder.pizzaCrustTextView.setText(currentItem.getCrust().toString());
-        holder.pizzaSizeTextView.setText(currentItem.getSize().toString());
-        holder.pizzaToppingsTextView.setText(listToppings.isEmpty() ? "No toppings" : listToppings.toString());
+        // Assuming Pizza class has methods like getType(), getSize(), getToppings()
+        StringBuilder pizzaDetails = new StringBuilder();
+        for (Pizza pizza : listPizzas) {
+            pizzaDetails.append(pizza.getPizzaType()).append(" - ").append(pizza.getSize()).append("\n");
+        }
+        holder.pizzaTypeTextViewFinal.setText(pizzaDetails.toString());
 
-        // Handle item selection for cancellation
+        StringBuilder toppingsDetails = new StringBuilder();
+        for (Pizza pizza : listPizzas) {
+            toppingsDetails.append(pizza.getToppings()).append("\n");
+        }
+        holder.pizzaToppingsTextViewFinal.setText(toppingsDetails.length() > 0 ? toppingsDetails.toString() : "No toppings");
+
+
+        holder.pizzaStyleTextViewFinal.setText(String.valueOf(currentOrder.getNumber()));
+        holder.pizzaCrustTextViewFinal.setText(String.valueOf(currentOrder.getNumber()));
+        holder.pizzaSizeTextViewFinal.setText(currentOrder.getPizzas().toString());
+        holder.pizzaToppingsTextViewFinal.setText(listPizzas.isEmpty() ? "No pizzas" : listPizzas.toString());
+        holder.pizzaSizeTextViewFinal.setText(listPizzas.isEmpty() ? "No pizzas" : listPizzas.toString());
+
         holder.itemView.setOnClickListener(v -> {
-            if (selectedPizzas.contains(currentItem)) {
-                selectedPizzas.remove(currentItem);
+            if (selectedOrders.contains(currentOrder)) {
+                selectedOrders.remove(currentOrder);
             } else {
-                selectedPizzas.add(currentItem);
+                selectedOrders.add(currentOrder);
             }
             notifyDataSetChanged();
         });
     }
 
+    /**get size of collection
+     * @return size*/
     @Override
-    public int getItemCount() {
-        return pizzas.size();
+    public int getItemCount() {//return pizzas.size();
+        return orders.size();
     }
 
-    // Method to get selected pizzas
-    public ArrayList<Pizza> getSelectedPizzas() {
-        return selectedPizzas;
-    }
+    /**return selected orders
+     * @return list of orders*/
+    public ArrayList<Order> getSelectedOrders() {return selectedOrders;}
 
-    public static class OrderItemHolder extends RecyclerView.ViewHolder {
+    /**item holder to associate GUI objects with respective value*/
+    public static class FinalOrderItemHolder extends RecyclerView.ViewHolder {
 
-        TextView pizzaStyleTextView;
-        TextView pizzaTypeTextView;
-        TextView pizzaCrustTextView;
-        TextView pizzaSizeTextView;
-        TextView pizzaToppingsTextView;
+        /**displays style of pizza*/
+        TextView pizzaStyleTextViewFinal;
+        /**displays pizza type*/
+        TextView pizzaTypeTextViewFinal;
+        /**displays crust*/
+        TextView pizzaCrustTextViewFinal;
+        /**displays size*/
+        TextView pizzaSizeTextViewFinal;
+        /**displays toppings*/
+        TextView pizzaToppingsTextViewFinal;
 
-        public OrderItemHolder(@NonNull View itemView) {
+        /**constructor of holder
+         * @param itemView is reference to view*/
+        public FinalOrderItemHolder(@NonNull View itemView) {
             super(itemView);
-            pizzaStyleTextView = itemView.findViewById(R.id.pizzaStyleTextView);
-            pizzaTypeTextView = itemView.findViewById(R.id.pizzaTypeTextView);
-            pizzaCrustTextView = itemView.findViewById(R.id.crustTypeTextView);
-            pizzaSizeTextView = itemView.findViewById(R.id.sizeTextView);
-            pizzaToppingsTextView = itemView.findViewById(R.id.toppingsTextView);
+            pizzaStyleTextViewFinal = itemView.findViewById(R.id.pizzaStyleTextViewFinal);
+            pizzaTypeTextViewFinal = itemView.findViewById(R.id.pizzaTypeTextViewFinal);
+            pizzaCrustTextViewFinal = itemView.findViewById(R.id.crustTypeTextViewFinal);
+            pizzaSizeTextViewFinal = itemView.findViewById(R.id.sizeTextViewFinal);
+            pizzaToppingsTextViewFinal = itemView.findViewById(R.id.toppingsTextViewFinal);
         }
     }
 
-    // Method to update the list of pizzas
+    /**Method to update the list of orders
+     * @param updatedOrders list of orders*/
     @SuppressLint("NotifyDataSetChanged")
-    public void updateOrderItems(ArrayList<Pizza> updatedItems) {
-        this.pizzas = updatedItems;
+    public void updateOrderItems(ArrayList<Order> updatedOrders) {
+        this.orders = updatedOrders;
+        notifyDataSetChanged();
+    }
+
+    /**removes selected item*/
+    @SuppressLint("NotifyDataSetChanged")
+    public void removeSelectedItems() {
+        //remove selected items from the list and notify adapter
+        orders.removeAll(selectedOrders);
+        selectedOrders.clear();
         notifyDataSetChanged();
     }
 }

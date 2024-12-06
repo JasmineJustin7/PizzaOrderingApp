@@ -1,6 +1,7 @@
 package Classes;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,7 +14,7 @@ public class Order {
     /**order number of given instance*/
     private int Number;
     /**holds list of pizzas associated with given order*/
-    private List<Pizza> pizzas;
+    private ArrayList<Pizza> pizzas;
     /**increments order number by 1 for every new order created*/
     private static int nextOrderNumber = 1;
 
@@ -24,14 +25,14 @@ public class Order {
     /** Constructor to create a new order
      * @param pizzas the list of pizzas included in the order
      */
-    public Order(List<Pizza> pizzas) {
+    public Order(ArrayList<Pizza> pizzas) {
         this.Number = nextOrderNumber++;
         this.pizzas = pizzas;
     }
 
     /**setter to associate a list of pizzas with an order
      * @param pizzas is a list of pizzas*/
-    public void setPizzas(List<Pizza> pizzas) {
+    public void setPizzas(ArrayList<Pizza> pizzas) {
         this.pizzas = pizzas;
     }
 
@@ -58,7 +59,7 @@ public class Order {
     /** Get the pizzas in the order
      * @return the list of pizzas
      */
-    public List<Pizza> getPizzas() {
+    public ArrayList<Pizza> getPizzas() {
         return pizzas;
     }
 

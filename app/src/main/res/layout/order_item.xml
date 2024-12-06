@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/pizzaStyleTextView"
+        android:id="@+id/pizzaStyleTextViewCurrent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text= '@string/pizza_style'
@@ -24,38 +24,38 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/pizzaTypeTextView"
+        android:id="@+id/pizzaTypeTextViewCurrent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text='@string/pizza_type'
-        app:layout_constraintTop_toBottomOf="@id/pizzaStyleTextView"
+        app:layout_constraintTop_toBottomOf="@id/pizzaStyleTextViewCurrent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/crustTypeTextView"
+        android:id="@+id/crustTypeTextViewCurrent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text='@string/crust_type'
-        app:layout_constraintTop_toBottomOf="@id/pizzaTypeTextView"
+        app:layout_constraintTop_toBottomOf="@id/pizzaTypeTextViewCurrent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/sizeTextView"
+        android:id="@+id/sizeTextViewCurrent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text='@string/size'
-        app:layout_constraintTop_toBottomOf="@id/crustTypeTextView"
+        app:layout_constraintTop_toBottomOf="@id/crustTypeTextViewCurrent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/toppingsTextView"
+        android:id="@+id/toppingsTextViewCurrent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text='@string/toppings'
-        app:layout_constraintTop_toBottomOf="@id/sizeTextView"
+        app:layout_constraintTop_toBottomOf="@id/sizeTextViewCurrent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -403,7 +403,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
      * @param addPizza is the button*/
     private void onClickAddPizza(Button addPizza, RadioButton nyStyle) {
         addPizza.setOnClickListener(new View.OnClickListener() {
-            //final Boolean NYChecked = nyStyle.isChecked();
             Size size;
             RadioButton sizeMedium = findViewById(R.id.cs_medium_size);
             RadioButton sizeLarge = findViewById(R.id.cs_large_size);
@@ -448,7 +447,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
                         addBYOPizzaToOrder();
                         break;
                 }
-                //currentToppings.clear(); //test to see if this erases toppings in current activity
                 Toast.makeText(OrderPizzasActivity.this, "Pizza added to order!", Toast.LENGTH_SHORT).show();
             }
 
@@ -465,7 +463,6 @@ public class OrderPizzasActivity extends AppCompatActivity {
 
             /**adds build your own pizza to order including */
             private void addBYOPizzaToOrder() {
-                //if(!currentToppings.isEmpty()) currentToppings.clear();//clear current selection of toppings
                 if(nyStyle.isChecked()){
                     Pizza buildYourOwnNY = new NYPizza().createBuildYourOwn(size);
                     buildYourOwnNY.setToppings(currentToppings);
@@ -475,6 +472,7 @@ public class OrderPizzasActivity extends AppCompatActivity {
                     buildYourOwnCS.setToppings(currentToppings);
                     orderDetails.addPizza(buildYourOwnCS);
                 }
+                currentToppings = new ArrayList<>();
             }
         });
     }

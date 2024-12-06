@@ -1,7 +1,6 @@
 package com.example.rupizzeria;
 
 import android.annotation.SuppressLint;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import Classes.Pizza;
 import Classes.Topping;
@@ -81,6 +79,11 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
         return pizzas.size();
     }
 
+    public void clearRecycler(){
+        pizzas.clear();
+        notifyDataSetChanged();
+    }
+
     public ArrayList<Pizza> getSelectedItems() {
         return selectedPizzas;
     }
@@ -95,11 +98,11 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
 
         public OrderItemHolder(@NonNull View itemView) {
             super(itemView);
-            pizzaStyleTextView = itemView.findViewById(R.id.pizzaStyleTextView);
-            pizzaTypeTextView = itemView.findViewById(R.id.pizzaTypeTextView);
-            pizzaCrustTextView = itemView.findViewById(R.id.crustTypeTextView);
-            pizzaSizeTextView = itemView.findViewById(R.id.sizeTextView);
-            pizzaToppingsTextView = itemView.findViewById(R.id.toppingsTextView);
+            pizzaStyleTextView = itemView.findViewById(R.id.pizzaStyleTextViewCurrent);
+            pizzaTypeTextView = itemView.findViewById(R.id.pizzaTypeTextViewCurrent);
+            pizzaCrustTextView = itemView.findViewById(R.id.crustTypeTextViewCurrent);
+            pizzaSizeTextView = itemView.findViewById(R.id.sizeTextViewCurrent);
+            pizzaToppingsTextView = itemView.findViewById(R.id.toppingsTextViewCurrent);
             selectItemCheckBox = itemView.findViewById(R.id.selectItemCheckBox);
         }
     }

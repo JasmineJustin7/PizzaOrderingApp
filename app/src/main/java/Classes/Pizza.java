@@ -10,7 +10,6 @@ import java.util.List;
  */
 public abstract class Pizza {
     /**holds a list of toppings associated with each pizza*/
-    //private List<Topping> toppings;
     private ArrayList<Topping> toppings;
     /** information about the crust of the pizza*/
     private Crust crust;
@@ -77,10 +76,12 @@ public abstract class Pizza {
      */
     public abstract double price();
 
+    /**String method to display pizza information*/
     @Override
     public String toString() {
         return getSize() + " " + getCrust() + " Pizza with toppings: " + toppings.toString();
     }
 
+    /**abstract method to display string form of pizza type depending on pizza*/
     public abstract String getPizzaType();
 }
